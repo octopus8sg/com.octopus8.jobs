@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+    <base>CRM/Job</base>
+    <class>Job</class>
+    <name>civicrm_job</name>
+    <comment>FIXME</comment>
+    <log>true</log>
+
+    <field>
+        <name>id</name>
+        <type>int unsigned</type>
+        <required>true</required>
+        <comment>Unique Job ID</comment>
+        <html>
+            <type>Number</type>
+        </html>
+    </field>
+    <primaryKey>
+        <name>id</name>
+        <autoincrement>true</autoincrement>
+    </primaryKey>
+
+    <field>
+        <name>contact_id</name>
+        <type>int unsigned</type>
+        <comment>FK to Contact</comment>
+    </field>
+    <foreignKey>
+        <name>contact_id</name>
+        <table>civicrm_contact</table>
+        <key>id</key>
+        <onDelete>CASCADE</onDelete>
+    </foreignKey>
+
+    <field>
+        <name>title</name>
+        <type>varchar</type>
+        <length>255</length>
+        <required>false</required>
+    </field>
+
+    <field>
+        <name>role_id</name>
+        <title>Role</title>
+        <type>int</type>
+        <length>3</length>
+        <default>1</default>
+        <pseudoconstant>
+            <optionGroupName>job_role</optionGroupName>
+        </pseudoconstant>
+        <html>
+            <type>Select</type>
+        </html>
+    </field>
+
+    <field>
+        <name>location_id</name>
+        <title>Location</title>
+        <type>int</type>
+        <length>3</length>
+        <default>1</default>
+        <pseudoconstant>
+            <optionGroupName>job_location</optionGroupName>
+        </pseudoconstant>
+        <html>
+            <type>Select</type>
+        </html>
+    </field>
+
+    <field>
+        <name>status_id</name>
+        <title>Status</title>
+        <type>int</type>
+        <length>3</length>
+        <default>1</default>
+        <pseudoconstant>
+            <optionGroupName>job_status</optionGroupName>
+        </pseudoconstant>
+        <html>
+            <type>Select</type>
+        </html>
+    </field>
+
+</table>

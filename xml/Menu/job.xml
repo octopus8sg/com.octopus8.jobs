@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/job/form</path>
+    <page_callback>CRM_Job_Form_Job</page_callback>
+    <title>Job</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/job/search</path>
+    <page_callback>CRM_Job_Form_Search</page_callback>
+    <title>Search</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/job/contacttab</path>
+    <page_callback>CRM_Job_Page_ContactTab</page_callback>
+    <title>ContactTab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>
