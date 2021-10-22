@@ -8,7 +8,7 @@
  */
 class CRM_Job_ExtensionUtil {
   const SHORT_NAME = 'job';
-  const LONG_NAME = 'com.socialservicesconnect.job';
+  const LONG_NAME = 'com.socialservicesconnect.jobs';
   const CLASS_PREFIX = 'CRM_Job';
 
   /**

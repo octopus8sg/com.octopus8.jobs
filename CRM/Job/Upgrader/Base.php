@@ -48,7 +48,7 @@ class CRM_Job_Upgrader_Base {
   public static function instance() {
     if (!self::$instance) {
       self::$instance = new CRM_Job_Upgrader(
-        'com.socialservicesconnect.job',
+        'com.socialservicesconnect.jobs',
         E::path()
       );
     }

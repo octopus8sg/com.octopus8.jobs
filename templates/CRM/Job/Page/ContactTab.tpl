@@ -1,4 +1,4 @@
-{crmScope extensionKey='com.socialservicesconnect.job'}
+{crmScope extensionKey='com.socialservicesconnect.jobs'}
     <div class="crm-content-block">
         <div class="action-link">
             <a class="button" href="{crmURL p="civicrm/job/form" q="reset=1&action=add" }">

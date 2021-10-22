@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<extension key="com.socialservicesconnect.job" type="module">
+<extension key="com.socialservicesconnect.jobs" type="module">
   <file>job</file>
   <name>Social Services Connect Job</name>
   <description>Social Services Connect Job Extension</description>
@@ -9,9 +9,9 @@
     <email>hindol@octopus8.com</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">http://job.socialservicesconnect.com</url>
-    <url desc="Documentation">http://job.socialservicesconnect.com</url>
-    <url desc="Support">http://job.socialservicesconnect.com</url>
+    <url desc="Main Extension Page">http://jobs.socialservicesconnect.com</url>
+    <url desc="Documentation">http://jobs.socialservicesconnect.com</url>
+    <url desc="Support">http://jobs.socialservicesconnect.com</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
   <releaseDate>2021-10-15</releaseDate>
