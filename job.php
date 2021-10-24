@@ -1,8 +1,10 @@
 <?php
 
 require_once 'job.civix.php';
+
 // phpcs:disable
 use CRM_Job_ExtensionUtil as E;
+
 // phpcs:enable
 
 /**
@@ -10,8 +12,9 @@ use CRM_Job_ExtensionUtil as E;
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config/
  */
-function job_civicrm_config(&$config) {
-  _job_civix_civicrm_config($config);
+function job_civicrm_config(&$config)
+{
+    _job_civix_civicrm_config($config);
 }
 
 /**
@@ -19,8 +22,9 @@ function job_civicrm_config(&$config) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_xmlMenu
  */
-function job_civicrm_xmlMenu(&$files) {
-  _job_civix_civicrm_xmlMenu($files);
+function job_civicrm_xmlMenu(&$files)
+{
+    _job_civix_civicrm_xmlMenu($files);
 }
 
 /**
@@ -28,8 +32,9 @@ function job_civicrm_xmlMenu(&$files) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
  */
-function job_civicrm_install() {
-  _job_civix_civicrm_install();
+function job_civicrm_install()
+{
+    _job_civix_civicrm_install();
 }
 
 /**
@@ -37,8 +42,9 @@ function job_civicrm_install() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
  */
-function job_civicrm_postInstall() {
-  _job_civix_civicrm_postInstall();
+function job_civicrm_postInstall()
+{
+    _job_civix_civicrm_postInstall();
 }
 
 /**
@@ -46,8 +52,9 @@ function job_civicrm_postInstall() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_uninstall
  */
-function job_civicrm_uninstall() {
-  _job_civix_civicrm_uninstall();
+function job_civicrm_uninstall()
+{
+    _job_civix_civicrm_uninstall();
 }
 
 /**
@@ -55,8 +62,9 @@ function job_civicrm_uninstall() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
-function job_civicrm_enable() {
-  _job_civix_civicrm_enable();
+function job_civicrm_enable()
+{
+    _job_civix_civicrm_enable();
 }
 
 /**
@@ -64,8 +72,9 @@ function job_civicrm_enable() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_disable
  */
-function job_civicrm_disable() {
-  _job_civix_civicrm_disable();
+function job_civicrm_disable()
+{
+    _job_civix_civicrm_disable();
 }
 
 /**
@@ -73,8 +82,9 @@ function job_civicrm_disable() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
  */
-function job_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _job_civix_civicrm_upgrade($op, $queue);
+function job_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL)
+{
+    return _job_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -85,8 +95,9 @@ function job_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_managed
  */
-function job_civicrm_managed(&$entities) {
-  _job_civix_civicrm_managed($entities);
+function job_civicrm_managed(&$entities)
+{
+    _job_civix_civicrm_managed($entities);
 }
 
 /**
@@ -98,8 +109,9 @@ function job_civicrm_managed(&$entities) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_caseTypes
  */
-function job_civicrm_caseTypes(&$caseTypes) {
-  _job_civix_civicrm_caseTypes($caseTypes);
+function job_civicrm_caseTypes(&$caseTypes)
+{
+    _job_civix_civicrm_caseTypes($caseTypes);
 }
 
 /**
@@ -112,8 +124,9 @@ function job_civicrm_caseTypes(&$caseTypes) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_angularModules
  */
-function job_civicrm_angularModules(&$angularModules) {
-  _job_civix_civicrm_angularModules($angularModules);
+function job_civicrm_angularModules(&$angularModules)
+{
+    _job_civix_civicrm_angularModules($angularModules);
 }
 
 /**
@@ -121,8 +134,9 @@ function job_civicrm_angularModules(&$angularModules) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_alterSettingsFolders
  */
-function job_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _job_civix_civicrm_alterSettingsFolders($metaDataFolders);
+function job_civicrm_alterSettingsFolders(&$metaDataFolders = NULL)
+{
+    _job_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**
@@ -132,15 +146,17 @@ function job_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
-function job_civicrm_entityTypes(&$entityTypes) {
-  _job_civix_civicrm_entityTypes($entityTypes);
+function job_civicrm_entityTypes(&$entityTypes)
+{
+    _job_civix_civicrm_entityTypes($entityTypes);
 }
 
 /**
  * Implements hook_civicrm_themes().
  */
-function job_civicrm_themes(&$themes) {
-  _job_civix_civicrm_themes($themes);
+function job_civicrm_themes(&$themes)
+{
+    _job_civix_civicrm_themes($themes);
 }
 
 // --- Functions below this ship commented out. Uncomment as required. ---
@@ -159,17 +175,19 @@ function job_civicrm_themes(&$themes) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
-function job_civicrm_navigationMenu(&$menu) {
-  _job_civix_insert_navigation_menu($menu, 'Search', array(
-    'label' => E::ts('Search Jobs'),
-    'name' => 'search_jobs',
-    'url' => 'civicrm/job/search',
-    'permission' => 'access CiviMail',
-    'operator' => 'OR',
-    'separator' => 0,
-  ));
-  _job_civix_navigationMenu($menu);
+function job_civicrm_navigationMenu(&$menu)
+{
+    _job_civix_insert_navigation_menu($menu, 'Search', array(
+        'label' => E::ts('Search Jobs'),
+        'name' => 'search_jobs',
+        'url' => 'civicrm/job/search',
+        'permission' => 'access CiviMail',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _job_civix_navigationMenu($menu);
 }
+
 //function job_civicrm_navigationMenu(&$menu) {
 //  _job_civix_insert_navigation_menu($menu, 'Mailings', array(
 //    'label' => E::ts('New subliminal message'),
@@ -186,24 +204,57 @@ function job_civicrm_navigationMenu(&$menu) {
  * Implementation of hook_civicrm_tabset
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_tabset
  */
-function job_civicrm_tabset($path, &$tabs, $context) {
+function job_civicrm_tabset($path, &$tabs, $context)
+{
     if ($path === 'civicrm/contact/view') {
         // add a tab to the contact summary screen
         $contactId = $context['contact_id'];
+        $contact = \Civi\Api4\Contact::get(0)
+            ->addWhere('id', '=', $contactId)
+            ->execute()->single();
+        $contactType = $contact['contact_type'];
         $url = CRM_Utils_System::url('civicrm/job/contacttab', ['cid' => $contactId]);
 
         $myEntities = \Civi\Api4\Job::get()
             ->selectRowCount()
             ->addWhere('contact_id', '=', $contactId)
             ->execute();
-
-        $tabs[] = array(
-            'id' => 'contact_job',
-            'url' => $url,
-            'count' => $myEntities->count(),
-            'title' => E::ts('Jobs'),
-            'weight' => 1,
-            'icon' => 'crm-i fa-envelope-open',
+        $employers = array("Household",
+            "Organization",
+            "Team",
+            "Sponsor"
         );
+        $employees = array("Individual",
+            "Student",
+            "Parent",
+            "Staff",
+        );
+        if (in_array($contactType, $employees)) {
+            $tabs[] = array(
+                'id' => 'employee_job',
+                'url' => $url,
+                'count' => $myEntities->count(),
+                'title' => E::ts('Jobs'),
+                'weight' => 1000,
+                'icon' => 'crm-i fa-envelope-open',
+            );
+            $tabs[] = array(
+                'id' => 'employee_application',
+                'url' => $url,
+                'count' => $myEntities->count(),
+                'title' => E::ts('Applications'),
+                'weight' => 1001,
+                'icon' => 'crm-i fa-envelope-open',
+            );
+        } elseif (in_array($contactType, $employers)) {
+            $tabs[] = array(
+                'id' => 'employeer_job',
+                'url' => $url,
+                'count' => $myEntities->count(),
+                'title' => E::ts('Jobs'),
+                'weight' => 1000,
+                'icon' => 'crm-i fa-envelope-open',
+            );
+        }
     }
 }
