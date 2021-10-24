@@ -18,4 +18,16 @@
     <title>ContactTab</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/job/employeetab</path>
+    <page_callback>CRM_Job_Page_EmployeeJobTab</page_callback>
+    <title>EmployeeJobTab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/job/employertab</path>
+    <page_callback>CRM_Job_Page_EmployerJobTab</page_callback>
+    <title>EmployerJobTab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

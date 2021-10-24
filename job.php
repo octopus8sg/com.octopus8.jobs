@@ -285,9 +285,13 @@ function job_civicrm_tabset($path, &$tabs, $context)
             ->addWhere('id', '=', $contactId)
             ->execute()->single();
         $contactType = $contact['contact_type'];
-        $url = CRM_Utils_System::url('civicrm/job/contacttab', ['cid' => $contactId]);
+        $employeesurl = CRM_Utils_System::url('civicrm/job/employeetab', ['cid' => $contactId]);
+        $employersurl = CRM_Utils_System::url('civicrm/job/employertab', ['cid' => $contactId]);
 
-        $myEntities = \Civi\Api4\Job::get()
+        $employeeEntities = \Civi\Api4\Job::get()
+            ->selectRowCount()
+            ->execute();
+        $employerEntities = \Civi\Api4\Job::get()
             ->selectRowCount()
             ->addWhere('contact_id', '=', $contactId)
             ->execute();
@@ -304,25 +308,17 @@ function job_civicrm_tabset($path, &$tabs, $context)
         if (in_array($contactType, $employees)) {
             $tabs[] = array(
                 'id' => 'employee_job',
-                'url' => $url,
-                'count' => $myEntities->count(),
+                'url' => $employeesurl,
+                'count' => $employeeEntities->count(),
                 'title' => E::ts('Jobs'),
                 'weight' => 1000,
-                'icon' => 'crm-i fa-envelope-open',
-            );
-            $tabs[] = array(
-                'id' => 'employee_application',
-                'url' => $url,
-                'count' => $myEntities->count(),
-                'title' => E::ts('Applications'),
-                'weight' => 1001,
                 'icon' => 'crm-i fa-envelope-open',
             );
         } elseif (in_array($contactType, $employers)) {
             $tabs[] = array(
                 'id' => 'employeer_job',
-                'url' => $url,
-                'count' => $myEntities->count(),
+                'url' => $employersurl,
+                'count' => $employerEntities->count(),
                 'title' => E::ts('Jobs'),
                 'weight' => 1000,
                 'icon' => 'crm-i fa-envelope-open',
