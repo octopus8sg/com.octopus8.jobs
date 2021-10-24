@@ -177,15 +177,87 @@ function job_civicrm_themes(&$themes)
  */
 function job_civicrm_navigationMenu(&$menu)
 {
-    _job_civix_insert_navigation_menu($menu, 'Search', array(
-        'label' => E::ts('Search Jobs'),
-        'name' => 'search_jobs',
-        'url' => 'civicrm/job/search',
-        'permission' => 'access CiviMail',
+    if (! CRM_Core_Permission::check('administer CiviCRM')) {
+        CRM_Core_Session::setStatus('', ts('Insufficient permission'), 'error');
+        return;
+    }
+//    $currentUserId = CRM_Core_Session::getLoggedInContactID();
+
+    _job_civix_insert_navigation_menu($menu, '', array(
+        'label' => E::ts('Devices'),
+        'name' => 'health_monitor',
+        'icon' => 'crm-i fa-heartbeat',
+        'url' => 'civicrm/devices/dashboard',
+        'permission' => 'access CiviCRM',
+        'navID' => 10,
         'operator' => 'OR',
         'separator' => 0,
     ));
     _job_civix_navigationMenu($menu);
+   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
+        'label' => E::ts('Dashboard'),
+        'name' => 'search_devices',
+        'url' => 'civicrm/devices/dashboard',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+   _job_civix_navigationMenu($menu);
+   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
+        'label' => E::ts('Find Devices'),
+        'name' => 'search_devices',
+        'url' => 'civicrm/devices/search',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+   _job_civix_navigationMenu($menu);
+   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
+        'label' => E::ts('Add Device'),
+        'name' => 'add_device',
+        'url' => 'civicrm/devices/form?reset=1&action=add',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+   _job_civix_navigationMenu($menu);
+   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
+        'label' => E::ts('Find Data'),
+        'name' => 'search_health_monitor',
+        'url' => 'civicrm/devices/data/search',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+   _job_civix_navigationMenu($menu);
+   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
+        'label' => E::ts('Add Data'),
+        'name' => 'search_health_monitor',
+        'url' => 'civicrm/devices/data/form?reset=1&action=add',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+   _job_civix_navigationMenu($menu);
+   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
+        'label' => E::ts('Search Alerts'),
+        'name' => 'search_alert',
+        'url' => 'civicrm/alert/search',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+   _job_civix_navigationMenu($menu);
+   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
+        'label' => E::ts('Device Reports'),
+        'name' => 'search_devices',
+        'url' => CRM_Utils_System::url('civicrm/report/list', ['grp' => 'devices', 'reset' => 1]),
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 2,
+    ));
+   _job_civix_navigationMenu($menu);
+
 }
 
 //function job_civicrm_navigationMenu(&$menu) {

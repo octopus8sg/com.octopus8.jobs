@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <extension key="com.socialservicesconnect.jobs" type="module">
   <file>job</file>
-  <name>Social Services Connect Job</name>
-  <description>Social Services Connect Job Extension</description>
+  <name>Social Services Connect Jobs</name>
+  <description>Social Services Connect Jobs Extension</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Dr.Khindol Madraimov</author>
