@@ -81,5 +81,18 @@
             <type>Select</type>
         </html>
     </field>
+    <field>
+        <name>created_date</name>
+        <type>timestamp</type>
+        <title>Job Proposal Created Date</title>
+        <required>true</required>
+        <default>CURRENT_TIMESTAMP</default>
+        <comment>Date and time the job was created</comment>
+        <html>
+            <type>Select Date</type>
+            <formatType>activityDateTime</formatType>
+        </html>
+
+    </field>
 
 </table>

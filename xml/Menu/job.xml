@@ -36,7 +36,7 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
-    <path>civicrm/job/employeejobsajax</path>
+    <path>civicrm/job/employerjobsajax</path>
     <page_callback>CRM_Job_Page_EmployerJobTab::getJobsAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>

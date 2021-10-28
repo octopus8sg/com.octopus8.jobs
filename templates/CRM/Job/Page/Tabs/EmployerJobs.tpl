@@ -13,7 +13,7 @@
         <div class="crm-search-results">
             {include file="CRM/common/enableDisableApi.tpl"}
             {include file="CRM/common/jsortable.tpl"}
-            <table class="selector selector-devices row-highlight pagerDisplay" id="employerJobs" name="employerJobs">
+            <table class="selector selector-employer-jobs row-highlight pagerDisplay" id="employerJobs" name="employerJobs">
                 <thead class="sticky">
                 <tr>
                     <th id="sortable" scope="col">

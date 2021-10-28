@@ -1,18 +1,28 @@
 <?php
+
 use CRM_Job_ExtensionUtil as E;
 
-class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page {
+class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
+{
 
-  public function run() {
-    // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-    CRM_Utils_System::setTitle(E::ts('Employer Job Tab'));
+    public function run()
+    {
+        // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
+        CRM_Utils_System::setTitle(E::ts('Employer Job Tab'));
 
-    // Example: Assign a variable for use in a template
-    $this->assign('currentTime', date('Y-m-d H:i:s'));
+        // Example: Assign a variable for use in a template
+        $this->assign('currentTime', date('Y-m-d H:i:s'));
+        $urlQry['snippet'] = 4;
+        $employer_job_source_url = CRM_Utils_System::url('civicrm/job/employerjobsajax', $urlQry, FALSE, NULL, FALSE);
+        $sourceUrl['employer_job_sourceUrl'] = $employer_job_source_url;
+        $this->assign('alert_sourcel', $employer_job_source_url);
+        $this->assign('useAjax', true);
+        $this->assign('sourceUrl', $employer_job_source_url);
+        CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
+        parent::run();
+    }
 
-    parent::run();
-  }
-    public function getAjax()
+    public function getJobsAjax()
     {
 
 //        CRM_Core_Error::debug_var('request', $_REQUEST);

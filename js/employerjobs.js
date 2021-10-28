@@ -14,12 +14,12 @@ CRM.$(function ($) {
     });
 
 
-    var jobs_sourceUrl = CRM.vars.source_url['job_sourceUrl'];
+    var jobs_sourceUrl = CRM.vars.source_url['employer_job_sourceUrl'];
 
     $(document).ready(function () {
         //Reset Table, add Filter and Search Possibility
         //devices datatable
-        var jobs_tab = $('.selector-jobs');
+        var jobs_tab = $('.selector-employer-jobs');
         var jobs_table = jobs_tab.DataTable();
         var jobs_dtsettings = jobs_table.settings().init();
         jobs_dtsettings.bFilter = true;

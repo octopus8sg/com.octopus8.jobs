@@ -42,7 +42,7 @@
     <import>true</import>
     <export>true</export>
     <pseudoconstant>
-      <optionGroupName>job_application_type</optionGroupName>
+      <optionGroupName>job_application_status</optionGroupName>
     </pseudoconstant>
     <html>
       <type>Select</type>
@@ -64,5 +64,19 @@
     <key>id</key>
     <onDelete>CASCADE</onDelete>
   </foreignKey>
+
+  <field>
+    <name>created_date</name>
+    <type>timestamp</type>
+    <title>Application Created Date</title>
+    <required>true</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <comment>Date and time the application was created</comment>
+    <html>
+      <type>Select Date</type>
+      <formatType>activityDateTime</formatType>
+    </html>
+
+  </field>
 
 </table>

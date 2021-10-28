@@ -61,7 +61,6 @@ class CRM_Job_Upgrader extends CRM_Job_Upgrader_Base
             // Ignore exception.
         }
         try {
-
             $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'job_status', 'title' => E::ts('Status')]);
             $typeOptionGroupId = $typeOptionGroupId['id'];
             civicrm_api3('OptionValue', 'create',
@@ -81,6 +80,48 @@ class CRM_Job_Upgrader extends CRM_Job_Upgrader_Base
             );
             civicrm_api3('OptionValue', 'create',
                 ['value' => 3,
+                    'name' => 'withdrown',
+                    'label' => E::ts('Withdrown'),
+                    'option_group_id' => $typeOptionGroupId
+                ]
+            );
+        } catch (\CiviCRM_API3_Exception $ex) {
+            // Ignore exception.
+        }
+        try {
+            $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'job_application_status', 'title' => E::ts('Status')]);
+            $typeOptionGroupId = $typeOptionGroupId['id'];
+            civicrm_api3('OptionValue', 'create',
+                ['value' => 1,
+                    'is_default' => '1',
+                    'name' => 'new',
+                    'label' => E::ts('New'),
+                    'option_group_id' => $typeOptionGroupId
+                ]
+            );
+            civicrm_api3('OptionValue', 'create',
+                ['value' => 2,
+                    'name' => 'under_revision',
+                    'label' => E::ts('Under Revision'),
+                    'option_group_id' => $typeOptionGroupId
+                ]
+            );
+            civicrm_api3('OptionValue', 'create',
+                ['value' => 4,
+                    'name' => 'approved',
+                    'label' => E::ts('Approved'),
+                    'option_group_id' => $typeOptionGroupId
+                ]
+            );
+            civicrm_api3('OptionValue', 'create',
+                ['value' => 5,
+                    'name' => 'rejected',
+                    'label' => E::ts('Rejected'),
+                    'option_group_id' => $typeOptionGroupId
+                ]
+            );
+            civicrm_api3('OptionValue', 'create',
+                ['value' => 6,
                     'name' => 'withdrown',
                     'label' => E::ts('Withdrown'),
                     'option_group_id' => $typeOptionGroupId
