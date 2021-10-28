@@ -42,8 +42,10 @@ CREATE TABLE `civicrm_job` (
   `location_id` int DEFAULT 1,
   `status_id` int DEFAULT 1,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the job was created',
+  `created_id` int unsigned COMMENT 'FK to civicrm_contact, who created this application',
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_civicrm_job_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
+  CONSTRAINT FK_civicrm_job_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,
+  CONSTRAINT FK_civicrm_job_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL
 )
 ENGINE=InnoDB;
 
@@ -60,8 +62,10 @@ CREATE TABLE `civicrm_job_application` (
   `job_application_status_id` int DEFAULT 1,
   `job_id` int unsigned NOT NULL COMMENT 'FK to Job',
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the application was created',
+  `created_id` int unsigned COMMENT 'FK to civicrm_contact, who created this application',
   PRIMARY KEY (`id`),
   CONSTRAINT FK_civicrm_job_application_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FK_civicrm_job_application_job_id FOREIGN KEY (`job_id`) REFERENCES `civicrm_job`(`id`) ON DELETE CASCADE
+  CONSTRAINT FK_civicrm_job_application_job_id FOREIGN KEY (`job_id`) REFERENCES `civicrm_job`(`id`) ON DELETE CASCADE,
+  CONSTRAINT FK_civicrm_job_application_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL
 )
 ENGINE=InnoDB;

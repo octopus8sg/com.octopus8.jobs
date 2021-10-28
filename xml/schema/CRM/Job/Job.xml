@@ -94,5 +94,21 @@
         </html>
 
     </field>
-
+    <field>
+        <name>created_id</name>
+        <type>int unsigned</type>
+        <title>Created By Contact ID</title>
+        <comment>FK to civicrm_contact, who created this application</comment>
+        <html>
+            <label>Created By</label>
+        </html>
+        <add>4.4</add>
+    </field>
+    <foreignKey>
+        <name>created_id</name>
+        <table>civicrm_contact</table>
+        <key>id</key>
+        <add>4.4</add>
+        <onDelete>SET NULL</onDelete>
+    </foreignKey>
 </table>

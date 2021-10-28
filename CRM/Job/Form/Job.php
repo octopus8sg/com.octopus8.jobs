@@ -154,7 +154,9 @@ class CRM_Job_Form_Job extends CRM_Core_Form
             }
             $params['title'] = $values['title'];
             $params['contact_id'] = $values['contact_id'];
-
+            $session = CRM_Core_Session::singleton();
+            $params['created_id'] = $session->get('userID');
+            $params['created_date'] = date('YmdHis');
             //added pseudoconstants
 
             $params['role_id'] = $values['role_id'];
