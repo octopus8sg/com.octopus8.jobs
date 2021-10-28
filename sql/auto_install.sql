@@ -17,6 +17,7 @@
 
 SET FOREIGN_KEY_CHECKS=0;
 
+DROP TABLE IF EXISTS `civicrm_job_application`;
 DROP TABLE IF EXISTS `civicrm_job`;
 
 SET FOREIGN_KEY_CHECKS=1;
@@ -37,10 +38,28 @@ CREATE TABLE `civicrm_job` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique Job ID',
   `contact_id` int unsigned COMMENT 'FK to Contact',
   `title` varchar(255) NULL,
-  `job_role_id` int DEFAULT 1,
-  `job_location_id` int DEFAULT 1,
-  `job_status_id` int DEFAULT 1,
+  `role_id` int DEFAULT 1,
+  `location_id` int DEFAULT 1,
+  `status_id` int DEFAULT 1,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_civicrm_job_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
+)
+ENGINE=InnoDB;
+
+-- /*******************************************************
+-- *
+-- * civicrm_job_application
+-- *
+-- * Job Application
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_job_application` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique Job Application ID',
+  `contact_id` int unsigned COMMENT 'FK to Contact',
+  `job_application_status_id` int DEFAULT 1,
+  `job_id` int unsigned NOT NULL COMMENT 'FK to Job',
+  PRIMARY KEY (`id`),
+  CONSTRAINT FK_civicrm_job_application_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,
+  CONSTRAINT FK_civicrm_job_application_job_id FOREIGN KEY (`job_id`) REFERENCES `civicrm_job`(`id`) ON DELETE CASCADE
 )
 ENGINE=InnoDB;

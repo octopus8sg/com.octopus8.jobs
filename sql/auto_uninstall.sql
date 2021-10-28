@@ -15,6 +15,7 @@
 
 SET FOREIGN_KEY_CHECKS=0;
 
+DROP TABLE IF EXISTS `civicrm_job_application`;
 DROP TABLE IF EXISTS `civicrm_job`;
 
 SET FOREIGN_KEY_CHECKS=1;

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Job</base>
+  <class>JobApplication</class>
+  <name>civicrm_job_application</name>
+  <comment>Job Application</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique Job Application ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>contact_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Contact</comment>
+  </field>
+  <foreignKey>
+    <name>contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>job_application_status_id</name>
+    <title>Application Status</title>
+    <type>int</type>
+    <length>3</length>
+    <default>1</default>
+    <import>true</import>
+    <export>true</export>
+    <pseudoconstant>
+      <optionGroupName>job_application_type</optionGroupName>
+    </pseudoconstant>
+    <html>
+      <type>Select</type>
+    </html>
+  </field>
+
+  <field>
+    <name>job_id</name>
+    <type>int unsigned</type>
+    <import>true</import>
+    <export>true</export>
+    <comment>FK to Job</comment>
+    <required>true</required>
+  </field>
+
+  <foreignKey>
+    <name>job_id</name>
+    <table>civicrm_job</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+</table>

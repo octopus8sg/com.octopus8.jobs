@@ -455,5 +455,10 @@ function _job_civix_civicrm_entityTypes(&$entityTypes) {
       'class' => 'CRM_Job_DAO_Job',
       'table' => 'civicrm_job',
     ],
+    'CRM_Job_DAO_JobApplication' => [
+      'name' => 'JobApplication',
+      'class' => 'CRM_Job_DAO_JobApplication',
+      'table' => 'civicrm_job_application',
+    ],
   ]);
 }
