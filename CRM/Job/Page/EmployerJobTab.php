@@ -67,7 +67,7 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
 
         $dateselect_from = CRM_Utils_Request::retrieveValue('dateselect_from', 'String', null);
         try {
-            $dateselectto = new DateTime($dateselect_from);
+            $dateselectfrom = new DateTime($dateselect_from);
         } catch (Exception $e) {
             $dateselect_from = null;
         }
@@ -148,7 +148,9 @@ $ordersql = " ORDER BY j.id desc";
         if (isset($dateselect_to)) {
             if ($dateselect_to != null) {
                 if ($dateselect_to != '') {
-                    $wheresql .= " AND j.`created_date` <= '" . $dateselect_to . "' ";
+                    $_to = strtotime("+1 day", strtotime($dateselect_to));
+                    $date_to = date("Y-m-d H:i:s", $_to);
+                    $wheresql .= " AND j.`created_date` <= '" . $date_to . "' ";
                 } else {
                     $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
                 }
@@ -158,9 +160,8 @@ $ordersql = " ORDER BY j.id desc";
         } else {
             $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
         }
+        CRM_Core_Error::debug_var('wheresql', $wheresql);
 
-
-//        CRM_Core_Error::debug_var('search_sql', $sql);
 
 
         if ($sort !== NULL) {
@@ -180,6 +181,7 @@ $ordersql = " ORDER BY j.id desc";
 
 //        CRM_Core_Error::debug_var('sql', $sql);
         $sql = $selectsql . $wheresql . $groupsql . $ordersql;
+        CRM_Core_Error::debug_var('search_sql', $sql);
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
