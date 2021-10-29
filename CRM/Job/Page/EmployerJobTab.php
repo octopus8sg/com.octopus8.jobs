@@ -67,7 +67,7 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
             1 => 'title',
             2 => 'application_count',
             3 => 'location',
-            4 => 'date',
+            4 => 'created_date',
             5 => 'job_status',
         ];
 
@@ -75,37 +75,37 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
         $sortOrder = isset($_REQUEST['sSortDir_0']) ? CRM_Utils_Type::escape($_REQUEST['sSortDir_0'], 'String') : 'asc';
 
 // SQL_CALC_FOUND_ROWS
-        $sql = "
-    SELECT  SQL_CALC_FOUND_ROWS
-      t.id,
-      t.date,
-      dt.label device_type,
-      t.device_id,
-      s.label sensor_name,
-      t.sensor_value,
-      d.name
-    FROM civicrm_health_monitor t INNER JOIN civicrm_device d on t.device_id = d.id
-    INNER JOIN civicrm_option_value s on  t.sensor_id = s.weight
-    INNER JOIN civicrm_option_group gs on s.option_group_id = gs.id and gs.name = 'health_monitor_sensor'    
-    INNER JOIN civicrm_option_value dt on t.device_type_id = dt.value
-    INNER JOIN civicrm_option_group gdt on dt.option_group_id = gdt.id and gdt.name = 'health_monitor_device_type'    
-    WHERE 1";
-
-
+        $selectsql = "
+SELECT  SQL_CALC_FOUND_ROWS
+    j.id,
+    count(a.id) application_count,
+    j.title,
+    l.label location,                            
+    j.created_date,
+    s.label job_status
+FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
+                              INNER JOIN civicrm_option_value s on  j.status_id = s.value
+                              INNER JOIN civicrm_option_group gs on s.option_group_id = gs.id and gs.name = 'job_status'
+                              INNER JOIN civicrm_option_value l on  j.location_id = l.value
+                              INNER JOIN civicrm_option_group gl on l.option_group_id = gl.id and gl.name = 'job_location'
+";
+$wheresql = " where 1 = 1";
+$groupsql = " group by j.id, j.title, s.label, l.label, j.created_date";
+$ordersql = " ORDER BY j.id desc";
         if (isset($contactId)) {
-            $sql .= " AND t.`contact_id` = " . $contactId . " ";
+            $wheresql .= " AND j.`contact_id` = " . $contactId . " ";
         }
 
 
         if (isset($device_type_id)) {
             if ($device_type_id > 0) {
-                $sql .= " AND t.`device_type_id` = " . $device_type_id . " ";
+                $wheresql .= " AND j.`device_type_id` = " . $device_type_id . " ";
             }
         }
 
         if (isset($sensor_id)) {
             if ($sensor_id > 0) {
-                $sql .= " AND t.`sensor_id` = " . $sensor_id . " ";
+                $wheresql .= " AND j.`sensor_id` = " . $sensor_id . " ";
             }
         }
 
@@ -118,7 +118,7 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
         if (isset($dateselect_from)) {
             if ($dateselect_from != null) {
                 if ($dateselect_from != '') {
-                    $sql .= " AND t.`date` >= '" . $dateselect_from . "' ";
+                    $wheresql .= " AND j.`created_date` >= '" . $dateselect_from . "' ";
                 }
             }
         }
@@ -127,15 +127,15 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
         if (isset($dateselect_to)) {
             if ($dateselect_to != null) {
                 if ($dateselect_to != '') {
-                    $sql .= " AND t.`date` <= '" . $dateselect_to . "' ";
+                    $wheresql .= " AND j.`created_date` <= '" . $dateselect_to . "' ";
                 } else {
-                    $sql .= " AND t.`date` <= '" . $date_today . "' ";
+                    $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
                 }
             } else {
-                $sql .= " AND t.`date` <= '" . $date_today . "' ";
+                $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
             }
         } else {
-            $sql .= " AND t.`date` <= '" . $date_today . "' ";
+            $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
         }
 
 
@@ -143,16 +143,14 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
 
 
         if ($sort !== NULL) {
-            $sql .= " ORDER BY {$sort} {$sortOrder}";
-        } else {
-            $sql = $sql . ' ORDER BY t.`date` ASC';
+            $ordersql = " ORDER BY {$sort} {$sortOrder}";
         }
 
         if ($limit !== false) {
             if ($limit !== NULL) {
                 if ($offset !== false) {
                     if ($offset !== NULL) {
-                        $sql .= " LIMIT {$offset}, {$limit}";
+                        $ordersql .= " LIMIT {$offset}, {$limit}";
                     }
                 }
             }
@@ -160,25 +158,25 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
 
 
 //        CRM_Core_Error::debug_var('sql', $sql);
-
+        $sql = $selectsql . $wheresql . $groupsql . $ordersql;
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
         $count = 0;
         while ($dao->fetch()) {
-            $r_update = CRM_Utils_System::url('civicrm/healthmonitor/form',
+            $r_update = CRM_Utils_System::url('civicrm/job/form',
                 ['action' => 'update', 'id' => $dao->id]);
-            $r_delete = CRM_Utils_System::url('civicrm/healthmonitor/form',
+            $r_delete = CRM_Utils_System::url('civicrm/job/form',
                 ['action' => 'delete', 'id' => $dao->id]);
             $update = '<a target="_blank" class="action-item crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
             $delete = '<a target="_blank" class="action-item crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$update $delete</span>";
             $rows[$count][] = $dao->id;
-            $rows[$count][] = $dao->date;
-            $rows[$count][] = $dao->device_type;
-            $rows[$count][] = $dao->name;
-            $rows[$count][] = $dao->sensor_name;
-            $rows[$count][] = $dao->sensor_value;
+            $rows[$count][] = $dao->title;
+            $rows[$count][] = $dao->application_count;
+            $rows[$count][] = $dao->location;
+            $rows[$count][] = $dao->created_date;
+            $rows[$count][] = $dao->job_status;
             $rows[$count][] = $action;
             $count++;
         }
