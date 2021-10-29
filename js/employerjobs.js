@@ -27,6 +27,7 @@ CRM.$(function ($) {
         jobs_dtsettings.bFilter = true;
         //turn on search
         jobs_dtsettings.fnInitComplete = function(oSettings, json){
+            // $("a.view-job").css('background','red');
             $("a.view-job").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
@@ -39,6 +40,35 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
+            // $("a.update-job").css('background','blue');
+            $("a.update-job").click(function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                // alert(href);
+                var $el = CRM.loadForm(href, {
+                    dialog: {width: '50%', height: '50%'}
+                }).on('crmFormSuccess', function () {
+                    var hm_tab = $('.selector-jobs');
+                    var hm_table = hm_tab.DataTable();
+                    hm_table.draw();
+                });
+            });
+        };
+        jobs_dtsettings.fnDrawCallback = function(oSettings){
+            // $("a.view-job").css('background','red');
+            $("a.view-job").click(function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                // alert(href);
+                var $el = CRM.loadForm(href, {
+                    dialog: {width: '50%', height: '50%'}
+                }).on('crmFormSuccess', function () {
+                    var hm_tab = $('.selector-jobs');
+                    var hm_table = hm_tab.DataTable();
+                    hm_table.draw();
+                });
+            });
+            // $("a.update-job").css('background','blue');
             $("a.update-job").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
@@ -57,6 +87,37 @@ CRM.$(function ($) {
         jobs_dtsettings.sAjaxSource = jobs_sourceUrl;
         jobs_dtsettings.Buttons = ["csv", "pdf", "copy"];
         jobs_dtsettings.fnServerData = function (sSource, aoData, fnCallback) {
+            // aoInitComplete = [function(){
+            //     $("a.view-job").css('background','red');
+            //     $("a.view-job").click(function (event) {
+            //         alert('AAAAAA');
+            //         event.preventDefault();
+            //         var href = $(this).attr('href');
+            //         // alert(href);
+            //         var $el = CRM.loadForm(href, {
+            //             dialog: {width: '50%', height: '50%'}
+            //         }).on('crmFormSuccess', function () {
+            //             var hm_tab = $('.selector-jobs');
+            //             var hm_table = hm_tab.DataTable();
+            //             hm_table.draw();
+            //         });
+            //     });
+            //     $("a.update-job").css('background','blue');
+            //     $("a.update-job").click(function (event) {
+            //         alert('BBBBB');
+            //         event.preventDefault();
+            //         var href = $(this).attr('href');
+            //         // alert(href);
+            //         var $el = CRM.loadForm(href, {
+            //             dialog: {width: '50%', height: '50%'}
+            //         }).on('crmFormSuccess', function () {
+            //             var hm_tab = $('.selector-jobs');
+            //             var hm_table = hm_tab.DataTable();
+            //             hm_table.draw();
+            //         });
+            //     });
+            // }
+            // ];
             aoData.push({
                 "name": "dateselect_from",
                 "value": $('#employer_job_dateselect_from').val()
