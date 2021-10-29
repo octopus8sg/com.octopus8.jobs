@@ -40,27 +40,27 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
 //        CRM_Core_Error::debug_var('limit', $limit);
 
 //todo
-//        $device_type_id = CRM_Utils_Request::retrieveValue('device_type_id', 'Positive', null);
-////        CRM_Core_Error::debug_var('device_type_id', $device_type_id);
-//
-//        $sensor_id = CRM_Utils_Request::retrieveValue('sensor_id', 'Positive', null);
+        $location_id = CRM_Utils_Request::retrieveValue('location_id', 'Positive', null);
+//        CRM_Core_Error::debug_var('device_type_id', $device_type_id);
+
+        $status_id = CRM_Utils_Request::retrieveValue('status_id', 'Positive', null);
 ////        CRM_Core_Error::debug_var('sensor_id', $sensor_id);
 //
-//        $dateselect_to = CRM_Utils_Request::retrieveValue('dateselect_to', 'String', null);
-//        try {
-//            $dateselectto = new DateTime($dateselect_to);
-//        } catch (Exception $e) {
-//            $dateselect_to = null;
-//        }
-////        CRM_Core_Error::debug_var('dateselect_to', $dateselect_to);
-//
-//        $dateselect_from = CRM_Utils_Request::retrieveValue('dateselect_from', 'String', null);
-//        try {
-//            $dateselectto = new DateTime($dateselect_from);
-//        } catch (Exception $e) {
-//            $dateselect_from = null;
-//        }
-////        CRM_Core_Error::debug_var('dateselect_from', $dateselect_from);
+        $dateselect_to = CRM_Utils_Request::retrieveValue('dateselect_to', 'String', null);
+        try {
+            $dateselectto = new DateTime($dateselect_to);
+        } catch (Exception $e) {
+            $dateselect_to = null;
+        }
+//        CRM_Core_Error::debug_var('dateselect_to', $dateselect_to);
+
+        $dateselect_from = CRM_Utils_Request::retrieveValue('dateselect_from', 'String', null);
+        try {
+            $dateselectto = new DateTime($dateselect_from);
+        } catch (Exception $e) {
+            $dateselect_from = null;
+        }
+//        CRM_Core_Error::debug_var('dateselect_from', $dateselect_from);
 
         $sortMapper = [
             0 => 'id',
@@ -97,15 +97,15 @@ $ordersql = " ORDER BY j.id desc";
         }
 
 
-        if (isset($device_type_id)) {
-            if ($device_type_id > 0) {
-                $wheresql .= " AND j.`device_type_id` = " . $device_type_id . " ";
+        if (isset($location_id)) {
+            if ($location_id > 0) {
+                $wheresql .= " AND j.`location_id` = " . $location_id . " ";
             }
         }
 
-        if (isset($sensor_id)) {
-            if ($sensor_id > 0) {
-                $wheresql .= " AND j.`sensor_id` = " . $sensor_id . " ";
+        if (isset($status_id)) {
+            if ($status_id > 0) {
+                $wheresql .= " AND j.`status_id` = " . $status_id . " ";
             }
         }
 
@@ -163,14 +163,19 @@ $ordersql = " ORDER BY j.id desc";
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
         $count = 0;
+        $update = "";
+        $delete = "";
         while ($dao->fetch()) {
+            $r_view = CRM_Utils_System::url('civicrm/job/form',
+                ['action' => 'view', 'id' => $dao->id]);
             $r_update = CRM_Utils_System::url('civicrm/job/form',
                 ['action' => 'update', 'id' => $dao->id]);
             $r_delete = CRM_Utils_System::url('civicrm/job/form',
                 ['action' => 'delete', 'id' => $dao->id]);
+            $view = '<a target="_blank" class="action-item crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
             $update = '<a target="_blank" class="action-item crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
-            $delete = '<a target="_blank" class="action-item crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
-            $action = "<span>$update $delete</span>";
+//            $delete = '<a target="_blank" class="action-item crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            $action = "<span>$view $update $delete</span>";
             $rows[$count][] = $dao->id;
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->application_count;

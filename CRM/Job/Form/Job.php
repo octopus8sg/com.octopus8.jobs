@@ -53,6 +53,9 @@ class CRM_Job_Form_Job extends CRM_Core_Form
         CRM_Utils_System::setTitle('Add Job');
         if ($this->_id) {
             CRM_Utils_System::setTitle('Edit Job');
+            if ($this->_action == CRM_Core_Action::VIEW) {
+                CRM_Utils_System::setTitle('View Job');
+            }
             $entities = civicrm_api4('Job', 'get', ['where' => [['id', '=', $this->_id]], 'limit' => 1]);
             if (!empty($entities)) {
                 $this->_myentity = $entities[0];
@@ -60,7 +63,7 @@ class CRM_Job_Form_Job extends CRM_Core_Form
             $this->assign('myentity', $this->_myentity);
 
             $session = CRM_Core_Session::singleton();
-            $session->replaceUserContext(CRM_Utils_System::url('civicrm/job/form', ['id' => $this->getEntityId(), 'action' => 'update']));
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/job/form', ['id' => $this->getEntityId(), 'action' => 'view']));
         }
 
         if (!empty($_POST['hidden_custom'])) {
@@ -94,18 +97,32 @@ class CRM_Job_Form_Job extends CRM_Core_Form
                 $statuses, TRUE, ['class' => 'huge crm-select2',
                     'data-option-edit-path' => 'civicrm/admin/options/job_status']);
 
-            $this->addButtons([
-                [
-                    'type' => 'upload',
-                    'name' => E::ts('Submit'),
-                    'isDefault' => TRUE,
-                ],
-            ]);
+            if ($this->_action == CRM_Core_Action::VIEW) {
+                $this->addButtons([
+                    [
+                        'type' => 'upload',
+                        'name' => E::ts('Close'),
+                        'isDefault' => TRUE,
+                    ],
+                ]);
+            } else {
+                $this->addButtons([
+                    [
+                        'type' => 'upload',
+                        'name' => E::ts('Submit'),
+                        'isDefault' => TRUE,
+                    ],
+                    ['type' => 'cancel', 'name' => E::ts('Cancel')]
+                ]);
+            }
         } else {
             $this->addButtons([
                 ['type' => 'submit', 'name' => E::ts('Delete'), 'isDefault' => TRUE],
                 ['type' => 'cancel', 'name' => E::ts('Cancel')]
             ]);
+        }
+        if ($this->_action == CRM_Core_Action::VIEW) {
+            $this->freeze();
         }
         parent::buildQuickForm();
     }
@@ -142,6 +159,9 @@ class CRM_Job_Form_Job extends CRM_Core_Form
      */
     public function postProcess()
     {
+        if ($this->_action == CRM_Core_Action::VIEW) {
+            return;
+        }
         if ($this->_action == CRM_Core_Action::DELETE) {
             civicrm_api4('Job', 'delete', ['where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
