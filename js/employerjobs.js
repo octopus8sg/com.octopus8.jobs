@@ -1,12 +1,12 @@
 CRM.$(function ($) {
 
-    $("a.add-job").click(function( event ) {
+    $("a.add-job").click(function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
         // alert(href);
-        var $el =CRM.loadForm(href, {
+        var $el = CRM.loadForm(href, {
             dialog: {width: '50%', height: '50%'}
-        }).on('crmFormSuccess', function() {
+        }).on('crmFormSuccess', function () {
             var hm_tab = $('.selector-jobs');
             var hm_table = hm_tab.DataTable();
             hm_table.draw();
@@ -29,9 +29,33 @@ CRM.$(function ($) {
         //turn of search field
         jobs_dtsettings.sAjaxSource = jobs_sourceUrl;
         jobs_dtsettings.Buttons = ["csv", "pdf", "copy"];
-        jobs_dtsettings.fnServerData = function ( sSource, aoData, fnCallback ) {
-            aoData.push({ "name": "job_role_id", "value": $('#job_job_role_id').val() });
-            $.ajax( {
+        jobs_dtsettings.fnServerData = function (sSource, aoData, fnCallback) {
+            aoData.push({
+                "name": "dateselect_from",
+                "value": $('#employer_job_dateselect_from').val()
+            });
+            aoData.push({
+                "name": "dateselect_to",
+                "value": $('#employer_job_dateselect_to').val()
+            });
+            aoData.push({
+                "name": "role_id",
+                "value": $('#employer_job_role_id').val()
+            });
+            aoData.push({
+                "name":
+                    "status_id",
+                "value":
+                    $('#employer_job_status_id').val()
+            });
+            aoData.push({
+                "name":
+                    "location_id",
+                "value":
+                    $('#employer_job_location_id').val()
+            });
+
+            $.ajax({
                 "dataType": 'json',
                 "type": "POST",
                 "url": sSource,
@@ -42,7 +66,7 @@ CRM.$(function ($) {
         jobs_table.destroy();
         var new_jobs_table = jobs_tab.DataTable(jobs_dtsettings);
         //End Reset Table
-        $('.job-filter :input').change(function(){
+        $('.employer-job-filter :input').change(function () {
             new_jobs_table.draw();
         });
 

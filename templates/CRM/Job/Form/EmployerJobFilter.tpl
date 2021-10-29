@@ -6,18 +6,18 @@
             <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Jobs{/ts}</div>
             <!-- /.crm-accordion-header -->
             <div class="crm-accordion-body">
-                <table class="form-layout alarm-filter">
+                <table class="form-layout employer-job-filter">
                     <tbody>
                     <tr>
-                        <td class="label">Employer ... {$form.employer_job_employer_id.label}</td>
-                        <td>{$form.employer_job_employer_id.html}</td>
-                        <td class="label">Location ... {$form.employer_job_location_id.label}</td>
+{*                        <td class="label">{$form.employer_job_contact_id.label}</td>*}
+{*                        <td>{$form.employer_job_contact_id.html}</td>*}
+                        <td class="label">{$form.employer_job_location_id.label}</td>
                         <td>{$form.employer_job_location_id.html}</td>
                     </tr>
                     <tr>
-                        <td class="label">Role ... {$form.employer_job_role_id.label}</td>
+                        <td class="label">{$form.employer_job_role_id.label}</td>
                         <td>{$form.employer_job_role_id.html}</td>
-                        <td class="label">Status ... {$form.employer_job_status_id.label}</td>
+                        <td class="label">{$form.employer_job_status_id.label}</td>
                         <td>{$form.employer_job_status_id.html}</td>
                     </tr>
                     <tr>

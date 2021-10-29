@@ -23,10 +23,13 @@
                         {ts}Job Title{/ts}
                     </th>
                     <th scope="col">
-                        {ts}Applications Count{/ts}
+                        {ts}Role{/ts}
                     </th>
                     <th scope="col">
                         {ts}Location{/ts}
+                    </th>
+                    <th scope="col">
+                        {ts}Applications Count{/ts}
                     </th>
                     <th scope="col">
                         {ts}Date Created{/ts}

@@ -19,6 +19,14 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
         $this->assign('useAjax', true);
         $this->assign('sourceUrl', $employer_job_source_url);
         CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
+        $controller_data = new CRM_Core_Controller_Simple(
+            'CRM_Job_Form_CommonJobFilter',
+            ts('Job Filter'),
+            NULL,
+            FALSE, FALSE, TRUE
+        );
+        $controller_data->setEmbedded(TRUE);
+        $controller_data->run();
         parent::run();
     }
 
@@ -41,10 +49,13 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
 
 //todo
         $location_id = CRM_Utils_Request::retrieveValue('location_id', 'Positive', null);
-//        CRM_Core_Error::debug_var('device_type_id', $device_type_id);
+//        CRM_Core_Error::debug_var('device_type_id', $location_id);
 
         $status_id = CRM_Utils_Request::retrieveValue('status_id', 'Positive', null);
-////        CRM_Core_Error::debug_var('sensor_id', $sensor_id);
+////        CRM_Core_Error::debug_var('sensor_id', $status_id);
+
+        $role_id = CRM_Utils_Request::retrieveValue('role_id', 'Positive', null);
+////        CRM_Core_Error::debug_var('sensor_id', $role_id);
 //
         $dateselect_to = CRM_Utils_Request::retrieveValue('dateselect_to', 'String', null);
         try {
@@ -65,10 +76,11 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
         $sortMapper = [
             0 => 'id',
             1 => 'title',
-            2 => 'application_count',
+            2 => 'role',
             3 => 'location',
-            4 => 'created_date',
-            5 => 'job_status',
+            4 => 'application_count',
+            5 => 'created_date',
+            6 => 'job_status',
         ];
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -80,6 +92,7 @@ SELECT  SQL_CALC_FOUND_ROWS
     j.id,
     count(a.id) application_count,
     j.title,
+    r.label role,                            
     l.label location,                            
     j.created_date,
     s.label job_status
@@ -88,9 +101,11 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                               INNER JOIN civicrm_option_group gs on s.option_group_id = gs.id and gs.name = 'job_status'
                               INNER JOIN civicrm_option_value l on  j.location_id = l.value
                               INNER JOIN civicrm_option_group gl on l.option_group_id = gl.id and gl.name = 'job_location'
+                              INNER JOIN civicrm_option_value r on  j.role_id = r.value
+                              INNER JOIN civicrm_option_group gr on r.option_group_id = gr.id and gr.name = 'job_role'
 ";
 $wheresql = " where 1 = 1";
-$groupsql = " group by j.id, j.title, s.label, l.label, j.created_date";
+$groupsql = " group by j.id, j.title, s.label, l.label, r.label, j.created_date";
 $ordersql = " ORDER BY j.id desc";
         if (isset($contactId)) {
             $wheresql .= " AND j.`contact_id` = " . $contactId . " ";
@@ -106,6 +121,12 @@ $ordersql = " ORDER BY j.id desc";
         if (isset($status_id)) {
             if ($status_id > 0) {
                 $wheresql .= " AND j.`status_id` = " . $status_id . " ";
+            }
+        }
+
+        if (isset($role_id)) {
+            if ($role_id > 0) {
+                $wheresql .= " AND j.`role_id` = " . $role_id . " ";
             }
         }
 
@@ -178,8 +199,9 @@ $ordersql = " ORDER BY j.id desc";
             $action = "<span>$view $update $delete</span>";
             $rows[$count][] = $dao->id;
             $rows[$count][] = $dao->title;
-            $rows[$count][] = $dao->application_count;
+            $rows[$count][] = $dao->role;
             $rows[$count][] = $dao->location;
+            $rows[$count][] = $dao->application_count;
             $rows[$count][] = $dao->created_date;
             $rows[$count][] = $dao->job_status;
             $rows[$count][] = $action;

@@ -45,5 +45,10 @@
     <page_callback>CRM_Job_Page_EmployerJobTab::getApplicationsAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
-
+  <item>
+    <path>civicrm/job/filter</path>
+    <page_callback>CRM_Job_Form_CommonJobFilter</page_callback>
+    <title>CommonJobFilter</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
