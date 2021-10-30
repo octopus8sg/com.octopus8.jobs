@@ -40,22 +40,26 @@ class CRM_Job_Upgrader extends CRM_Job_Upgrader_Base
                     'name' => 'manager',
                     'label' => E::ts('Manager'),
                     'option_group_id' => $typeOptionGroupId
-                ],
+                ]);
+            civicrm_api3('OptionValue', 'create',
                 ['value' => 2,
                     'name' => 'ceo',
                     'label' => E::ts('CEO'),
                     'option_group_id' => $typeOptionGroupId
-                ],
+                ]);
+            civicrm_api3('OptionValue', 'create',
                 ['value' => 3,
                     'name' => 'cto',
                     'label' => E::ts('CTO'),
                     'option_group_id' => $typeOptionGroupId
-                ],
+                ]);
+            civicrm_api3('OptionValue', 'create',
                 ['value' => 4,
                     'name' => 'accountant',
                     'label' => E::ts('Accountant'),
                     'option_group_id' => $typeOptionGroupId
-                ],
+                ]);
+            civicrm_api3('OptionValue', 'create',
                 ['value' => 5,
                     'name' => 'lawyer',
                     'label' => E::ts('Lawyer'),
@@ -75,13 +79,19 @@ class CRM_Job_Upgrader extends CRM_Job_Upgrader_Base
                     'name' => 'remote',
                     'label' => E::ts('Remote'),
                     'option_group_id' => $typeOptionGroupId
-                ],
+                ]);
+            civicrm_api3('OptionValue', 'create',
                 ['value' => 2,
                     'name' => 'on-site',
                     'label' => E::ts('On-Site'),
                     'option_group_id' => $typeOptionGroupId
+                ]);
+            civicrm_api3('OptionValue', 'create',
+                ['value' => 3,
+                    'name' => 'home-based',
+                    'label' => E::ts('Home-Based'),
+                    'option_group_id' => $typeOptionGroupId
                 ]
-
             );
         } catch (\CiviCRM_API3_Exception $ex) {
             // Ignore exception.

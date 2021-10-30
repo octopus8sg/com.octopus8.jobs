@@ -7,21 +7,18 @@ CRM.$(function ($) {
         var $el = CRM.loadForm(href, {
             dialog: {width: '50%', height: '50%'}
         }).on('crmFormSuccess', function () {
-            var hm_tab = $('.selector-employer-jobs');
+            var hm_tab = $('.selector-employee-jobs');
             var hm_table = hm_tab.DataTable();
             hm_table.draw();
         });
     });
 
 
-    var jobs_sourceUrl = CRM.vars.source_url['employer_job_sourceUrl'];
+    var jobs_sourceUrl = CRM.vars.source_url['employee_job_sourceUrl'];
     $(document).ready(function () {
-
-
-
         //Reset Table, add Filter and Search Possibility
         //devices datatable
-        var jobs_tab = $('.selector-employer-jobs');
+        var jobs_tab = $('.selector-employee-jobs');
         var jobs_table = jobs_tab.DataTable();
         var jobs_dtsettings = jobs_table.settings().init();
         jobs_dtsettings.bFilter = true;
@@ -35,7 +32,7 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-employer-jobs');
+                    var hm_tab = $('.selector-employee-jobs');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
@@ -48,7 +45,7 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-employer-jobs');
+                    var hm_tab = $('.selector-employee-jobs');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
@@ -63,7 +60,7 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-employer-jobs');
+                    var hm_tab = $('.selector-employee-jobs');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
@@ -76,7 +73,7 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-employer-jobs');
+                    var hm_tab = $('.selector-employee-jobs');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
@@ -89,27 +86,27 @@ CRM.$(function ($) {
         jobs_dtsettings.fnServerData = function (sSource, aoData, fnCallback) {
             aoData.push({
                 "name": "dateselect_from",
-                "value": $('#employer_job_dateselect_from').val()
+                "value": $('#employee_job_dateselect_from').val()
             });
             aoData.push({
                 "name": "dateselect_to",
-                "value": $('#employer_job_dateselect_to').val()
+                "value": $('#employee_job_dateselect_to').val()
             });
             aoData.push({
                 "name": "role_id",
-                "value": $('#employer_job_role_id').val()
+                "value": $('#employee_job_role_id').val()
             });
             aoData.push({
                 "name":
                     "status_id",
                 "value":
-                    $('#employer_job_status_id').val()
+                    $('#employee_job_status_id').val()
             });
             aoData.push({
                 "name":
                     "location_id",
                 "value":
-                    $('#employer_job_location_id').val()
+                    $('#employee_job_location_id').val()
             });
 
 
@@ -124,7 +121,7 @@ CRM.$(function ($) {
         jobs_table.destroy();
         var new_jobs_table = jobs_tab.DataTable(jobs_dtsettings);
         //End Reset Table
-        $('.employer-job-filter :input').change(function () {
+        $('.employee-job-filter :input').change(function () {
             new_jobs_table.draw();
         });
 

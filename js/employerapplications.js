@@ -7,26 +7,26 @@ CRM.$(function ($) {
         var $el = CRM.loadForm(href, {
             dialog: {width: '50%', height: '50%'}
         }).on('crmFormSuccess', function () {
-            var hm_tab = $('.selector-employer-jobs');
+            var hm_tab = $('.selector-employer-applications');
             var hm_table = hm_tab.DataTable();
             hm_table.draw();
         });
     });
 
 
-    var jobs_sourceUrl = CRM.vars.source_url['employer_job_sourceUrl'];
+    var applications_sourceUrl = CRM.vars.source_url['employer_application_sourceUrl'];
     $(document).ready(function () {
 
 
 
         //Reset Table, add Filter and Search Possibility
         //devices datatable
-        var jobs_tab = $('.selector-employer-jobs');
-        var jobs_table = jobs_tab.DataTable();
-        var jobs_dtsettings = jobs_table.settings().init();
-        jobs_dtsettings.bFilter = true;
+        var applications_tab = $('.selector-employer-applications');
+        var applications_table = applications_tab.DataTable();
+        var applications_dtsettings = applications_table.settings().init();
+        applications_dtsettings.bFilter = true;
         //turn on search
-        jobs_dtsettings.fnInitComplete = function(oSettings, json){
+        applications_dtsettings.fnInitComplete = function(oSettings, json){
             // $("a.view-job").css('background','red');
             $("a.view-job").click(function (event) {
                 event.preventDefault();
@@ -35,7 +35,7 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-employer-jobs');
+                    var hm_tab = $('.selector-employer-applications');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
@@ -48,13 +48,13 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-employer-jobs');
+                    var hm_tab = $('.selector-employer-applications');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
             });
         };
-        jobs_dtsettings.fnDrawCallback = function(oSettings){
+        applications_dtsettings.fnDrawCallback = function(oSettings){
             // $("a.view-job").css('background','red');
             $("a.view-job").click(function (event) {
                 event.preventDefault();
@@ -63,7 +63,7 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-employer-jobs');
+                    var hm_tab = $('.selector-employer-applications');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
@@ -76,40 +76,40 @@ CRM.$(function ($) {
                 var $el = CRM.loadForm(href, {
                     dialog: {width: '50%', height: '50%'}
                 }).on('crmFormSuccess', function () {
-                    var hm_tab = $('.selector-employer-jobs');
+                    var hm_tab = $('.selector-employer-applications');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
                 });
             });
         };
-        jobs_dtsettings.sDom = '<"crm-datatable-pager-top"lp>Brt<"crm-datatable-pager-bottom"ip>';
+        applications_dtsettings.sDom = '<"crm-datatable-pager-top"lp>Brt<"crm-datatable-pager-bottom"ip>';
         //turn of search field
-        jobs_dtsettings.sAjaxSource = jobs_sourceUrl;
-        jobs_dtsettings.Buttons = ["csv", "pdf", "copy"];
-        jobs_dtsettings.fnServerData = function (sSource, aoData, fnCallback) {
+        applications_dtsettings.sAjaxSource = applications_sourceUrl;
+        applications_dtsettings.Buttons = ["csv", "pdf", "copy"];
+        applications_dtsettings.fnServerData = function (sSource, aoData, fnCallback) {
             aoData.push({
                 "name": "dateselect_from",
-                "value": $('#employer_job_dateselect_from').val()
+                "value": $('#employer_application_dateselect_from').val()
             });
             aoData.push({
                 "name": "dateselect_to",
-                "value": $('#employer_job_dateselect_to').val()
+                "value": $('#employer_application_dateselect_to').val()
             });
             aoData.push({
                 "name": "role_id",
-                "value": $('#employer_job_role_id').val()
+                "value": $('#employer_application_role_id').val()
             });
             aoData.push({
                 "name":
                     "status_id",
                 "value":
-                    $('#employer_job_status_id').val()
+                    $('#employer_application_status_id').val()
             });
             aoData.push({
                 "name":
                     "location_id",
                 "value":
-                    $('#employer_job_location_id').val()
+                    $('#employer_application_location_id').val()
             });
 
 
@@ -121,11 +121,11 @@ CRM.$(function ($) {
                 "success": fnCallback
             });
         };
-        jobs_table.destroy();
-        var new_jobs_table = jobs_tab.DataTable(jobs_dtsettings);
+        applications_table.destroy();
+        var new_applications_table = applications_tab.DataTable(applications_dtsettings);
         //End Reset Table
         $('.employer-job-filter :input').change(function () {
-            new_jobs_table.draw();
+            new_applications_table.draw();
         });
 
     });

@@ -11,8 +11,9 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
         CRM_Utils_System::setTitle(E::ts('Employer Job Tab'));
 
         // Example: Assign a variable for use in a template
-        $this->assign('currentTime', date('Y-m-d H:i:s'));
         $urlQry['snippet'] = 4;
+        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+        $urlQry['cid'] = $contactId;
         $employer_job_source_url = CRM_Utils_System::url('civicrm/job/employerjobsajax', $urlQry, FALSE, NULL, FALSE);
         $sourceUrl['employer_job_sourceUrl'] = $employer_job_source_url;
         $this->assign('alert_sourcel', $employer_job_source_url);
@@ -160,7 +161,7 @@ $ordersql = " ORDER BY j.id desc";
         } else {
             $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
         }
-        CRM_Core_Error::debug_var('wheresql', $wheresql);
+//        CRM_Core_Error::debug_var('wheresql', $wheresql);
 
 
 
@@ -181,7 +182,7 @@ $ordersql = " ORDER BY j.id desc";
 
 //        CRM_Core_Error::debug_var('sql', $sql);
         $sql = $selectsql . $wheresql . $groupsql . $ordersql;
-        CRM_Core_Error::debug_var('search_sql', $sql);
+//        CRM_Core_Error::debug_var('search_sql', $sql);
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
