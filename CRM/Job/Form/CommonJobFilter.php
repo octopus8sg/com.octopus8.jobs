@@ -164,7 +164,7 @@ class CRM_Job_Form_CommonJobFilter extends CRM_Core_Form {
         $this->addEntityRef('employee_job_contact_id', E::ts('Employer'),
             ['create' => false, 'multiple' => true, 'class' => 'huge'], false);
 
-        $this->addEntityRef('employee_application_contact_id', E::ts('Applicant'),
+        $this->addEntityRef('employee_application_contact_id', E::ts('Employer'),
             ['create' => false, 'multiple' => true, 'class' => 'huge'], false);
 
 //        $this->addEntityRef('data_device_id', E::ts('Device'), [
