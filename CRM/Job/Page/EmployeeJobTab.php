@@ -350,7 +350,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
 
         if (isset($status_id)) {
             if ($status_id > 0) {
-                $wheresql .= " AND j.`status_id` = " . $status_id . " ";
+                $wheresql .= " AND ap.`job_application_status_id` = " . $status_id . " ";
             }
         }
 
@@ -369,7 +369,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
         if (isset($dateselect_from)) {
             if ($dateselect_from != null) {
                 if ($dateselect_from != '') {
-                    $wheresql .= " AND j.`created_date` >= '" . $dateselect_from . "' ";
+                    $wheresql .= " AND ap.`created_date` >= '" . $dateselect_from . "' ";
                 }
             }
         }
@@ -380,15 +380,15 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                 if ($dateselect_to != '') {
                     $_to = strtotime("+1 day", strtotime($dateselect_to));
                     $date_to = date("Y-m-d H:i:s", $_to);
-                    $wheresql .= " AND j.`created_date` <= '" . $date_to . "' ";
+                    $wheresql .= " AND ap.`created_date` <= '" . $date_to . "' ";
                 } else {
-                    $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
+                    $wheresql .= " AND ap.`created_date` <= '" . $date_today . "' ";
                 }
             } else {
-                $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
+                $wheresql .= " AND ap.`created_date` <= '" . $date_today . "' ";
             }
         } else {
-            $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
+            $wheresql .= " AND ap.`created_date` <= '" . $date_today . "' ";
         }
 //        CRM_Core_Error::debug_var('wheresql', $wheresql);
 
