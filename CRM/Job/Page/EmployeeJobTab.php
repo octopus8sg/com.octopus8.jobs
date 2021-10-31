@@ -37,11 +37,13 @@ class CRM_Job_Page_EmployeeJobTab extends CRM_Core_Page
     public function getJobsAjax()
     {
 
-//        CRM_Core_Error::debug_var('request', $_REQUEST);
-//        CRM_Core_Error::debug_var('post', $_POST);
+        CRM_Core_Error::debug_var('request', $_REQUEST);
+        CRM_Core_Error::debug_var('post', $_POST);
 
         $contactId = null;
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+
+        $employerIds = CRM_Utils_Request::retrieve('employer_ids', 'String');
 //        CRM_Core_Error::debug_var('contact', $contactId);
 
 //start and end date
@@ -114,9 +116,9 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
         $wheresql = " where 1 = 1";
         $groupsql = " group by j.id, j.title, s.label, l.label, r.label, j.created_date, j.contact_id";
         $ordersql = " ORDER BY j.id desc";
-        if (isset($employerId)) {
-            if ($employerId !== null) {
-                $wheresql .= " AND j.`contact_id` = " . $contactId . " ";
+        if (isset($employerIds)) {
+            if ($employerIds !== null) {
+                $wheresql .= " AND j.`contact_id` in (" . $employerIds . ") ";
             }
         }
 

@@ -20,9 +20,9 @@
               <td>{$form.employee_job_status_id.html}</td>
             </tr>
             <tr>
-              <td class="label">Date From ... {$form.employee_job_dateselect_from.label}</td>
+              <td class="label">{$form.employee_job_dateselect_from.label}</td>
               <td>{$form.employee_job_dateselect_from.html}</td>
-              <td class="label">Date To ... {$form.employee_job_dateselect_to.label}</td>
+              <td class="label">{$form.employee_job_dateselect_to.label}</td>
               <td>{$form.employee_job_dateselect_to.html}</td>
             </tr>
             </tbody>

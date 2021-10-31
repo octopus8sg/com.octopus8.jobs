@@ -108,6 +108,12 @@ CRM.$(function ($) {
                 "value":
                     $('#employee_job_location_id').val()
             });
+            aoData.push({
+                "name":
+                    "employer_ids",
+                "value":
+                    $('#employee_job_contact_id').val()
+            });
 
 
             $.ajax({

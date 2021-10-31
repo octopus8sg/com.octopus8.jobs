@@ -74,6 +74,13 @@ class CRM_Job_Form_CommonJobFilter extends CRM_Core_Form {
                 'data-option-edit-path' => 'civicrm/admin/options/job_status','placeholder' => ts('- Select Status -'),
                 'select' => ['minimumInputLength' => 0]]);
 
+        $this->add('select', 'employee_job_status_id',
+            E::ts('Status'),
+            $statuses,
+            FALSE, ['class' => 'huge crm-select2',
+                'data-option-edit-path' => 'civicrm/admin/options/job_status','placeholder' => ts('- Select Status -'),
+                'select' => ['minimumInputLength' => 0]]);
+
 //        // for device filter
 //        $this->add('select', 'device_device_type_id',
 //            E::ts('Device Type'),
