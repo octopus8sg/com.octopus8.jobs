@@ -205,16 +205,11 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                         ['reset' => 1, 'cid' => $dao->contact_id]) . '">' .
                     CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
             }
-            $r_view = CRM_Utils_System::url('civicrm/job/form',
-                ['action' => 'view', 'id' => $dao->id]);
-            $r_update = CRM_Utils_System::url('civicrm/job/form',
-                ['action' => 'update', 'id' => $dao->id]);
-            $r_delete = CRM_Utils_System::url('civicrm/job/form',
-                ['action' => 'delete', 'id' => $dao->id]);
-            $view = '<a target="_blank" class="action-item view-job crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
-            $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
+            $r_apply = CRM_Utils_System::url('civicrm/application/form',
+                ['action' => 'add', 'job_id' => $dao->id]);
+            $apply = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_apply . '"><i class="crm-i fa-pencil"></i>&nbsp;Apply</a>';
 //            $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
-            $action = "<span>$view $update $delete</span>";
+            $action = "<span>$apply</span>";
             $rows[$count][] = $dao->id;
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->role;
@@ -297,7 +292,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
             4 => 'contact_id',
             5 => 'application_count',
             6 => 'job_created_date',
-            7 => 'job_created_date',
+            7 => 'app_created_date',
             8 => 'app_status',
         ];
 
@@ -315,7 +310,8 @@ SELECT  SQL_CALC_FOUND_ROWS
     l.label location,                            
     j.created_date job_created_date,
     ap.created_date app_created_date,
-    s.label app_status
+    s.label app_status,
+    ap.id app_id
 FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
     INNER JOIN civicrm_job_application ap on ap.job_id = j.id
     INNER JOIN civicrm_option_value s on  ap.job_application_status_id = s.value
@@ -326,7 +322,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
     INNER JOIN civicrm_option_group gr on r.option_group_id = gr.id and gr.name = 'job_role'
 ";
         $wheresql = " where 1 = 1";
-        $groupsql = " group by j.id, j.title, s.label, l.label, r.label, j.created_date, j.contact_id, ap.id";
+        $groupsql = " group by j.id, j.title, s.label, l.label, r.label, j.created_date, j.contact_id, app_id";
         $ordersql = " ORDER BY j.id desc";
         if (isset($employerIds)) {
             if ($employerIds !== null) {
@@ -423,16 +419,16 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                         ['reset' => 1, 'cid' => $dao->contact_id]) . '">' .
                     CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
             }
-            $r_view = CRM_Utils_System::url('civicrm/job/form',
-                ['action' => 'view', 'id' => $dao->id]);
-            $r_update = CRM_Utils_System::url('civicrm/job/form',
-                ['action' => 'update', 'id' => $dao->id]);
-            $r_delete = CRM_Utils_System::url('civicrm/job/form',
-                ['action' => 'delete', 'id' => $dao->id]);
+            $r_view = CRM_Utils_System::url('civicrm/application/form',
+                ['action' => 'view', 'id' => $dao->app_id]);
+            $r_update = CRM_Utils_System::url('civicrm/application/form',
+                ['action' => 'update', 'id' => $dao->app_id]);
+            $r_delete = CRM_Utils_System::url('civicrm/application/form',
+                ['action' => 'delete', 'id' => $dao->app_id]);
             $view = '<a target="_blank" class="action-item view-job crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
             $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
 //            $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
-            $action = "<span>$view $update $delete</span>";
+            $action = "<span>$view</span>";
             $rows[$count][] = $dao->id;
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->role;
