@@ -166,8 +166,16 @@ class CRM_Job_Upgrader extends CRM_Job_Upgrader_Base
         } catch (\CiviCRM_API3_Exception $ex) {
             // Ignore exception.
         }
-
-
+        try {
+            $this->executeSqlFile('sql/samplejobs.sql');
+        } catch (\CiviCRM_API3_Exception $ex) {
+            // Ignore exception.
+        }
+        try {
+            $this->executeSqlFile('sql/sampleapps.sql');
+        } catch (\CiviCRM_API3_Exception $ex) {
+            // Ignore exception.
+        }
     }
 
     /**
