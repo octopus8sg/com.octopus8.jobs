@@ -3,28 +3,28 @@
 
     <div class="crm-block crm-form-block crm-basic-criteria-form-block">
         <div class="crm-accordion-wrapper crm-expenses_search-accordion">
-            <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Jobs{/ts}</div>
+            <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Applications{/ts}</div>
             <!-- /.crm-accordion-header -->
             <div class="crm-accordion-body">
                 <table class="form-layout alarm-filter">
                     <tbody>
                     <tr>
-                        <td class="label">Employer ... {$form.employer_job_employer_id.label}</td>
-                        <td>{$form.employer_job_employer_id.html}</td>
-                        <td class="label">Location ... {$form.employer_job_location_id.label}</td>
-                        <td>{$form.employer_job_location_id.html}</td>
+                        <td class="label">{$form.employee_application_contact_id.label}</td>
+                        <td>{$form.employee_application_contact_id.html}</td>
+                        <td class="label">{$form.employee_application_location_id.label}</td>
+                        <td>{$form.employee_application_location_id.html}</td>
                     </tr>
                     <tr>
-                        <td class="label">Role ... {$form.employer_job_role_id.label}</td>
-                        <td>{$form.employer_job_role_id.html}</td>
-                        <td class="label">Status ... {$form.employer_job_status_id.label}</td>
-                        <td>{$form.employer_job_status_id.html}</td>
+                        <td class="label">{$form.employee_application_role_id.label}</td>
+                        <td>{$form.employee_application_role_id.html}</td>
+                        <td class="label">{$form.employee_application_status_id.label}</td>
+                        <td>{$form.employee_application_status_id.html}</td>
                     </tr>
                     <tr>
-                        <td class="label">Date From ... {$form.employer_job_dateselect_from.label}</td>
-                        <td>{$form.employer_job_dateselect_from.html}</td>
-                        <td class="label">Date To ... {$form.employer_job_dateselect_to.label}</td>
-                        <td>{$form.employer_job_dateselect_to.html}</td>
+                        <td class="label">{$form.employee_application_dateselect_from.label}</td>
+                        <td>{$form.employee_application_dateselect_from.html}</td>
+                        <td class="label">{$form.employee_application_dateselect_to.label}</td>
+                        <td>{$form.employee_application_dateselect_to.html}</td>
                     </tr>
                     </tbody>
                 </table>

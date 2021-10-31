@@ -35,7 +35,7 @@ class CRM_Job_Form_CommonJobFilter extends CRM_Core_Form {
                 'data-option-edit-path' => 'civicrm/admin/options/job_location','placeholder' => ts('- Select Location -'),
                 'select' => ['minimumInputLength' => 0]]);
 
-        $this->add('select', 'employee_application_job_location_id',
+        $this->add('select', 'employee_application_location_id',
             E::ts('Location'),
             $locations,
             FALSE, ['class' => 'huge crm-select2',
@@ -58,7 +58,7 @@ class CRM_Job_Form_CommonJobFilter extends CRM_Core_Form {
                 'data-option-edit-path' => 'civicrm/admin/options/job_role','placeholder' => ts('- Select Role -'),
                 'select' => ['minimumInputLength' => 0]]);
 
-        $this->add('select', 'employee_application_job_role_id',
+        $this->add('select', 'employee_application_role_id',
             E::ts('Role'),
             $roles,
             FALSE, ['class' => 'huge crm-select2',
@@ -79,6 +79,15 @@ class CRM_Job_Form_CommonJobFilter extends CRM_Core_Form {
             $statuses,
             FALSE, ['class' => 'huge crm-select2',
                 'data-option-edit-path' => 'civicrm/admin/options/job_status','placeholder' => ts('- Select Status -'),
+                'select' => ['minimumInputLength' => 0]]);
+
+        $a_statuses = CRM_Core_OptionGroup::values('application_status');
+
+        $this->add('select', 'employee_application_status_id',
+            E::ts('Status'),
+            $a_statuses,
+            FALSE, ['class' => 'huge crm-select2',
+                'data-option-edit-path' => 'civicrm/admin/options/job_status','placeholder' => ts('- Select Application Status -'),
                 'select' => ['minimumInputLength' => 0]]);
 
 //        // for device filter

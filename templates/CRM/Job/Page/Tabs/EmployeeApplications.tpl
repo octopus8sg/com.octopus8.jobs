@@ -44,5 +44,5 @@
             </div>
         </div>
     </div>
-{*{crmScript ext=com.socialservicesconnect.jobs file=js/employeeapplications.js}*}
+{crmScript ext=com.socialservicesconnect.jobs file=js/employeeapplications.js}
 {/crmScope}
