@@ -14,6 +14,7 @@ class CRM_Job_Page_EmployeeJobTab extends CRM_Core_Page
         $urlQry['snippet'] = 4;
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
         $urlQry['cid'] = $contactId;
+        $this->assign('contactId', $contactId);
         $employee_job_source_url = CRM_Utils_System::url('civicrm/job/employeejobsajax', $urlQry, FALSE, NULL, FALSE);
         $employee_application_source_url = CRM_Utils_System::url('civicrm/job/employeeapplicationsajax', $urlQry, FALSE, NULL, FALSE);
         $sourceUrl['employee_job_sourceUrl'] = $employee_job_source_url;

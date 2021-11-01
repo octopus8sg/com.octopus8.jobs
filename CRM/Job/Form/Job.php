@@ -19,6 +19,8 @@ class CRM_Job_Form_Job extends CRM_Core_Form
 
     protected $_myentity;
 
+    protected $_contactId;
+
     public function getDefaultEntity()
     {
         return 'Job';
@@ -50,6 +52,9 @@ class CRM_Job_Form_Job extends CRM_Core_Form
         $this->assign('action', $this->_action);
 
         $this->_id = CRM_Utils_Request::retrieve('id', 'Positive', $this, FALSE);
+
+        $this->_contactId = CRM_Utils_Request::retrieve('cid', 'Positive', $this, FALSE);
+
         CRM_Utils_System::setTitle('Add Job');
         if ($this->_id) {
             CRM_Utils_System::setTitle('Edit Job');
@@ -80,7 +85,11 @@ class CRM_Job_Form_Job extends CRM_Core_Form
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id');
         if ($this->_action != CRM_Core_Action::DELETE) {
-            $this->addEntityRef('contact_id', E::ts('Contact'), [], TRUE);
+            if ($this->_contactId) {
+                $this->addEntityRef('contact_id', E::ts('Contact'), [], TRUE)->freeze();
+            }else{
+                $this->addEntityRef('contact_id', E::ts('Contact'), [], TRUE);
+            }
             $this->add('text', 'title', E::ts('Title'), ['class' => 'huge'], FALSE);
             //todo add pseudoconstants
 
@@ -147,6 +156,10 @@ class CRM_Job_Form_Job extends CRM_Core_Form
         }
         if (empty($defaults['status_id'])) {
             $defaults['status_id'] = CRM_Core_OptionGroup::getDefaultValue('job_status');
+        }
+        if ($this->_contactId){
+            $defaults['contact_id'] = $this->_contactId;
+
         }
         return $defaults;
     }

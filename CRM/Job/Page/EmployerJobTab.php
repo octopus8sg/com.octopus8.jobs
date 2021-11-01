@@ -13,6 +13,7 @@ class CRM_Job_Page_EmployerJobTab extends CRM_Core_Page
         // Example: Assign a variable for use in a template
         $urlQry['snippet'] = 4;
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+        $this->assign('contactId', $contactId);
         $urlQry['cid'] = $contactId;
         $employer_job_source_url = CRM_Utils_System::url('civicrm/job/employerjobsajax', $urlQry, FALSE, NULL, FALSE);
         $sourceUrl['employer_job_sourceUrl'] = $employer_job_source_url;
@@ -192,8 +193,16 @@ $ordersql = " ORDER BY j.id desc";
         while ($dao->fetch()) {
             $r_view = CRM_Utils_System::url('civicrm/job/form',
                 ['action' => 'view', 'id' => $dao->id]);
+            if($contactId){
+            $u_action = ['action' => 'update',
+                'id' => $dao->id,
+                'cid' => $contactId];
+            }else{
+                $u_action = ['action' => 'update',
+                    'id' => $dao->id];
+            }
             $r_update = CRM_Utils_System::url('civicrm/job/form',
-                ['action' => 'update', 'id' => $dao->id]);
+                $u_action);
             $r_delete = CRM_Utils_System::url('civicrm/job/form',
                 ['action' => 'delete', 'id' => $dao->id]);
             $view = '<a target="_blank" class="action-item view-job crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';

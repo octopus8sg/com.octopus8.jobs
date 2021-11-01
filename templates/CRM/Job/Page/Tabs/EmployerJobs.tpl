@@ -1,7 +1,8 @@
 {crmScope extensionKey='com.socialservicesconnect.jobs'}
 <div class="crm-content-block">
     <div class="action-link">
-        <a class="button add-job" href="{crmURL p="civicrm/job/form" q="reset=1&action=add" }&cid={$contactId}">
+        {debug}
+        <a class="button add-job" href="{crmURL p="civicrm/job/form" q="reset=1&action=add&cid=$contactId" }">
             <i class="crm-i fa-plus-circle">&nbsp;</i>
             {ts}Add Job{/ts}
         </a>
