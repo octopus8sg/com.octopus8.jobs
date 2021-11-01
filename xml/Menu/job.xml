@@ -8,7 +8,7 @@
   </item>
   <item>
     <path>civicrm/application/form</path>
-    <page_callback>CRM_Job_Form_Job</page_callback>
+    <page_callback>CRM_Job_Form_JobApplication</page_callback>
     <title>Application</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
@@ -65,6 +65,11 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/job/applicationsajax</path>
+    <page_callback>CRM_Job_Form_SearchApplications::getApplicationsAjax</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/job/employeejobsajax</path>
     <page_callback>CRM_Job_Page_EmployeeJobTab::getJobsAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
@@ -78,6 +83,12 @@
     <path>civicrm/job/filter</path>
     <page_callback>CRM_Job_Form_CommonJobFilter</page_callback>
     <title>CommonJobFilter</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/applications/search</path>
+    <page_callback>CRM_Job_Form_SearchApplications</page_callback>
+    <title>SearchApplications</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>
