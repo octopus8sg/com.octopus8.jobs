@@ -184,77 +184,59 @@ function job_civicrm_navigationMenu(&$menu)
 //    $currentUserId = CRM_Core_Session::getLoggedInContactID();
 
     _job_civix_insert_navigation_menu($menu, '', array(
-        'label' => E::ts('Devices'),
-        'name' => 'health_monitor',
-        'icon' => 'crm-i fa-heartbeat',
-        'url' => 'civicrm/devices/dashboard',
+        'label' => E::ts('Jobs'),
+        'name' => 'jobs',
+        'icon' => 'crm-i fa-briefcase',
+        'url' => 'civicrm/jobs/dashboard',
         'permission' => 'access CiviCRM',
         'navID' => 10,
         'operator' => 'OR',
         'separator' => 0,
     ));
     _job_civix_navigationMenu($menu);
-   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
+   _job_civix_insert_navigation_menu($menu, 'jobs', array(
         'label' => E::ts('Dashboard'),
-        'name' => 'search_devices',
-        'url' => 'civicrm/devices/dashboard',
+        'name' => 'jobs_dashboard',
+        'url' => 'civicrm/jobs/dashboard',
         'permission' => 'access CiviCRM',
         'operator' => 'OR',
         'separator' => 0,
     ));
    _job_civix_navigationMenu($menu);
-   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
-        'label' => E::ts('Find Devices'),
-        'name' => 'search_devices',
-        'url' => 'civicrm/devices/search',
+   _job_civix_insert_navigation_menu($menu, 'jobs', array(
+        'label' => E::ts('Find Jobs'),
+        'name' => 'search_jobs',
+        'url' => 'civicrm/jobs/search',
         'permission' => 'access CiviCRM',
         'operator' => 'OR',
         'separator' => 0,
     ));
    _job_civix_navigationMenu($menu);
-   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
-        'label' => E::ts('Add Device'),
-        'name' => 'add_device',
-        'url' => 'civicrm/devices/form?reset=1&action=add',
+   _job_civix_insert_navigation_menu($menu, 'jobs', array(
+        'label' => E::ts('Add Job'),
+        'name' => 'add_job',
+        'url' => 'civicrm/jobs/form?reset=1&action=add',
+        'permission' => 'administer CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+   _job_civix_navigationMenu($menu);
+   _job_civix_insert_navigation_menu($menu, 'jobs', array(
+        'label' => E::ts('Find Applications'),
+        'name' => 'search_application',
+        'url' => 'civicrm/applications/search',
         'permission' => 'access CiviCRM',
         'operator' => 'OR',
         'separator' => 0,
     ));
    _job_civix_navigationMenu($menu);
-   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
-        'label' => E::ts('Find Data'),
-        'name' => 'search_health_monitor',
-        'url' => 'civicrm/devices/data/search',
-        'permission' => 'access CiviCRM',
+   _job_civix_insert_navigation_menu($menu, 'jobs', array(
+        'label' => E::ts('Add Application'),
+        'name' => 'add_application',
+        'url' => 'civicrm/applications/form?reset=1&action=add',
+        'permission' => 'administer CiviCRM',
         'operator' => 'OR',
         'separator' => 0,
-    ));
-   _job_civix_navigationMenu($menu);
-   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
-        'label' => E::ts('Add Data'),
-        'name' => 'search_health_monitor',
-        'url' => 'civicrm/devices/data/form?reset=1&action=add',
-        'permission' => 'access CiviCRM',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-   _job_civix_navigationMenu($menu);
-   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
-        'label' => E::ts('Search Alerts'),
-        'name' => 'search_alert',
-        'url' => 'civicrm/alert/search',
-        'permission' => 'access CiviCRM',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-   _job_civix_navigationMenu($menu);
-   _job_civix_insert_navigation_menu($menu, 'health_monitor', array(
-        'label' => E::ts('Device Reports'),
-        'name' => 'search_devices',
-        'url' => CRM_Utils_System::url('civicrm/report/list', ['grp' => 'devices', 'reset' => 1]),
-        'permission' => 'access CiviCRM',
-        'operator' => 'OR',
-        'separator' => 2,
     ));
    _job_civix_navigationMenu($menu);
 

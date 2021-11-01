@@ -7,7 +7,31 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/application/form</path>
+    <page_callback>CRM_Job_Form_Job</page_callback>
+    <title>Application</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/applications/form</path>
+    <page_callback>CRM_Job_Form_Job</page_callback>
+    <title>Application</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/jobs/form</path>
+    <page_callback>CRM_Job_Form_Job</page_callback>
+    <title>Job</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/job/search</path>
+    <page_callback>CRM_Job_Form_Search</page_callback>
+    <title>Search</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/jobs/search</path>
     <page_callback>CRM_Job_Form_Search</page_callback>
     <title>Search</title>
     <access_arguments>access CiviCRM</access_arguments>
