@@ -40,7 +40,7 @@ class CRM_Job_Form_SearchApplications extends CRM_Job_Form_CommonJobFilter
 
         $urlQry['snippet'] = 4;
 
-        $app_source_url = CRM_Utils_System::url('civicrm/job/applicationssajax', $urlQry, FALSE, NULL, FALSE);
+        $app_source_url = CRM_Utils_System::url('civicrm/job/applicationsajax', $urlQry, FALSE, NULL, FALSE);
 
         $sourceUrl['application_sourceUrl'] = $app_source_url;
         $this->assign('useAjax', true);
@@ -152,11 +152,12 @@ class CRM_Job_Form_SearchApplications extends CRM_Job_Form_CommonJobFilter
             1 => 'title',
             2 => 'role',
             3 => 'location',
-            4 => 'contact_id',
+            4 => 'job_contact_id',
             5 => 'application_count',
             6 => 'job_created_date',
-            7 => 'app_created_date',
-            8 => 'app_status',
+            7 => 'app_contact_id',
+            8 => 'app_created_date',
+            9 => 'app_status',
         ];
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -168,11 +169,12 @@ SELECT  SQL_CALC_FOUND_ROWS
     j.id,
     count(a.id) application_count,
     j.title,
-    j.contact_id,
+    j.contact_id job_contact_id,
     r.label role,                            
     l.label location,                            
     j.created_date job_created_date,
     ap.created_date app_created_date,
+    ap.contact_id app_contact_id,
     s.label app_status,
     ap.id app_id
 FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
@@ -277,10 +279,15 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
         $update = "";
         $delete = "";
         while ($dao->fetch()) {
-            if (!empty($dao->contact_id)) {
-                $contact = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
-                        ['reset' => 1, 'cid' => $dao->contact_id]) . '">' .
-                    CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
+            if (!empty($dao->job_contact_id)) {
+                $job_contact = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
+                        ['reset' => 1, 'cid' => $dao->job_contact_id]) . '">' .
+                    CRM_Contact_BAO_Contact::displayName($dao->job_contact_id) . '</a>';
+            }
+            if (!empty($dao->app_contact_id)) {
+                $app_contact = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
+                        ['reset' => 1, 'cid' => $dao->app_contact_id]) . '">' .
+                    CRM_Contact_BAO_Contact::displayName($dao->app_contact_id) . '</a>';
             }
             $r_view = CRM_Utils_System::url('civicrm/application/form',
                 ['action' => 'view', 'id' => $dao->app_id]);
@@ -296,9 +303,10 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->role;
             $rows[$count][] = $dao->location;
-            $rows[$count][] = $contact;
+            $rows[$count][] = $job_contact;
             $rows[$count][] = $dao->application_count;
             $rows[$count][] = $dao->job_created_date;
+            $rows[$count][] = $app_contact;
             $rows[$count][] = $dao->app_created_date;
             $rows[$count][] = $dao->app_status;
             $rows[$count][] = $action;
