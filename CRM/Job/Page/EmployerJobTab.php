@@ -152,7 +152,7 @@ $ordersql = " ORDER BY j.id desc";
                 if ($dateselect_to != '') {
                     $_to = strtotime("+1 day", strtotime($dateselect_to));
                     $date_to = date("Y-m-d H:i:s", $_to);
-                    $wheresql .= " AND j.`created_date` <= '" . $date_to . "' ";
+                    $wheresql .= " AND j.`created_date` < '" . $date_to . "' ";
                 } else {
                     $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
                 }

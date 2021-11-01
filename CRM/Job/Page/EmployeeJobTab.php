@@ -163,7 +163,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                 if ($dateselect_to != '') {
                     $_to = strtotime("+1 day", strtotime($dateselect_to));
                     $date_to = date("Y-m-d H:i:s", $_to);
-                    $wheresql .= " AND j.`created_date` <= '" . $date_to . "' ";
+                    $wheresql .= " AND j.`created_date` < '" . $date_to . "' ";
                 } else {
                     $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
                 }
@@ -377,7 +377,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                 if ($dateselect_to != '') {
                     $_to = strtotime("+1 day", strtotime($dateselect_to));
                     $date_to = date("Y-m-d H:i:s", $_to);
-                    $wheresql .= " AND ap.`created_date` <= '" . $date_to . "' ";
+                    $wheresql .= " AND ap.`created_date` < '" . $date_to . "' ";
                 } else {
                     $wheresql .= " AND ap.`created_date` <= '" . $date_today . "' ";
                 }

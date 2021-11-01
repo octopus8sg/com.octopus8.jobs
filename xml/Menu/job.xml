@@ -60,6 +60,11 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/job/jobsajax</path>
+    <page_callback>CRM_Job_Form_Search::getJobsAjax</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/job/employeejobsajax</path>
     <page_callback>CRM_Job_Page_EmployeeJobTab::getJobsAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>

@@ -7,7 +7,8 @@ use CRM_Job_ExtensionUtil as E;
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
-class CRM_Job_Form_Search extends CRM_Core_Form {
+class CRM_Job_Form_Search extends CRM_Job_Form_CommonJobFilter
+{
 
     protected $formValues;
 
@@ -22,40 +23,28 @@ class CRM_Job_Form_Search extends CRM_Core_Form {
     public $rows = [];
 
 
-    public function preProcess() {
+    public function preProcess()
+    {
         parent::preProcess();
 
 
         $this->formValues = $this->getSubmitValues();
         $this->setTitle(E::ts('Search Jobs'));
 
-        $this->limit = CRM_Utils_Request::retrieveValue('crmRowCount', 'Positive', 50);
-        $this->pageId = CRM_Utils_Request::retrieveValue('crmPID', 'Positive', 1);
-        if ($this->limit !== false) {
-            $this->offset = ($this->pageId - 1) * $this->limit;
-        }
-        $this->query();
-        $this->assign('entities', $this->rows);
 
-        $pagerParams = [];
-        $pagerParams['total'] = 0;
-        $pagerParams['status'] =E::ts('%%StatusMessage%%');
-        $pagerParams['csvString'] = NULL;
-        $pagerParams['rowCount'] =  50;
-        $pagerParams['buttonTop'] = 'PagerTopButton';
-        $pagerParams['buttonBottom'] = 'PagerBottomButton';
-        $pagerParams['total'] = $this->count;
-        $pagerParams['pageID'] = $this->pageId;
-        $this->pager = new CRM_Utils_Pager($pagerParams);
-        $this->assign('pager', $this->pager);
     }
 
-
-    public function buildQuickForm() {
+    public function buildQuickForm()
+    {
         parent::buildQuickForm();
 
-        $this->add('text', 'title', E::ts('Title'), array('class' => 'huge'));
-        $this->addEntityRef('contact_id', E::ts('Contact'), ['create' => false, 'multiple' => true], false, array('class' => 'huge'));
+        $urlQry['snippet'] = 4;
+
+        $job_source_url = CRM_Utils_System::url('civicrm/job/jobsajax', $urlQry, FALSE, NULL, FALSE);
+
+        $sourceUrl['job_sourceUrl'] = $job_source_url;
+        $this->assign('useAjax', true);
+        CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
 
         $this->addButtons(array(
             array(
@@ -66,7 +55,8 @@ class CRM_Job_Form_Search extends CRM_Core_Form {
         ));
     }
 
-    public function postProcess() {
+    public function postProcess()
+    {
         parent::postProcess();
     }
 
@@ -75,7 +65,8 @@ class CRM_Job_Form_Search extends CRM_Core_Form {
      *
      * @throws \CRM_Core_Exception
      */
-    protected function query() {
+    protected function query()
+    {
         $sql = "
     SELECT SQL_CALC_FOUND_ROWS
       `civicrm_job`.`id`,
@@ -84,10 +75,10 @@ class CRM_Job_Form_Search extends CRM_Core_Form {
     FROM `civicrm_job`
     WHERE 1";
         if (isset($this->formValues['title']) && !empty($this->formValues['title'])) {
-            $sql .= " AND `civicrm_job`.`title` LIKE '%".$this->formValues['title']."%'";
+            $sql .= " AND `civicrm_job`.`title` LIKE '%" . $this->formValues['title'] . "%'";
         }
         if (isset($this->formValues['contact_id']) && is_array($this->formValues['contact_id']) && count($this->formValues['contact_id'])) {
-            $sql  .= " AND `civicrm_job`.`contact_id` IN (".implode(", ", $this->formValues['contact_id']).")";
+            $sql .= " AND `civicrm_job`.`contact_id` IN (" . implode(", ", $this->formValues['contact_id']) . ")";
         }
 
         if ($this->limit !== false) {
@@ -96,14 +87,14 @@ class CRM_Job_Form_Search extends CRM_Core_Form {
         $dao = CRM_Core_DAO::executeQuery($sql);
         $this->count = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $this->rows = array();
-        while($dao->fetch()) {
+        while ($dao->fetch()) {
             $row = [
                 'id' => $dao->id,
                 'contact_id' => $dao->contact_id,
                 'title' => $dao->title,
             ];
             if (!empty($row['contact_id'])) {
-                $row['contact'] = '<a href="'.CRM_Utils_System::url('civicrm/contact/view', ['reset' => 1, 'cid' => $dao->contact_id]).'">'.CRM_Contact_BAO_Contact::displayName($dao->contact_id).'</a>';
+                $row['contact'] = '<a href="' . CRM_Utils_System::url('civicrm/contact/view', ['reset' => 1, 'cid' => $dao->contact_id]) . '">' . CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
             }
             $this->rows[] = $row;
         }
@@ -133,6 +124,9 @@ class CRM_Job_Form_Search extends CRM_Core_Form {
         $status_id = CRM_Utils_Request::retrieveValue('status_id', 'Positive', null);
 ////        CRM_Core_Error::debug_var('sensor_id', $status_id);
 
+        $contact_id = CRM_Utils_Request::retrieveValue('contact_id', 'Positive', null);
+////        CRM_Core_Error::debug_var('sensor_id', $status_id);
+
         $role_id = CRM_Utils_Request::retrieveValue('role_id', 'Positive', null);
 ////        CRM_Core_Error::debug_var('sensor_id', $role_id);
 //
@@ -151,15 +145,15 @@ class CRM_Job_Form_Search extends CRM_Core_Form {
             $dateselect_from = null;
         }
 //        CRM_Core_Error::debug_var('dateselect_from', $dateselect_from);
-
         $sortMapper = [
             0 => 'id',
             1 => 'title',
             2 => 'role',
             3 => 'location',
-            4 => 'application_count',
-            5 => 'created_date',
-            6 => 'job_status',
+            4 => 'contact_id',
+            5 => 'application_count',
+            6 => 'created_date',
+            7 => 'job_status',
         ];
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -171,6 +165,7 @@ SELECT  SQL_CALC_FOUND_ROWS
     j.id,
     count(a.id) application_count,
     j.title,
+    j.contact_id,
     r.label role,                            
     l.label location,                            
     j.created_date,
@@ -183,11 +178,12 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                               INNER JOIN civicrm_option_value r on  j.role_id = r.value
                               INNER JOIN civicrm_option_group gr on r.option_group_id = gr.id and gr.name = 'job_role'
 ";
+
         $wheresql = " where 1 = 1";
         $groupsql = " group by j.id, j.title, s.label, l.label, r.label, j.created_date";
         $ordersql = " ORDER BY j.id desc";
-        if (isset($contactId)) {
-            $wheresql .= " AND j.`contact_id` = " . $contactId . " ";
+        if (isset($contact_id)) {
+            $wheresql .= " AND j.`contact_id` = " . $contact_id . " ";
         }
 
 
@@ -229,7 +225,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                 if ($dateselect_to != '') {
                     $_to = strtotime("+1 day", strtotime($dateselect_to));
                     $date_to = date("Y-m-d H:i:s", $_to);
-                    $wheresql .= " AND j.`created_date` <= '" . $date_to . "' ";
+                    $wheresql .= " AND j.`created_date` < '" . $date_to . "' ";
                 } else {
                     $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
                 }
@@ -240,7 +236,6 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
             $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
         }
 //        CRM_Core_Error::debug_var('wheresql', $wheresql);
-
 
 
         if ($sort !== NULL) {
@@ -265,31 +260,38 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
         $count = 0;
+        $can_update = true;
+        $can_delete = true;
         $update = "";
         $delete = "";
         while ($dao->fetch()) {
+            if (!empty($dao->contact_id)) {
+                $contact = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
+                        ['reset' => 1, 'cid' => $dao->contact_id]) . '">' .
+                    CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
+            }
+
             $r_view = CRM_Utils_System::url('civicrm/job/form',
                 ['action' => 'view', 'id' => $dao->id]);
-            if($contactId){
-                $u_action = ['action' => 'update',
-                    'id' => $dao->id,
-                    'cid' => $contactId];
-            }else{
-                $u_action = ['action' => 'update',
-                    'id' => $dao->id];
-            }
+            $u_action = ['action' => 'update',
+                'id' => $dao->id];
             $r_update = CRM_Utils_System::url('civicrm/job/form',
                 $u_action);
             $r_delete = CRM_Utils_System::url('civicrm/job/form',
                 ['action' => 'delete', 'id' => $dao->id]);
             $view = '<a target="_blank" class="action-item view-job crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
-            $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
-//            $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            if ($can_update) {
+                $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
+            }
+            if ($can_delete) {
+                $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            }
             $action = "<span>$view $update $delete</span>";
             $rows[$count][] = $dao->id;
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->role;
             $rows[$count][] = $dao->location;
+            $rows[$count][] = $contact;
             $rows[$count][] = $dao->application_count;
             $rows[$count][] = $dao->created_date;
             $rows[$count][] = $dao->job_status;
