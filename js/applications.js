@@ -127,6 +127,18 @@ CRM.$(function ($) {
                 "value":
                     $('#application_contact_id').val()
             });
+            aoData.push({
+                "name":
+                    "application_id",
+                "value":
+                    $('#application_id').val()
+            });
+            aoData.push({
+                "name":
+                    "application_job_id",
+                "value":
+                    $('#application_job_id').val()
+            });
 
 
             $.ajax({
@@ -141,7 +153,7 @@ CRM.$(function ($) {
         var new_applications_table = applications_tab.DataTable(applications_dtsettings);
         //End Reset Table
         $('.application-filter :input').change(function () {
-            alert("I'm here!");
+            // alert("I'm here!");
 
             new_applications_table.draw();
         });

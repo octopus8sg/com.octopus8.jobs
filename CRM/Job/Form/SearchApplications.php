@@ -108,9 +108,17 @@ class CRM_Job_Form_SearchApplications extends CRM_Job_Form_CommonJobFilter
         CRM_Core_Error::debug_var('post', $_POST);
 
         $contactId = null;
+
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
 
         $employerIds = CRM_Utils_Request::retrieve('employer_ids', 'String');
+
+        $employeeIds = CRM_Utils_Request::retrieve('employee_ids', 'String');
+
+        $appId = CRM_Utils_Request::retrieve('application_id', 'String');
+
+        $jobId = CRM_Utils_Request::retrieve('application_job_id', 'String');
+
 //        CRM_Core_Error::debug_var('contact', $contactId);
 
 //start and end date
@@ -125,7 +133,9 @@ class CRM_Job_Form_SearchApplications extends CRM_Job_Form_CommonJobFilter
         $location_id = CRM_Utils_Request::retrieveValue('location_id', 'Positive', null);
 //        CRM_Core_Error::debug_var('device_type_id', $location_id);
 
-        $status_id = CRM_Utils_Request::retrieveValue('status_id', 'Positive', null);
+        $app_status_id = CRM_Utils_Request::retrieveValue('app_status_id', 'Positive', null);
+
+        $job_status_id = CRM_Utils_Request::retrieveValue('job_status_id', 'Positive', null);
 ////        CRM_Core_Error::debug_var('sensor_id', $status_id);
 
         $role_id = CRM_Utils_Request::retrieveValue('role_id', 'Positive', null);
@@ -148,7 +158,7 @@ class CRM_Job_Form_SearchApplications extends CRM_Job_Form_CommonJobFilter
 //        CRM_Core_Error::debug_var('dateselect_from', $dateselect_from);
 
         $sortMapper = [
-            0 => 'id',
+            0 => 'app_id',
             1 => 'title',
             2 => 'role',
             3 => 'location',
@@ -166,7 +176,7 @@ class CRM_Job_Form_SearchApplications extends CRM_Job_Form_CommonJobFilter
 // SQL_CALC_FOUND_ROWS
         $selectsql = "
 SELECT  SQL_CALC_FOUND_ROWS
-    j.id,
+    j.id job_id,
     count(a.id) application_count,
     j.title,
     j.contact_id job_contact_id,
@@ -188,11 +198,19 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
 ";
         $wheresql = " where 1 = 1";
         $groupsql = " group by j.id, j.title, s.label, l.label, r.label, j.created_date, j.contact_id, app_id";
-        $ordersql = " ORDER BY j.id desc";
+        $ordersql = " ORDER BY app_id desc";
         if (isset($employerIds)) {
             if ($employerIds !== null) {
                 if (trim(strval($employerIds)) !== "") {
                     $wheresql .= " AND j.`contact_id` in (" . $employerIds . ") ";
+                }
+            }
+        }
+
+        if (isset($employeeIds)) {
+            if ($employeeIds !== null) {
+                if (trim(strval($employeeIds)) !== "") {
+                    $wheresql .= " AND ap.`contact_id` in (" . $employeeIds . ") ";
                 }
             }
         }
@@ -203,15 +221,38 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
             }
         }
 
+        if (isset($appId)) {
+            if ($appId !== null) {
+                if ($appId !== "") {
+
+                    $wheresql .= " AND ap.`id` = " . intval($appId) . " ";
+                }
+            }
+        }
+
+        if (isset($jobId)) {
+            if ($jobId !== null) {
+                if ($jobId !== "") {
+                    $wheresql .= " AND (j.`id` = " . intval($jobId) . " OR  j.`title` like '%" . strval($jobId) . "%')";
+                }
+            }
+        }
+
         if (isset($location_id)) {
             if ($location_id > 0) {
                 $wheresql .= " AND j.`location_id` = " . $location_id . " ";
             }
         }
 
-        if (isset($status_id)) {
-            if ($status_id > 0) {
-                $wheresql .= " AND ap.`job_application_status_id` = " . $status_id . " ";
+        if (isset($app_status_id)) {
+            if ($app_status_id > 0) {
+                $wheresql .= " AND ap.`job_application_status_id` = " . $app_status_id . " ";
+            }
+        }
+
+        if (isset($job_status_id)) {
+            if ($job_status_id > 0) {
+                $wheresql .= " AND j.`status_id` = " . $job_status_id . " ";
             }
         }
 
@@ -299,7 +340,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
             $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
 //            $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$view</span>";
-            $rows[$count][] = $dao->id;
+            $rows[$count][] = $dao->app_id;
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->role;
             $rows[$count][] = $dao->location;
@@ -328,7 +369,6 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
         }
         CRM_Utils_JSON::output($hmdatas);
     }
-
 
 
 }

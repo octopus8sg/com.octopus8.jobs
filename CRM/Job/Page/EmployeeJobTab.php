@@ -242,8 +242,8 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
     public function getApplicationsAjax()
     {
 
-        CRM_Core_Error::debug_var('request', $_REQUEST);
-        CRM_Core_Error::debug_var('post', $_POST);
+//        CRM_Core_Error::debug_var('request', $_REQUEST);
+//        CRM_Core_Error::debug_var('post', $_POST);
 
         $contactId = null;
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
@@ -407,7 +407,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
 
 //        CRM_Core_Error::debug_var('sql', $sql);
         $sql = $selectsql . $wheresql . $groupsql . $ordersql;
-        CRM_Core_Error::debug_var('search_sql', $sql);
+//        CRM_Core_Error::debug_var('search_sql', $sql);
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
