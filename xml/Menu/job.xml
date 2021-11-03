@@ -14,7 +14,7 @@
   </item>
   <item>
     <path>civicrm/applications/form</path>
-    <page_callback>CRM_Job_Form_Job</page_callback>
+    <page_callback>CRM_Job_Form_JobApplication</page_callback>
     <title>Application</title>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>

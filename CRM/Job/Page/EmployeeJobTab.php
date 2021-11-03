@@ -207,7 +207,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                     CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
             }
             $r_apply = CRM_Utils_System::url('civicrm/application/form',
-                ['action' => 'add', 'job_id' => $dao->id]);
+                ['action' => 'add', 'jid' => $dao->id, 'cid' => $contactId]);
             $apply = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_apply . '"><i class="crm-i fa-pencil"></i>&nbsp;Apply</a>';
 //            $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$apply</span>";
@@ -286,7 +286,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
 //        CRM_Core_Error::debug_var('dateselect_from', $dateselect_from);
 
         $sortMapper = [
-            0 => 'id',
+            0 => 'app_id',
             1 => 'title',
             2 => 'role',
             3 => 'location',
@@ -303,7 +303,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
 // SQL_CALC_FOUND_ROWS
         $selectsql = "
 SELECT  SQL_CALC_FOUND_ROWS
-    j.id,
+    j.id job_id,
     count(a.id) application_count,
     j.title,
     j.contact_id,
@@ -421,7 +421,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
                     CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
             }
             $r_view = CRM_Utils_System::url('civicrm/application/form',
-                ['action' => 'view', 'id' => $dao->app_id]);
+                ['action' => 'view', 'id' => $dao->app_id, 'cid'=>$contactId, 'jid' => $dao->job_id]);
             $r_update = CRM_Utils_System::url('civicrm/application/form',
                 ['action' => 'update', 'id' => $dao->app_id]);
             $r_delete = CRM_Utils_System::url('civicrm/application/form',
@@ -430,7 +430,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
             $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
 //            $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$view</span>";
-            $rows[$count][] = $dao->id;
+            $rows[$count][] = $dao->app_id;
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->role;
             $rows[$count][] = $dao->location;

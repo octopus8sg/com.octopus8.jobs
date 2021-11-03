@@ -230,15 +230,15 @@ function job_civicrm_navigationMenu(&$menu)
         'separator' => 0,
     ));
    _job_civix_navigationMenu($menu);
-   _job_civix_insert_navigation_menu($menu, 'jobs', array(
-        'label' => E::ts('Add Application'),
-        'name' => 'add_application',
-        'url' => 'civicrm/applications/form?reset=1&action=add',
-        'permission' => 'administer CiviCRM',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-   _job_civix_navigationMenu($menu);
+//   _job_civix_insert_navigation_menu($menu, 'jobs', array(
+//        'label' => E::ts('Add Application'),
+//        'name' => 'add_application',
+//        'url' => 'civicrm/applications/form?reset=1&action=add',
+//        'permission' => 'administer CiviCRM',
+//        'operator' => 'OR',
+//        'separator' => 0,
+//    ));
+//   _job_civix_navigationMenu($menu);
 
 }
 

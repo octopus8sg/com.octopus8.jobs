@@ -3,7 +3,7 @@
   {* Are you sure to delete form *}
   <h3>{ts}Delete Job{/ts}</h3>
   <div class="crm-block crm-form-block">
-    <div class="crm-section">{ts 1=$myentity.title}Are you sure you wish to delete the job with title: %1?{/ts}</div>
+    <div class="crm-section">{ts 1=$myentity.id 2=$myentity.title}Are you sure you wish to delete the job with ID/Title: %1/<b>%2</b>?{/ts}</div>
   </div>
 
   <div class="crm-submit-buttons">
