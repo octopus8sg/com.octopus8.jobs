@@ -86,11 +86,13 @@ class CRM_Job_Form_Job extends CRM_Core_Form
         $this->add('hidden', 'id');
         if ($this->_action != CRM_Core_Action::DELETE) {
             if ($this->_contactId) {
-                $this->addEntityRef('contact_id', E::ts('Contact'), [], TRUE)->freeze();
+                $this->addEntityRef('contact_id', E::ts('Employer'), [], TRUE)->freeze();
             }else{
-                $this->addEntityRef('contact_id', E::ts('Contact'), [], TRUE);
+                $this->addEntityRef('contact_id', E::ts('Employer'), [], TRUE);
             }
             $this->add('text', 'title', E::ts('Title'), ['class' => 'huge'], FALSE);
+
+            $this->add('wysiwyg', 'description', E::ts('Description'), [], FALSE);
             //todo add pseudoconstants
 
             $roles = CRM_Core_OptionGroup::values('job_role');
@@ -186,6 +188,7 @@ class CRM_Job_Form_Job extends CRM_Core_Form
                 $action = 'update';
             }
             $params['title'] = $values['title'];
+            $params['description'] = $values['description'];
             $params['contact_id'] = $values['contact_id'];
             $session = CRM_Core_Session::singleton();
             $params['created_id'] = $session->get('userID');

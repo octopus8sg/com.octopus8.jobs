@@ -24,7 +24,14 @@
       <div class="content">{$form.contact_id.html}</div>
       <div class="clear"></div>
     </div>
-    
+
+    <div class="crm-section">
+      <div class="label">{$form.description.label}</div>
+      <div class="content">{$form.description.html}</div>
+      <div class="clear"></div>
+    </div>
+
+
     <div class="crm-section">
       <div class="label">{$form.role_id.label}</div>
       <div class="content">{$form.role_id.html}</div>

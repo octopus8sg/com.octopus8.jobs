@@ -38,6 +38,7 @@ CREATE TABLE `civicrm_job` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique Job ID',
   `contact_id` int unsigned COMMENT 'FK to Contact',
   `title` varchar(255) NULL,
+  `description` longtext NULL,
   `role_id` int DEFAULT 1,
   `location_id` int DEFAULT 1,
   `status_id` int DEFAULT 1,

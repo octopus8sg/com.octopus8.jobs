@@ -41,6 +41,18 @@
     </field>
 
     <field>
+        <name>description</name>
+        <title>Description</title>
+        <lable>Description</lable>
+        <type>longtext</type>
+        <html>
+        <type>RichTextEditor</type>
+        </html>
+        <length>255</length>
+        <required>false</required>
+    </field>
+
+    <field>
         <name>role_id</name>
         <title>Role</title>
         <type>int</type>
