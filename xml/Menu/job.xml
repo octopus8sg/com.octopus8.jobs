@@ -91,4 +91,10 @@
     <title>SearchApplications</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/jobs/dashboard</path>
+    <page_callback>CRM_Job_Page_JobsDashboard</page_callback>
+    <title>JobsDashboard</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
