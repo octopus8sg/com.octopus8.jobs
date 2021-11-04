@@ -16,7 +16,7 @@ CRM.$(function ($) {
 
     var applications_sourceUrl = CRM.vars.source_url['application_sourceUrl'];
     $(document).ready(function () {
-        alert(applications_sourceUrl);
+        // alert(applications_sourceUrl);
         //Reset Table, add Filter and Search Possibility
         //devices datatable
         var applications_tab = $('.selector-applications');

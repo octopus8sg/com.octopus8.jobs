@@ -42,7 +42,7 @@
 {/if}
   {* At the bottom of the file add the following lines: *}
 {literal}
-  <script type="text/javascript">
+  <!--script type="text/javascript">
     CRM.$(function($) {
       function updateCustomData() {
         var subRole = '{/literal}{$role_id}{literal}';
@@ -56,6 +56,6 @@
       }
       updateCustomData();
     });
-  </script>
+  </script-->
 {/literal}
 {/crmScope}
