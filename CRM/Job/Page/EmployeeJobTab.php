@@ -208,7 +208,7 @@ FROM civicrm_job j LEFT JOIN civicrm_job_application a on a.job_id = j.id
             }
             $r_apply = CRM_Utils_System::url('civicrm/application/form',
                 ['action' => 'add', 'jid' => $dao->id, 'cid' => $contactId]);
-            $apply = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_apply . '"><i class="crm-i fa-pencil"></i>&nbsp;Apply</a>';
+            $apply = '<a target="_blank" class="action-item add-application crm-hover-button" href="' . $r_apply . '"><i class="crm-i fa-pencil"></i>&nbsp;Apply</a>';
 //            $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$apply</span>";
             $rows[$count][] = $dao->id;

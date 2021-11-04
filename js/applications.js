@@ -1,18 +1,18 @@
 CRM.$(function ($) {
 
-    $("a.add-application").click(function (event) {
-        event.preventDefault();
-        var href = $(this).attr('href');
-        // alert(href);
-        var $el = CRM.loadForm(href, {
-            dialog: {width: '50%', height: '50%'}
-        }).on('crmFormSuccess', function () {
-            var hm_tab = $('.selector-applications');
-            var hm_table = hm_tab.DataTable();
-            hm_table.draw();
-        });
-    });
-
+    // $("a.add-application").click(function (event) {
+    //     event.preventDefault();
+    //     var href = $(this).attr('href');
+    //     // alert(href);
+    //     var $el = CRM.loadForm(href, {
+    //         dialog: {width: '50%', height: '50%'}
+    //     }).on('crmFormSuccess', function () {
+    //         var hm_tab = $('.selector-applications');
+    //         var hm_table = hm_tab.DataTable();
+    //         hm_table.draw();
+    //     });
+    // });
+    //
 
     var applications_sourceUrl = CRM.vars.source_url['application_sourceUrl'];
     $(document).ready(function () {
@@ -51,6 +51,18 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
+            $("a.add-application").click(function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                // alert(href);
+                var $el = CRM.loadForm(href, {
+                    dialog: {width: '50%', height: '50%'}
+                }).on('crmFormSuccess', function () {
+                    var hm_tab = $('.selector-applications');
+                    var hm_table = hm_tab.DataTable();
+                    hm_table.draw();
+                });
+            });
         };
         applications_dtsettings.fnDrawCallback = function(oSettings){
             // $("a.view-job").css('background','red');
@@ -68,6 +80,18 @@ CRM.$(function ($) {
             });
             // $("a.update-job").css('background','blue');
             $("a.update-application").click(function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                // alert(href);
+                var $el = CRM.loadForm(href, {
+                    dialog: {width: '50%', height: '50%'}
+                }).on('crmFormSuccess', function () {
+                    var hm_tab = $('.selector-applications');
+                    var hm_table = hm_tab.DataTable();
+                    hm_table.draw();
+                });
+            });
+            $("a.add-application").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
