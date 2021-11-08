@@ -62,6 +62,18 @@ CRM.$(function ($) {
                     hm_table.draw();
                 });
             });
+            $("a.delete-application").click(function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                // alert(href);
+                var $el = CRM.loadForm(href, {
+                    dialog: {width: '50%', height: '50%'}
+                }).on('crmFormSuccess', function () {
+                    var hm_tab = $('.selector-applications');
+                    var hm_table = hm_tab.DataTable();
+                    hm_table.draw();
+                });
+            });
         };
         applications_dtsettings.sDom = '<"crm-datatable-pager-top"lp>Brt<"crm-datatable-pager-bottom"ip>';
         //turn of search field
