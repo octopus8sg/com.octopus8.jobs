@@ -41,4 +41,9 @@
     <page_callback>CRM_Jobs_Page_JobsSearch::getJobsAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/jobs/applicationsajax</path>
+    <page_callback>CRM_Jobs_Page_ApplicationsSearch::getApplicationsAjax</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

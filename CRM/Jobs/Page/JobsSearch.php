@@ -30,6 +30,10 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
         parent::run();
     }
 
+    /**
+     * @return array json for datatable
+     * @throws CRM_Core_Exception
+     */
     public function getJobsAjax()
     {
 
@@ -195,7 +199,7 @@ FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.i
 
 //        CRM_Core_Error::debug_var('sql', $sql);
         $sql = $selectsql . $wheresql . $groupsql . $ordersql;
-        CRM_Core_Error::debug_var('search_sql', $sql);
+//        CRM_Core_Error::debug_var('search_sql', $sql);
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
@@ -254,4 +258,5 @@ FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.i
         }
         CRM_Utils_JSON::output($hmdatas);
     }
+
 }
