@@ -256,15 +256,15 @@ FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.i
                         ['reset' => 1, 'cid' => $dao->app_contact_id]) . '">' .
                     CRM_Contact_BAO_Contact::displayName($dao->app_contact_id) . '</a>';
             }
-            $r_view = CRM_Utils_System::url('civicrm/application/form',
+            $r_view = CRM_Utils_System::url('civicrm/applications/form',
                 ['action' => 'view', 'id' => $dao->app_id]);
-            $r_update = CRM_Utils_System::url('civicrm/application/form',
+            $r_update = CRM_Utils_System::url('civicrm/applications/form',
                 ['action' => 'update', 'id' => $dao->app_id]);
-            $r_delete = CRM_Utils_System::url('civicrm/application/form',
+            $r_delete = CRM_Utils_System::url('civicrm/applications/form',
                 ['action' => 'delete', 'id' => $dao->app_id]);
-            $view = '<a target="_blank" class="action-item view-job crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
-            $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
-//            $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            $view = '<a target="_blank" class="action-item view-application crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
+            $update = '<a target="_blank" class="action-item update-application crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
+//            $delete = '<a target="_blank" class="action-item delete-application crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$view</span>";
             $rows[$count][] = $dao->app_id;
             $rows[$count][] = $dao->title;
