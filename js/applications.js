@@ -23,47 +23,6 @@ CRM.$(function ($) {
         var applications_table = applications_tab.DataTable();
         var applications_dtsettings = applications_table.settings().init();
         applications_dtsettings.bFilter = true;
-        //turn on search
-        // applications_dtsettings.fnInitComplete = function(oSettings, json){
-        //     // $("a.view-job").css('background','red');
-        //     $("a.view-application").click(function (event) {
-        //         event.preventDefault();
-        //         var href = $(this).attr('href');
-        //         // alert(href);
-        //         var $el = CRM.loadForm(href, {
-        //             dialog: {width: '50%', height: '50%'}
-        //         }).on('crmFormSuccess', function () {
-        //             var hm_tab = $('.selector-applications');
-        //             var hm_table = hm_tab.DataTable();
-        //             hm_table.draw();
-        //         });
-        //     });
-        //     // $("a.update-job").css('background','blue');
-        //     $("a.update-application").click(function (event) {
-        //         event.preventDefault();
-        //         var href = $(this).attr('href');
-        //         // alert(href);
-        //         var $el = CRM.loadForm(href, {
-        //             dialog: {width: '50%', height: '50%'}
-        //         }).on('crmFormSuccess', function () {
-        //             var hm_tab = $('.selector-applications');
-        //             var hm_table = hm_tab.DataTable();
-        //             hm_table.draw();
-        //         });
-        //     });
-        //     $("a.add-application").click(function (event) {
-        //         event.preventDefault();
-        //         var href = $(this).attr('href');
-        //         // alert(href);
-        //         var $el = CRM.loadForm(href, {
-        //             dialog: {width: '50%', height: '50%'}
-        //         }).on('crmFormSuccess', function () {
-        //             var hm_tab = $('.selector-applications');
-        //             var hm_table = hm_tab.DataTable();
-        //             hm_table.draw();
-        //         });
-        //     });
-        // };
         applications_dtsettings.fnDrawCallback = function(oSettings){
             // $("a.view-job").css('background','red');
             $("a.view-application").click(function (event) {
@@ -181,7 +140,12 @@ CRM.$(function ($) {
 
             new_applications_table.draw();
         });
-
+        $('#application_job_id').keyup(function() {
+            new_applications_table.draw();
+        });
+        $('#application_id').keyup(function() {
+            new_applications_table.draw();
+        });
     });
 
 
