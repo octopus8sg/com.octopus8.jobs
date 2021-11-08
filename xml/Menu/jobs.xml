@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/jobs/commonfilter</path>
+    <page_callback>CRM_Jobs_Form_JobsCommonFilter</page_callback>
+    <title>JobsCommonFilter</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/jobs/form</path>
+    <page_callback>CRM_Jobs_Form_JobsForm</page_callback>
+    <title>JobsForm</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/applications/form</path>
+    <page_callback>CRM_Jobs_Form_ApplicationsForm</page_callback>
+    <title>ApplicationsForm</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/jobs/search</path>
+    <page_callback>CRM_Jobs_Page_JobsSearch</page_callback>
+    <title>JobsSearch</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/applications/search</path>
+    <page_callback>CRM_Jobs_Page_ApplicationsSearch</page_callback>
+    <title>ApplicationsSearch</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/jobs</path>
+    <page_callback>CRM_Jobs_Page_JobsDashboard</page_callback>
+    <title>JobsDashboard</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/jobs/jobsajax</path>
+    <page_callback>CRM_Jobs_Page_JobsSearch::getJobsAjax</page_callback>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>

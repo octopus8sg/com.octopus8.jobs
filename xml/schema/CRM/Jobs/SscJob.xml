@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Jobs</base>
+  <class>SscJob</class>
+  <name>civicrm_ssc_job</name>
+  <comment>Social Services Connect Job Proposals</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique SSC Job ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>contact_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Contact</comment>
+  </field>
+  <foreignKey>
+    <name>contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+  <field>
+    <name>contact_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Contact</comment>
+  </field>
+  <foreignKey>
+    <name>contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>title</name>
+    <type>varchar</type>
+    <length>255</length>
+    <required>false</required>
+  </field>
+
+  <field>
+    <name>description</name>
+    <title>Description</title>
+    <lable>Description</lable>
+    <type>longtext</type>
+    <html>
+      <type>RichTextEditor</type>
+    </html>
+    <length>255</length>
+    <required>false</required>
+  </field>
+
+  <field>
+    <name>role_id</name>
+    <title>Role</title>
+    <type>int</type>
+    <length>3</length>
+    <default>1</default>
+    <pseudoconstant>
+      <optionGroupName>ssc_job_role</optionGroupName>
+    </pseudoconstant>
+    <html>
+      <type>Select</type>
+    </html>
+  </field>
+
+  <field>
+    <name>location_id</name>
+    <title>Location</title>
+    <type>int</type>
+    <length>3</length>
+    <default>1</default>
+    <pseudoconstant>
+      <optionGroupName>ssc_job_location</optionGroupName>
+    </pseudoconstant>
+    <html>
+      <type>Select</type>
+    </html>
+  </field>
+
+  <field>
+    <name>status_id</name>
+    <title>Status</title>
+    <type>int</type>
+    <length>3</length>
+    <default>1</default>
+    <pseudoconstant>
+      <optionGroupName>ssc_job_status</optionGroupName>
+    </pseudoconstant>
+    <html>
+      <type>Select</type>
+    </html>
+  </field>
+
+  <field>
+    <name>created_date</name>
+    <type>timestamp</type>
+    <title>Job Proposal Created Date</title>
+    <required>true</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <comment>Date and time the job was created</comment>
+    <html>
+      <type>Select Date</type>
+      <formatType>activityDateTime</formatType>
+    </html>
+
+  </field>
+  <field>
+    <name>created_id</name>
+    <type>int unsigned</type>
+    <title>Created By Contact ID</title>
+    <comment>FK to civicrm_contact, who created this application</comment>
+    <html>
+      <label>Created By</label>
+    </html>
+    <add>4.4</add>
+  </field>
+
+  <foreignKey>
+    <name>created_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>SET NULL</onDelete>
+  </foreignKey>
+
+</table>

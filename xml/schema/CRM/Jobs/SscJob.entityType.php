@@ -1,0 +1,10 @@
+<?php
+// This file declares a new entity type. For more details, see "hook_civicrm_entityTypes" at:
+// https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
+return [
+  [
+    'name' => 'SscJob',
+    'class' => 'CRM_Jobs_DAO_SscJob',
+    'table' => 'civicrm_ssc_job',
+  ],
+];
