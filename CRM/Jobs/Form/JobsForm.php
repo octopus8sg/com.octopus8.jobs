@@ -201,6 +201,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         }
         if ($this->_action == CRM_Core_Action::VIEW) {
             $this->add('text', 'job_id', E::ts('ID'), ['class' => 'huge'], FALSE);
+            $this->add('datepicker', 'created_date', E::ts('Created Time'), ['class' => 'huge'], FALSE);
             $this->freeze();
         }
         parent::buildQuickForm();
