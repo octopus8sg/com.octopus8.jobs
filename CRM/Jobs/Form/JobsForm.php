@@ -161,11 +161,18 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                     if ($this->_isEmployee) {
                         $this->add('hidden', 'employee_id');
                         $this->addButtons([
+
                             [
                                 'type' => 'upload',
                                 'name' => E::ts('Apply'),
                                 'isDefault' => FALSE,
                             ],
+//                            [
+//                                'type' => 'submit',
+//                                'name' => E::ts('Delete'),
+//                                'formaction' => 'delete',
+//                                'isDefault' => FALSE,
+//                            ],
                             [
                                 'type' => 'cancel',
                                 'name' => E::ts('Close'),
@@ -201,6 +208,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         }
         if ($this->_action == CRM_Core_Action::VIEW) {
             $this->add('text', 'job_id', E::ts('ID'), ['class' => 'huge'], FALSE);
+            $this->add('datepicker', 'created_date', E::ts('Created Time'), ['class' => 'huge'], FALSE);
             $this->freeze();
         }
         parent::buildQuickForm();
@@ -248,6 +256,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
         if ($this->_action == CRM_Core_Action::VIEW) {
             $values = $this->controller->exportValues();
+            CRM_Core_Error::debug_var('values', $values);
 
             if (isset($values['employee_id'])) {
                 $action = 'create';
@@ -258,7 +267,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                 try {
                     civicrm_api4('SscApplication', $action, ['values' => $params]);
                 } catch (Exception $exception) {
-                    CRM_Core_Error::debug_var('errod', $exception->getMessage());
+                    CRM_Core_Error::debug_var('error', $exception->getMessage());
                     return;
                 }
             }

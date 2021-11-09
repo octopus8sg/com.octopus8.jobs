@@ -54,9 +54,15 @@
       <div class="content">{$form.status_id.html}</div>
       <div class="clear"></div>
     </div>
+
+    <div class="crm-section">
+      <div class="label">{$form.created_date.label}</div>
+      <div class="content">{$form.created_date.html}</div>
+      <div class="clear"></div>
+    </div>
     {* Add the line below: *}
 
-    {include file="CRM/common/customDataBlock.tpl" customDataType='Job' entityID=$id}
+    {include file="CRM/common/customDataBlock.tpl" customDataType='SscJob' entityID=$id}
 
     <div class="crm-submit-buttons">
       {include file="CRM/common/formButtons.tpl" location="bottom"}
