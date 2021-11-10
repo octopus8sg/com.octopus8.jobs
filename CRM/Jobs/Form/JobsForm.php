@@ -133,7 +133,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id');
         if ($this->_action != CRM_Core_Action::DELETE) {
-            if ($this->_contactId) {
+
+            if (($this->_contactId) AND ($this->_action != CRM_Core_Action::ADD)) {
                 $this->addEntityRef('contact_id', E::ts('Employer'), [], TRUE)->freeze();
             } else {
                 $this->addEntityRef('contact_id', E::ts('Employer'), [], TRUE);
@@ -237,10 +238,9 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         if (empty($defaults['status_id'])) {
             $defaults['status_id'] = CRM_Core_OptionGroup::getDefaultValue('ssc_job_status');
         }
-        if ($this->_contactId) {
-            $defaults['contact_id'] = $this->_contactId;
-
-        }
+//        if ($this->_contactId) {
+//            $defaults['contact_id'] = $this->_contactId;
+//        }
         return $defaults;
     }
 
@@ -256,7 +256,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
         if ($this->_action == CRM_Core_Action::VIEW) {
             $values = $this->controller->exportValues();
-            CRM_Core_Error::debug_var('values', $values);
+//            CRM_Core_Error::debug_var('values', $values);
 
             if (isset($values['employee_id'])) {
                 $action = 'create';
