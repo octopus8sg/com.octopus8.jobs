@@ -228,15 +228,23 @@ FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.i
         $can_delete = true;
         $update = "";
         $delete = "";
+        if ($employeeId) {
+            $can_update = false;
+            $can_delete = false;
+        }
         while ($dao->fetch()) {
             if (!empty($dao->contact_id)) {
                 $contact = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
                         ['reset' => 1, 'cid' => $dao->contact_id]) . '">' .
                     CRM_Contact_BAO_Contact::displayName($dao->contact_id) . '</a>';
             }
-
+            if ($employeeId) {
+                $r_view = CRM_Utils_System::url('civicrm/jobs/form',
+                    ['action' => 'view', 'id' => $dao->id, 'employeeid' => $employeeId]);
+            }else{
             $r_view = CRM_Utils_System::url('civicrm/jobs/form',
                 ['action' => 'view', 'id' => $dao->id]);
+            }
             $u_action = ['action' => 'update',
                 'id' => $dao->id];
             $r_update = CRM_Utils_System::url('civicrm/jobs/form',

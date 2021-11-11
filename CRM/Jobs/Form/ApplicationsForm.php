@@ -94,6 +94,9 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
         }
 
         CRM_Utils_System::setTitle('Add Application');
+        if ($this->_action == CRM_Core_Action::VIEW) {
+            CRM_Utils_System::setTitle('View Application');
+        }
         if ($this->_id) {
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/applications/form', ['id' => $this->getEntityId(), 'action' => 'view']));
