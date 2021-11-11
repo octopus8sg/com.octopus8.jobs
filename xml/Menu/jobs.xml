@@ -46,4 +46,22 @@
     <page_callback>CRM_Jobs_Page_ApplicationsSearch::getApplicationsAjax</page_callback>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/jobs/contacttab</path>
+    <page_callback>CRM_Jobs_Page_ContactTab</page_callback>
+    <title>ContactTab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/jobs/employeetab</path>
+    <page_callback>CRM_Jobs_Page_EmployeeTab</page_callback>
+    <title>EmployeeTab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/jobs/employertab</path>
+    <page_callback>CRM_Jobs_Page_EmployerTab</page_callback>
+    <title>EmployerTab</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

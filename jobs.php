@@ -214,3 +214,59 @@ function jobs_civicrm_navigationMenu(&$menu) {
     ));
   _jobs_civix_navigationMenu($menu);
 }
+
+/**
+ * Implementation of hook_civicrm_tabset
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_tabset
+ */
+function jobs_civicrm_tabset($path, &$tabs, $context)
+{
+    if ($path === 'civicrm/contact/view') {
+        // add a tab to the contact summary screen
+        $contactId = $context['contact_id'];
+        $contact = \Civi\Api4\Contact::get(0)
+            ->addWhere('id', '=', $contactId)
+            ->execute()->single();
+        $contactType = $contact['contact_type'];
+        $employeesurl = CRM_Utils_System::url('civicrm/jobs/employeetab', ['cid' => $contactId]);
+        $employersurl = CRM_Utils_System::url('civicrm/jobs/employertab', ['cid' => $contactId]);
+
+        $employeeEntities = \Civi\Api4\SscApplication::get()
+            ->selectRowCount()
+            ->addWhere('contact_id', '=', $contactId)
+            ->execute();
+        $employerEntities = \Civi\Api4\SscJob::get()
+            ->selectRowCount()
+            ->addWhere('contact_id', '=', $contactId)
+            ->execute();
+        $employers = array("Household",
+            "Organization",
+            "Team",
+            "Sponsor"
+        );
+        $employees = array("Individual",
+            "Student",
+            "Parent",
+            "Staff",
+        );
+        if (in_array($contactType, $employees)) {
+            $tabs[] = array(
+                'id' => 'employee_job',
+                'url' => $employeesurl,
+                'count' => $employeeEntities->count(),
+                'title' => E::ts('Jobs & Apps'),
+                'weight' => 1000,
+                'icon' => 'crm-i fa-briefcase',
+            );
+        } elseif (in_array($contactType, $employers)) {
+            $tabs[] = array(
+                'id' => 'employeer_job',
+                'url' => $employersurl,
+                'count' => $employerEntities->count(),
+                'title' => E::ts('Jobs'),
+                'weight' => 1000,
+                'icon' => 'crm-i fa-briefcase',
+            );
+        }
+    }
+}

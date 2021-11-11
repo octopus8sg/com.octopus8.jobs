@@ -42,6 +42,10 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
 
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
 
+        $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive');
+
+        $employerId = CRM_Utils_Request::retrieve('employerid', 'Positive');
+
         $jobId = CRM_Utils_Request::retrieveValue('job_id', 'String', null);
 //        CRM_Core_Error::debug_var('contact', $contactId);
 
@@ -81,6 +85,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
             $dateselect_from = null;
         }
 //        CRM_Core_Error::debug_var('dateselect_from', $dateselect_from);
+        if(!isset($employerId)){
         $sortMapper = [
             0 => 'id',
             1 => 'title',
@@ -91,6 +96,17 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
             6 => 'created_date',
             7 => 'job_status',
         ];
+        }else{
+            $sortMapper = [
+                0 => 'id',
+                1 => 'title',
+                2 => 'role',
+                3 => 'location',
+                4 => 'application_count',
+                5 => 'created_date',
+                6 => 'job_status',
+            ];
+        }
 
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
         $sortOrder = isset($_REQUEST['sSortDir_0']) ? CRM_Utils_Type::escape($_REQUEST['sSortDir_0'], 'String') : 'asc';
@@ -120,6 +136,10 @@ FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.i
         $ordersql = " ORDER BY j.id desc";
         if (isset($contact_id)) {
             $wheresql .= " AND j.`contact_id` = " . $contact_id . " ";
+        }
+
+        if (isset($employerId)) {
+            $wheresql .= " AND j.`contact_id` = " . $employerId . " ";
         }
 
         if (isset($jobId)) {
@@ -235,7 +255,9 @@ FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.i
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->role;
             $rows[$count][] = $dao->location;
+            if(!isset($employerId)){
             $rows[$count][] = $contact;
+            }
             $rows[$count][] = $dao->application_count;
             $rows[$count][] = $dao->created_date;
             $rows[$count][] = $dao->job_status;
