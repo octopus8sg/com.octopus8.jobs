@@ -28,6 +28,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
     protected $_isEmployer;
 
+    protected $_employeeId;
+
     public function getDefaultEntity()
     {
         return 'SscJob';
@@ -66,7 +68,15 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $session = CRM_Core_Session::singleton();
             $contactId = $session->get('userID');
         }
+
+        $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive', $this, FALSE);
+
         $this->_contactId = $contactId;
+        if ($employeeId) {
+            $this->_employeeId = $employeeId;
+        } else {
+            $this->_employeeId = $contactId;
+        }
         $contact = $myentity = null;
 
         CRM_Utils_System::setTitle('Add Job');
@@ -227,7 +237,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         if ($this->_myentity) {
             $defaults = $this->_myentity;
             $defaults['job_id'] = $defaults['id'];
-            $defaults['employee_id'] = $this->_contactId;
+            $defaults['employee_id'] = $this->_employeeId;
         }
         if (empty($defaults['role_id'])) {
             $defaults['role_id'] = CRM_Core_OptionGroup::getDefaultValue('ssc_job_role');
@@ -253,11 +263,11 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
     public function postProcess()
     {
         $session = CRM_Core_Session::singleton();
+        $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive');
 
         if ($this->_action == CRM_Core_Action::VIEW) {
             $values = $this->controller->exportValues();
 //            CRM_Core_Error::debug_var('values', $values);
-
             if (isset($values['employee_id'])) {
                 $action = 'create';
                 $params['created_id'] = $session->get('userID');

@@ -1,31 +1,34 @@
 <?php
+
 use CRM_Jobs_ExtensionUtil as E;
 
-class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page {
+class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
+{
 
-  public function run() {
-      // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-      CRM_Utils_System::setTitle(E::ts('Search Applications'));
+    public function run()
+    {
+        // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
+        CRM_Utils_System::setTitle(E::ts('Search Applications'));
 
-      // Example: Assign a variable for use in a template
-      $urlQry['snippet'] = 4;
+        // Example: Assign a variable for use in a template
+        $urlQry['snippet'] = 4;
 //        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
 //        $this->assign('contactId', $contactId);
 //        $urlQry['cid'] = $contactId;
-      $app_source_url = CRM_Utils_System::url('civicrm/jobs/applicationsajax', $urlQry, FALSE, NULL, FALSE);
-      $sourceUrl['application_sourceUrl'] = $app_source_url;
-      $this->assign('useAjax', true);
-      CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
-      $controller_data = new CRM_Core_Controller_Simple(
-          'CRM_Jobs_Form_JobsCommonFilter',
-          ts('Job Filter'),
-          NULL,
-          FALSE, FALSE, TRUE
-      );
-      $controller_data->setEmbedded(TRUE);
-      $controller_data->run();
-      parent::run();
-  }
+        $app_source_url = CRM_Utils_System::url('civicrm/jobs/applicationsajax', $urlQry, FALSE, NULL, FALSE);
+        $sourceUrl['application_sourceUrl'] = $app_source_url;
+        $this->assign('useAjax', true);
+        CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
+        $controller_data = new CRM_Core_Controller_Simple(
+            'CRM_Jobs_Form_JobsCommonFilter',
+            ts('Job Filter'),
+            NULL,
+            FALSE, FALSE, TRUE
+        );
+        $controller_data->setEmbedded(TRUE);
+        $controller_data->run();
+        parent::run();
+    }
 
     public function getApplicationsAjax()
     {
@@ -36,6 +39,8 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page {
         $contactId = null;
 
 //        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
+
+        $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive');
 
         $employerIds = CRM_Utils_Request::retrieveValue('employer_ids', 'String', null);
 
@@ -82,20 +87,31 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page {
             $dateselect_from = null;
         }
 //        CRM_Core_Error::debug_var('dateselect_from', $dateselect_from);
-
-        $sortMapper = [
-            0 => 'app_id',
-            1 => 'title',
-            2 => 'role',
-            3 => 'location',
-            4 => 'job_contact_id',
-            5 => 'application_count',
-            6 => 'job_created_date',
-            7 => 'app_contact_id',
-            8 => 'app_created_date',
-            9 => 'app_status',
-        ];
-
+        if (!isset($employeeId)) {
+            $sortMapper = [
+                0 => 'app_id',
+                1 => 'title',
+                2 => 'role',
+                3 => 'location',
+                4 => 'job_contact_id',
+                5 => 'application_count',
+                6 => 'job_created_date',
+                7 => 'app_contact_id',
+                8 => 'app_created_date',
+                9 => 'app_status',
+            ];
+        } else {
+            $sortMapper = [
+                0 => 'app_id',
+                1 => 'title',
+                2 => 'role',
+                3 => 'location',
+                4 => 'job_contact_id',
+                5 => 'application_count',
+                6 => 'job_created_date',
+                7 => 'app_created_date',
+                8 => 'app_status',];
+        }
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
         $sortOrder = isset($_REQUEST['sSortDir_0']) ? CRM_Utils_Type::escape($_REQUEST['sSortDir_0'], 'String') : 'asc';
 
@@ -144,6 +160,12 @@ FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.i
         if (isset($contactId)) {
             if ($contactId !== null) {
                 $wheresql .= " AND ap.`contact_id` = " . $contactId . " ";
+            }
+        }
+
+        if (isset($employeeId)) {
+            if ($employeeId !== null) {
+                $wheresql .= " AND ap.`contact_id` = " . $employeeId . " ";
             }
         }
 
@@ -273,7 +295,9 @@ FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.i
             $rows[$count][] = $job_contact;
             $rows[$count][] = $dao->application_count;
             $rows[$count][] = $dao->job_created_date;
-            $rows[$count][] = $app_contact;
+            if (!isset($employeeId)) {
+                $rows[$count][] = $app_contact;
+            }
             $rows[$count][] = $dao->app_created_date;
             $rows[$count][] = $dao->app_status;
             $rows[$count][] = $action;

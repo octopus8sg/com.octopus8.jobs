@@ -23,74 +23,22 @@ CRM.$(function ($) {
         var jobs_dtsettings = jobs_table.settings().init();
         jobs_dtsettings.bFilter = true;
         //turn on search
-        jobs_dtsettings.fnInitComplete = function(oSettings, json){
-            // $("a.view-job").css('background','red');
-            // $("a.view-job").click(function (event) {
-            //     event.preventDefault();
-            //     var href = $(this).attr('href');
-            //     // alert(href);
-            //     var $el = CRM.loadForm(href, {
-            //         dialog: {width: '50%', height: '50%'}
-            //     }).on('crmFormSuccess', function () {
-            //         var hm_tab = $('.selector-employee-jobs');
-            //         var hm_table = hm_tab.DataTable();
-            //         hm_table.draw();
-            //     });
-            // });
-            // // $("a.update-job").css('background','blue');
-            // $("a.update-job").click(function (event) {
-            //     event.preventDefault();
-            //     var href = $(this).attr('href');
-            //     // alert(href);
-            //     var $el = CRM.loadForm(href, {
-            //         dialog: {width: '50%', height: '50%'}
-            //     }).on('crmFormSuccess', function () {
-            //         var hm_tab = $('.selector-employee-jobs');
-            //         var hm_table = hm_tab.DataTable();
-            //         hm_table.draw();
-            //     });
-            // });
-            // // $("a.add-application").click(function (event) {
-            // //     event.preventDefault();
-            // //     var href = $(this).attr('href');
-            // //     // alert(href);
-            // //     var $el = CRM.loadForm(href, {
-            // //         dialog: {width: '50%', height: '50%'}
-            // //     }).on('crmFormSuccess', function () {
-            // //         var hm_tab = $('.selector-employee-jobs');
-            // //         var hm_table = hm_tab.DataTable();
-            // //         hm_table.draw();
-            // //     });
-            // // });
-        };
         jobs_dtsettings.fnDrawCallback = function(oSettings){
             // $("a.view-job").css('background','red');
-            // $("a.view-job").click(function (event) {
-            //     event.preventDefault();
-            //     var href = $(this).attr('href');
-            //     // alert(href);
-            //     var $el = CRM.loadForm(href, {
-            //         dialog: {width: '50%', height: '50%'}
-            //     }).on('crmFormSuccess', function () {
-            //         var hm_tab = $('.selector-employee-jobs');
-            //         var hm_table = hm_tab.DataTable();
-            //         hm_table.draw();
-            //     });
-            // });
-            // // $("a.update-job").css('background','blue');
-            // $("a.update-job").click(function (event) {
-            //     event.preventDefault();
-            //     var href = $(this).attr('href');
-            //     // alert(href);
-            //     var $el = CRM.loadForm(href, {
-            //         dialog: {width: '50%', height: '50%'}
-            //     }).on('crmFormSuccess', function () {
-            //         var hm_tab = $('.selector-employee-jobs');
-            //         var hm_table = hm_tab.DataTable();
-            //         hm_table.draw();
-            //     });
-            // });
-            $("a.add-application").click(function (event) {
+            $("a.view-job").click(function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                // alert(href);
+                var $el = CRM.loadForm(href, {
+                    dialog: {width: '50%', height: '50%'}
+                }).on('crmFormSuccess', function () {
+                    var hm_tab = $('.selector-employee-jobs');
+                    var hm_table = hm_tab.DataTable();
+                    hm_table.draw();
+                });
+            });
+            // $("a.update-job").css('background','blue');
+            $("a.update-job").click(function (event) {
                 event.preventDefault();
                 var href = $(this).attr('href');
                 // alert(href);
@@ -135,6 +83,12 @@ CRM.$(function ($) {
             aoData.push({
                 "name":
                     "employer_ids",
+                "value":
+                    $('#employee_job_contact_id').val()
+            });
+            aoData.push({
+                "name":
+                    "job_contact_id",
                 "value":
                     $('#employee_job_contact_id').val()
             });
