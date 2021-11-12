@@ -127,14 +127,12 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
         $this->assign('action', $this->_action);
         // CUSTOM FIELDS
-        /*
         if (!empty($_POST['hidden_custom'])) {
             $role_id = $this->getSubmitValue('role_id');
-            CRM_Custom_Form_CustomData::preProcess($this, null, $role_id, 1, 'Job', $this->getEntityId());
+            CRM_Custom_Form_CustomData::preProcess($this, null, $role_id, 1, 'SscJob', $this->getEntityId());
             CRM_Custom_Form_CustomData::buildQuickForm($this);
             CRM_Custom_Form_CustomData::setDefaultValues($this);
         }
-        */
     }
 
 
@@ -305,6 +303,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $params['status_id'] = $values['status_id'];
 //            CRM_Core_Error::debug_var('params', $params);
 //            CRM_Core_Error::debug_var('values', $values);
+            //Default Way
+            $params['custom'] = \CRM_Core_BAO_CustomField::postProcess($values, $this->getEntityId(), $this->getDefaultEntity());
             civicrm_api4('SscJob', $action, ['values' => $params]);
 
             //Custom Fields
