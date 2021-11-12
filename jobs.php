@@ -150,9 +150,12 @@ function jobs_civicrm_themes(&$themes) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_preProcess
  */
-//function jobs_civicrm_preProcess($formName, &$form) {
-//
-//}
+function jobs_civicrm_preProcess($formName, &$form) {
+    if ($formName == 'CRM_Custom_Form_CustomDataByType') {
+        _jobs_add_grouptree($form);
+//        _esignature_debug($form);
+    }
+}
 
 /**
  * Implements hook_civicrm_navigationMenu().
@@ -216,6 +219,131 @@ function jobs_civicrm_navigationMenu(&$menu) {
 }
 
 /**
+ * @param $form
+ * @param $groupTree
+ * @throws API_Exception
+ * @throws CRM_Core_Exception
+ */
+function _jobs_add_grouptree(&$form)
+{
+    $groupTree = [];
+    $type = $form->_type;
+    $subType = CRM_Utils_Request::retrieve('subType', 'String');
+    $subName = CRM_Utils_Request::retrieve('subName', 'String');
+    $groupCount = CRM_Utils_Request::retrieve('cgcount', 'Positive');
+    $entityId = CRM_Utils_Request::retrieve('entityID', 'Positive');
+    $contactID = CRM_Utils_Request::retrieve('cid', 'Positive');
+    $groupID = CRM_Utils_Request::retrieve('groupID', 'Positive');
+    $onlySubtype = CRM_Utils_Request::retrieve('onlySubtype', 'Boolean');
+    $action = CRM_Utils_Request::retrieve('action', 'Alphanumeric');
+    $contactTypes = CRM_Contact_BAO_ContactType::contactTypeInfo();
+    if (!is_array($subType) && strstr($subType, CRM_Core_DAO::VALUE_SEPARATOR)) {
+        $subType = str_replace(CRM_Core_DAO::VALUE_SEPARATOR, ',', trim($subType, CRM_Core_DAO::VALUE_SEPARATOR));
+    }
+    $singleRecord = NULL;
+    if (!empty($form->_groupCount) && !empty($form->_multiRecordDisplay) && $form->_multiRecordDisplay == 'single') {
+        $singleRecord = $form->_groupCount;
+    }
+    $mode = CRM_Utils_Request::retrieve('mode', 'String', $form);
+    // when a new record is being added for multivalued custom fields.
+    if (isset($form->_groupCount) && $form->_groupCount == 0 && $mode == 'add' &&
+        !empty($form->_multiRecordDisplay) && $form->_multiRecordDisplay == 'single') {
+        $singleRecord = 'new';
+    }
+    $options = [$form->_type,
+        NULL,
+        $entityId,
+        $groupID,
+        $subType,
+        $form->_subName,
+        TRUE,
+        $onlySubtype,
+        FALSE,
+        TRUE,
+        $singleRecord];
+
+    $groupTree = CRM_Core_BAO_CustomGroup::getTree(...$options);
+//    CRM_Core_Error::debug_var('gr0', $groupTree);
+    $groupTree = CRM_Core_BAO_CustomGroup::formatGroupTree($groupTree, TRUE, $form);
+//    CRM_Core_Error::debug_var('gr1', $groupTree);
+    $form->assign('eSignature_groupTree', $groupTree);
+    if ($groupTree) {
+        foreach ($groupTree as $id => $group) {
+            if (isset($group['fields'])) {
+                foreach ($group['fields'] as $field) {
+                    $required = $field['is_required'] ?? NULL;
+                    if ($field['html_type'] == 'eSignature') {
+                        $fieldId = $field['id'];
+                        $elementName = $field['element_name'];
+//                        $signatures[] = $elementName;
+                        _jobs_addQuickFormSignatureElement($form, $elementName, $fieldId, $required);
+                        if ($form->getAction() == CRM_Core_Action::VIEW) {
+                            $form->getElement($elementName)->freeze();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Add a custom field to an existing form.
+ *
+ * @param CRM_Core_Form $qf
+ *   Form object (reference).
+ * @param string $elementName
+ *   Name of the custom field.
+ * @param int $fieldId
+ * @param bool $useRequired
+ *   True if required else false.
+ * @param bool $search
+ *   True if used for search else false.
+ * @param string $label
+ *   Label for custom field.
+ * @return \HTML_QuickForm_Element|null
+ * @throws \CiviCRM_API3_Exception
+ */
+function _jobs_addQuickFormSignatureElement(
+    $qf, $elementName, $fieldId, $useRequired = TRUE, $search = FALSE, $label = NULL
+)
+{
+    $field = CRM_Core_BAO_CustomField::getFieldObject($fieldId);
+    $element = NULL;
+//    CRM_Core_Error::debug_var('field_before_add', $field);
+    if (!isset($label)) {
+        $label = $field->label;
+    }
+
+    // DAO stores attributes as a string, but it's hard to manipulate and
+    // CRM_Core_Form::add() wants them as an array.
+    $fieldAttributes = CRM_Core_BAO_CustomField::attributesFromString($field->attributes);
+
+    // Custom field HTML should indicate group+field name
+    $groupName = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_CustomGroup', $field->custom_group_id);
+    $fieldAttributes['data-crm-custom'] = $groupName . ':' . $field->name;
+    $fieldAttributes['class'] = "eSignature" . $fieldId;
+    // at some point in time we might want to split the below into small functions
+    //element name for profile edit differs?
+    $element = $qf->add('text', $elementName, $label,
+        $fieldAttributes,
+        $useRequired && !$search
+    );
+    CRM_Core_Region::instance('page-body')->add(array(
+        'template' => 'CRM/Esignaturecustomfield/Page/ElSignature.tpl',
+    ));
+
+    if ($field->is_view && !$search) {
+        $qf->freeze($elementName);
+    }
+//    CRM_Core_Error::debug_var('element_after_add', $element);
+
+    return $element;
+
+}
+
+
+/**
  * Implementation of hook_civicrm_tabset
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_tabset
  */
@@ -254,7 +382,7 @@ function jobs_civicrm_tabset($path, &$tabs, $context)
                 'id' => 'employee_job',
                 'url' => $employeesurl,
                 'count' => $employeeEntities->count(),
-                'title' => E::ts('Jobs & Apps'),
+                'title' => E::ts('Jobs'),
                 'weight' => 1000,
                 'icon' => 'crm-i fa-briefcase',
             );

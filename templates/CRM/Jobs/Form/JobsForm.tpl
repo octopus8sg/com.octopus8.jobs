@@ -70,16 +70,23 @@
 
   </div>
 {/if}
+{*  {debug}*}
   {* At the bottom of the file add the following lines: *}
 {literal}
   <script type="text/javascript">
     CRM.$(function($) {
       function updateCustomData() {
-        var subRole = '{/literal}{$role_id}{literal}';
+        var subRole = '{/literal}{$form.role_id.value}{literal}';
         if ($('#role_id').length) {
           subRole = $('#role_id').val();
         }
-        CRM.buildCustomData('Job', subRole, false, false, false, false, false, {/literal}{$cid}{literal});
+        CRM.buildCustomData('SscJob',
+                subRole,
+                false,
+                false,
+                false,
+                false,
+                false, {/literal}{$cid}{literal});
       }
       if ($('#role_id').length) {
         $('#role_id').on('change', updateCustomData);
