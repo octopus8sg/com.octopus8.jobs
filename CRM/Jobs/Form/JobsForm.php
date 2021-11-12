@@ -264,8 +264,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
     {
         $session = CRM_Core_Session::singleton();
         $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
-        CRM_Core_Error::debug_var('request', $_REQUEST);
-        CRM_Core_Error::debug_var('post', $_POST);
+//        CRM_Core_Error::debug_var('request', $_REQUEST);
+//        CRM_Core_Error::debug_var('post', $_POST);
         if ($this->_action == CRM_Core_Action::VIEW) {
             $params = [];
             $jobId = CRM_Utils_Request::retrieve('id', 'Positive');
@@ -283,7 +283,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             try {
                 civicrm_api4('SscApplication', $action, ['values' => $params]);
             } catch (Exception $exception) {
-                CRM_Core_Error::debug_var('error', $exception->getMessage());
+//                CRM_Core_Error::debug_var('error', $exception->getMessage());
                 return;
             }
             return;
