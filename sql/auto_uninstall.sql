@@ -17,5 +17,5 @@ SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `civicrm_ssc_job`;
 DROP TABLE IF EXISTS `civicrm_ssc_application`;
-
+DELETE FROM civicrm_option_value WHERE `description` LIKE "CRM_Job%";
 SET FOREIGN_KEY_CHECKS=1;

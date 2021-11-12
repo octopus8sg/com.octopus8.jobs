@@ -28,10 +28,10 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
         try {
             civicrm_api3('OptionValue', 'create', [
                 'option_group_id' => "cg_extend_objects",
-                'label' => E::ts('SscJob'),
-                'value' => 'ssc_job',
+                'label' => E::ts('Jobs'),
+                'value' => 'SscJob',
                 'name' => 'civicrm_ssc_job',
-                'description' => 'CRM_Job_PseudoConstant::SscJobRole;',
+                'description' => 'CRM_Jobs_PseudoConstant::jobRole;',
             ]);
 
         } catch (\CiviCRM_API3_Exception $ex) {
@@ -252,7 +252,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
 //      todo custom fields for jobs
        try {
            $customGroups = civicrm_api3('CustomGroup', 'get', [
-               'extends' => 'SscJob',
+               'extends' => 'Jobs',
                'options' => ['limit' => 0],
            ]);
            foreach ($customGroups['values'] as $customGroup) {
@@ -268,7 +268,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
            // Remove our entity from the cg_extend_objects option group.
            $cgExtendOptionId = civicrm_api3('OptionValue', 'getvalue', [
                'option_group_id' => "cg_extend_objects",
-               'value' => 'SscJob',
+               'value' => 'Jobs',
                'return' => 'id',
            ]);
            civicrm_api3('OptionValue', 'delete', ['id' => $cgExtendOptionId]);
