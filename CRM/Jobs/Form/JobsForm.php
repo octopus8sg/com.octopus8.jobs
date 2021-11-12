@@ -130,7 +130,9 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         if (!empty($_POST['hidden_custom'])) {
             $role_id = $this->getSubmitValue('role_id');
             CRM_Custom_Form_CustomData::preProcess($this, null, $role_id, 1, 'SscJob', $this->getEntityId());
-            CRM_Custom_Form_CustomData::buildQuickForm($this);
+            if ($this->_action != CRM_Core_Action::VIEW) {
+                CRM_Custom_Form_CustomData::buildQuickForm($this);
+            }
             CRM_Custom_Form_CustomData::setDefaultValues($this);
         }
     }
@@ -261,27 +263,31 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
     public function postProcess()
     {
         $session = CRM_Core_Session::singleton();
-        $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive');
-
+        $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
+        CRM_Core_Error::debug_var('request', $_REQUEST);
+        CRM_Core_Error::debug_var('post', $_POST);
         if ($this->_action == CRM_Core_Action::VIEW) {
-            $values = $this->controller->exportValues();
+            $params = [];
+            $jobId = CRM_Utils_Request::retrieve('id', 'Positive');
 //            CRM_Core_Error::debug_var('values', $values);
-            if (isset($values['employee_id'])) {
-                $action = 'create';
-                $params['created_id'] = $session->get('userID');
-                $params['created_date'] = date('YmdHis');
-                $params['contact_id'] = $values['employee_id'];
-                $params['ssc_job_id'] = $values['job_id'];
-                try {
-                    civicrm_api4('SscApplication', $action, ['values' => $params]);
-                } catch (Exception $exception) {
-                    CRM_Core_Error::debug_var('error', $exception->getMessage());
-                    return;
-                }
+            $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
+            $createdUserId = $session->get('userID');
+            if (!$employeeId) {
+                $employeeId = $createdUserId;
+            }
+            $action = 'create';
+            $params['created_id'] = $createdUserId;
+            $params['created_date'] = date('YmdHis');
+            $params['contact_id'] = $employeeId;
+            $params['ssc_job_id'] = $jobId;
+            try {
+                civicrm_api4('SscApplication', $action, ['values' => $params]);
+            } catch (Exception $exception) {
+                CRM_Core_Error::debug_var('error', $exception->getMessage());
+                return;
             }
             return;
-        }
-        if ($this->_action == CRM_Core_Action::DELETE) {
+        } elseif ($this->_action == CRM_Core_Action::DELETE) {
             civicrm_api4('SscJob', 'delete', ['where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
         } else {
@@ -306,113 +312,6 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             //Default Way
             $params['custom'] = \CRM_Core_BAO_CustomField::postProcess($values, $this->getEntityId(), $this->getDefaultEntity());
             civicrm_api4('SscJob', $action, ['values' => $params]);
-
-            //Custom Fields
-            /*
-                        $evalues = CRM_Utils_Request::exportValues();
-                        $gevalues = $values;
-                        $groupTree = $this->get_template_vars('groupTree');
-            //    CRM_Core_Error::debug_var('formName_postPro', $formName);
-            //    CRM_Core_Error::debug_var('form', $form);
-            //            CRM_Core_Error::debug_var('groupTree', $groupTree);
-
-                        foreach ($groupTree as $id => $group) {
-                            $tableName = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_CustomGroup', $id, 'table_name');
-            //                CRM_Core_Error::debug_var('group', $group);
-                            foreach ($group['fields'] as $field) {
-            //    CRM_Core_Error::debug_var('field', $field);
-                                $entityId = $this->getEntityId();
-                                if ($entityId) {
-                                    if ($field['html_type'] != 'eSignature') {
-                                        $serialize = CRM_Core_BAO_CustomField::isSerialized($field);
-                                        //esignature is added by itself
-                                        $fieldId = $field['id'];
-                                        $elementName = $field['element_name'];
-                                        $elementValue = $gevalues[$elementName];
-            //                            CRM_Core_Error::debug_var('field', $field);
-            //                            CRM_Core_Error::debug_var('serialize', $serialize);
-            //                            CRM_Core_Error::debug_var('elementm', $elementName);
-            //                            CRM_Core_Error::debug_var('elementv', $elementValue);
-                                        $v = $elementValue;
-                                        if ($serialize) {
-                                            $v = ($v && $field['html_type'] === 'Checkbox') ? array_keys($v) : $v;
-                                            $v = $v ? CRM_Utils_Array::implodePadded($v) : NULL;
-                                        }
-                                        $elementValue = $v;
-                                        if ($field['html_type'] == 'File') {
-                                            if (isset($elementValue)) {
-                                                $groupID = $id;
-                                                // store the file in d/b
-                                                $fileParams = ['upload_date' => date('YmdHis')];
-                                                if ($groupTree[$groupID]['fields'][$fieldId]['customValue']['fid']) {
-                                                    $fileParams['id'] = $groupTree[$groupID]['fields'][$fieldId]['customValue']['fid'];
-                                                }
-                                                if (!empty($v)) {
-                                                    $fileParams['uri'] = $v['name'];
-                                                    $fileParams['mime_type'] = $v['type'];
-                                                    CRM_Core_BAO_File::filePostProcess(
-                                                        $v['name'],
-                                                        $groupTree[$groupID]['fields'][$fieldId]['customValue']['fid'],
-                                                        $tableName,
-                                                        $entityId,
-                                                        FALSE,
-                                                        TRUE,
-                                                        $fileParams,
-                                                        'custom_' . $fieldId,
-                                                        $v['type']
-                                                    );
-                                                }
-                                                $defaults = [];
-                                                $paramsFile = [
-                                                    'entity_table' => $tableName,
-                                                    'entity_id' => $entityId,
-                                                ];
-                                                $returnProperties = ['file_id'];
-                                                $attachements = \CRM_Core_BAO_File::getEntityFile($tableName, $entityId);
-                                                $cmr = CRM_Core_DAO::commonRetrieve('CRM_Core_DAO_EntityFile',
-                                                    $paramsFile,
-                                                    $defaults,
-                                                    $returnProperties
-                                                );
-                                                $attachement = end($attachements);
-            //                                    CRM_Core_Error::debug_var('defaults', $defaults);
-            //                                    CRM_Core_Error::debug_var('attachements', $attachements);
-            //                                    CRM_Core_Error::debug_var('attachement', $attachement);
-
-                                                $fid = $attachement['fileID'];
-                                                $field_name = 'custom_' . $fieldId;
-                                                try {
-                                                    $result = civicrm_api3('CustomValue', 'create', [
-                                                        'entity_id' => $entityId,
-                                                        'custom_' . $fieldId => $fid,
-                                                        'field_id' => $fid
-                                                    ]);
-            //                                        CRM_Core_Error::debug_var('result', $result);
-
-                                                } catch (CiviCRM_API3_Exception $e) {
-            //                                        CRM_Core_Error::debug_var('eresult', $e->getMessage());
-                                                }
-                                            }
-                                        } elseif ($field['html_type'] != 'Select Date') {
-                                            if (isset($elementValue)) {
-                                                $result = civicrm_api3('CustomValue', 'create', [
-                                                    'entity_id' => $entityId,
-                                                    'custom_' . $fieldId => $elementValue,
-                                                ]);
-                                            }
-                                        } elseif ($field['html_type'] == 'Select Date') {
-                                            $date = CRM_Utils_Date::processDate($v);
-                                            $result = civicrm_api3('CustomValue', 'create', [
-                                                'entity_id' => $entityId,
-                                                'custom_' . $fieldId => $date,
-                                            ]);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-            */
-
         }
         parent::postProcess();
     }

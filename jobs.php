@@ -151,7 +151,6 @@ function jobs_civicrm_themes(&$themes) {
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_preProcess
  */
 function jobs_civicrm_preProcess($formName, &$form) {
-    CRM_Core_Error::debug_var('formName_pre', $formName);
     if ($formName == 'CRM_Custom_Form_CustomDataByType') {
         _jobs_add_grouptree($form);
 //        _esignature_debug($form);
