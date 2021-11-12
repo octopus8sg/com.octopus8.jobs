@@ -19,22 +19,24 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
     public function install()
     {
         // Create custom value option for custom fields
-        /* todo Create custom value option for custom fields
-//        try {
-//            civicrm_api3('OptionValue', 'create', [
-//                'option_group_id' => "cg_extend_objects",
-//                'label' => E::ts('SSC Job'),
-//                'value' => 'ssc_job',
-//                'name' => 'civicrm_ssc_job',
-//                'description' => 'CRM_Job_PseudoConstant::JobRole;',
-//            ]);
-//        } catch (\CiviCRM_API3_Exception $ex) {
-//            // Ignore exception.
-//        }
-        */
         // Create the job_role, job_location, job_status option groups
 //        first uninstall
         $this->uninstall();
+
+        // todo Create custom value option for custom fields
+
+        try {
+            civicrm_api3('OptionValue', 'create', [
+                'option_group_id' => "cg_extend_objects",
+                'label' => E::ts('SscJob'),
+                'value' => 'ssc_job',
+                'name' => 'civicrm_ssc_job',
+                'description' => 'CRM_Job_PseudoConstant::SscJobRole;',
+            ]);
+
+        } catch (\CiviCRM_API3_Exception $ex) {
+            // Ignore exception.
+        }
         try {
             $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'ssc_job_role', 'title' => E::ts('Role')]);
             $typeOptionGroupId = $typeOptionGroupId['id'];
@@ -248,31 +250,31 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
            // Ignore exception.
        }
 //      todo custom fields for jobs
-//       try {
-//           $customGroups = civicrm_api3('CustomGroup', 'get', [
-//               'extends' => 'Job',
-//               'options' => ['limit' => 0],
-//           ]);
-//           foreach ($customGroups['values'] as $customGroup) {
-//               $customFields = civicrm_api3('CustomField', 'get', [
-//                   'custom_group_id' => $customGroup['id'],
-//                   'options' => ['limit' => 0],
-//               ]);
-//               foreach ($customFields['values'] as $customField) {
-//                   civicrm_api3('CustomField', 'delete', ['id' => $customField['id']]);
-//               }
-//               civicrm_api3('CustomGroup', 'delete', ['id' => $customGroup['id']]);
-//           }
-//           // Remove our entity from the cg_extend_objects option group.
-//           $cgExtendOptionId = civicrm_api3('OptionValue', 'getvalue', [
-//               'option_group_id' => "cg_extend_objects",
-//               'value' => 'Job',
-//               'return' => 'id',
-//           ]);
-//           civicrm_api3('OptionValue', 'delete', ['id' => $cgExtendOptionId]);
-//       } catch (\CiviCRM_API3_Exception $ex) {
-//           // Ignore exception.
-//       }
+       try {
+           $customGroups = civicrm_api3('CustomGroup', 'get', [
+               'extends' => 'SscJob',
+               'options' => ['limit' => 0],
+           ]);
+           foreach ($customGroups['values'] as $customGroup) {
+               $customFields = civicrm_api3('CustomField', 'get', [
+                   'custom_group_id' => $customGroup['id'],
+                   'options' => ['limit' => 0],
+               ]);
+               foreach ($customFields['values'] as $customField) {
+                   civicrm_api3('CustomField', 'delete', ['id' => $customField['id']]);
+               }
+               civicrm_api3('CustomGroup', 'delete', ['id' => $customGroup['id']]);
+           }
+           // Remove our entity from the cg_extend_objects option group.
+           $cgExtendOptionId = civicrm_api3('OptionValue', 'getvalue', [
+               'option_group_id' => "cg_extend_objects",
+               'value' => 'SscJob',
+               'return' => 'id',
+           ]);
+           civicrm_api3('OptionValue', 'delete', ['id' => $cgExtendOptionId]);
+       } catch (\CiviCRM_API3_Exception $ex) {
+           // Ignore exception.
+       }
    }
 
   /**

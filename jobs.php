@@ -254,7 +254,7 @@ function jobs_civicrm_tabset($path, &$tabs, $context)
                 'id' => 'employee_job',
                 'url' => $employeesurl,
                 'count' => $employeeEntities->count(),
-                'title' => E::ts('Jobs & Apps'),
+                'title' => E::ts('Jobs'),
                 'weight' => 1000,
                 'icon' => 'crm-i fa-briefcase',
             );
