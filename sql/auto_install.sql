@@ -71,3 +71,5 @@ CREATE TABLE `civicrm_ssc_application` (
                                            CONSTRAINT FK_civicrm_ssc_application_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL
 )
     ENGINE=InnoDB;
+
+DELETE FROM civicrm_option_value WHERE `description` LIKE "CRM_Job%";

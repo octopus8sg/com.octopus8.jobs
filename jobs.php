@@ -151,7 +151,15 @@ function jobs_civicrm_themes(&$themes) {
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_preProcess
  */
 function jobs_civicrm_preProcess($formName, &$form) {
+    if ($formName == 'CRM_Jobs_Form_JobsForm') {
+        _jobs_add_grouptree($form);
+//        _esignature_debug($form);
+    }
     if ($formName == 'CRM_Custom_Form_CustomDataByType') {
+        _jobs_add_grouptree($form);
+//        _esignature_debug($form);
+    }
+    if ($formName == 'CRM_Custom_Form_Group') {
         _jobs_add_grouptree($form);
 //        _esignature_debug($form);
     }
