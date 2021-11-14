@@ -246,7 +246,7 @@ FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.i
                 ['action' => 'view', 'id' => $dao->id]);
             }
             $u_action = ['action' => 'update',
-                'id' => $dao->id];
+                'id' => $dao->id, 'reset' => 1];
             $r_update = CRM_Utils_System::url('civicrm/jobs/form',
                 $u_action);
             $r_delete = CRM_Utils_System::url('civicrm/jobs/form',
