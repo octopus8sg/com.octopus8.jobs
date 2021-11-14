@@ -127,16 +127,50 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
         $this->assign('action', $this->_action);
         // CUSTOM FIELDS
-        if (!empty($_POST['hidden_custom'])) {
-            $role_id = $this->getSubmitValue('role_id');
-            CRM_Custom_Form_CustomData::preProcess($this, null, $role_id, 1, 'SscJob', $this->getEntityId());
-            if ($this->_action != CRM_Core_Action::VIEW) {
-                CRM_Custom_Form_CustomData::buildQuickForm($this);
-            }
-            CRM_Custom_Form_CustomData::setDefaultValues($this);
+        // when custom data is included in this page
+        $role_id = $this->getSubmitValue('role_id');
+
+        if ((!$role_id) AND !empty($this->_submitValues['role_id'])) {
+            $role_id = $this->_submitValues['role_id'];
         }
+        if ((!$role_id) AND !empty($this->_values['role_id'])) {
+            $role_id = $this->_values['role_id'];
+        }
+        $this->set('type', 'SscJob');
+        $this->set('subType', $role_id);
+        $this->set('entityId', $this->_id);
+        $this->assign('type', 'SscJob');
+        $this->assign('subType', $role_id);
+        $this->assign('entityId', $this->_id);
+        CRM_Core_Error::debug_var('type', 'SscJob');
+        CRM_Core_Error::debug_var('subType', $role_id);
+        CRM_Core_Error::debug_var('entityId', $this->_id);
+        if (!empty($_POST['hidden_custom'])) {
+            $this->applyCustomData('SscJob', $role_id, $this->_id);
+        }
+
+
     }
 
+
+    /**
+     * @param string $type
+     *   Eg 'Contribution'.
+     * @param string $subType
+     * @param int $entityId
+     */
+    public function applyCustomData($type, $subType, $entityId)
+    {
+        $this->set('type', $type);
+        $this->set('subType', $subType);
+        $this->set('entityId', $entityId);
+        CRM_Custom_Form_CustomData::preProcess($this, NULL, $subType, 1, $type, $entityId);
+
+        if ($this->_action != CRM_Core_Action::VIEW) {
+            CRM_Custom_Form_CustomData::buildQuickForm($this);
+        }
+        CRM_Custom_Form_CustomData::setDefaultValues($this);
+    }
 
     public function buildQuickForm()
     {
