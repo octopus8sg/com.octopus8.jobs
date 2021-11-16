@@ -2,6 +2,9 @@
 
 class CRM_Jobs_PseudoConstant extends CRM_Core_PseudoConstant {
 
+    /**
+     * @return array
+     */
     public static function jobRole() {
         $constants = CRM_Core_OptionGroup::values('o8_job_role');
         return $constants;

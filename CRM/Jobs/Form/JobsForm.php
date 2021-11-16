@@ -136,19 +136,23 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         if ((!$role_id) AND !empty($this->_values['role_id'])) {
             $role_id = $this->_values['role_id'];
         }
+        if (!$role_id) {
+            $role_id = CRM_Core_OptionGroup::getDefaultValue('o8_job_role');
+        }
         $this->set('type', 'SscJob');
         $this->set('subType', $role_id);
         $this->set('entityId', $this->_id);
         $this->assign('type', 'SscJob');
         $this->assign('subType', $role_id);
         $this->assign('entityId', $this->_id);
-        CRM_Core_Error::debug_var('type', 'SscJob');
-        CRM_Core_Error::debug_var('subType', $role_id);
-        CRM_Core_Error::debug_var('entityId', $this->_id);
-        if (!empty($_POST['hidden_custom'])) {
-            $this->applyCustomData('SscJob', $role_id, $this->_id);
+//        CRM_Core_Error::debug_var('type', 'SscJob');
+//        CRM_Core_Error::debug_var('subType', $role_id);
+//        CRM_Core_Error::debug_var('entityId', $this->_id);
+        if ($role_id) {
+            if (!empty($_POST['hidden_custom'])) {
+                $this->applyCustomData('SscJob', $role_id, $this->_id);
+            }
         }
-
 
     }
 
@@ -301,6 +305,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 //        CRM_Core_Error::debug_var('request', $_REQUEST);
 //        CRM_Core_Error::debug_var('post', $_POST);
         if ($this->_action == CRM_Core_Action::VIEW) {
+
+            // makes application for the job
             $params = [];
             $jobId = CRM_Utils_Request::retrieve('id', 'Positive');
 //            CRM_Core_Error::debug_var('values', $values);
@@ -316,8 +322,9 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $params['o8_job_id'] = $jobId;
             try {
                 civicrm_api4('SscApplication', $action, ['values' => $params]);
+                // makes application for the job
             } catch (Exception $exception) {
-//                CRM_Core_Error::debug_var('error', $exception->getMessage());
+                CRM_Core_Error::debug_var('error', $exception->getMessage());
                 return;
             }
             return;
@@ -341,11 +348,16 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $params['role_id'] = $values['role_id'];
             $params['location_id'] = $values['location_id'];
             $params['status_id'] = $values['status_id'];
-//            CRM_Core_Error::debug_var('params', $params);
-//            CRM_Core_Error::debug_var('values', $values);
+            $params['a'] = 'b';
+            $custom = \CRM_Core_BAO_CustomField::postProcess($values, $this->getEntityId(), $this->getDefaultEntity());
+            $params['custom'] = $custom;
+            //in case 'custom' disappears somewhere
+            $params['bustom'] = $custom;
             //Default Way
-            $params['custom'] = \CRM_Core_BAO_CustomField::postProcess($values, $this->getEntityId(), $this->getDefaultEntity());
-            civicrm_api4('SscJob', $action, ['values' => $params]);
+//            CRM_Core_Error::debug_var('paramsfrom', $params);
+//            CRM_Core_Error::debug_var('values', $values);
+            $saver = (array) civicrm_api4('SscJob', $action, ['values' => $params]);
+//            CRM_Core_Error::debug_var('saver', $saver);
         }
         parent::postProcess();
     }
