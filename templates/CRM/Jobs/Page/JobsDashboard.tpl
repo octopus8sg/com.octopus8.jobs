@@ -14,10 +14,10 @@
         <td align="right"><a target="_blank" href="{crmURL p='civicrm/jobs/search'}">{$appCount}</a></td>
         <td align="right">{$empersCount}</td>
         <td align="right"><a target="_blank"
-                             href="{crmURL p='civicrm/admin/options/ssc_job_role'}&reset=1&action=browse">{$roleCount}</a>
+                             href="{crmURL p='civicrm/admin/options/o8_job_role'}&reset=1&action=browse">{$roleCount}</a>
         </td>
         <td align="right"><a target="_blank"
-                             href="{crmURL p='civicrm/admin/options/ssc_job_location'}&reset=1&action=browse">{$locationCount}</a>
+                             href="{crmURL p='civicrm/admin/options/o8_job_location'}&reset=1&action=browse">{$locationCount}</a>
         </td>
     </tr>
 </table>

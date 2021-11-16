@@ -3,7 +3,7 @@
 <table>
   <base>CRM/Jobs</base>
   <class>SscJob</class>
-  <name>civicrm_ssc_job</name>
+  <name>civicrm_o8_job</name>
   <comment>Social Services Connect Job Proposals</comment>
   <log>true</log>
 
@@ -70,7 +70,7 @@
     <length>3</length>
     <default>1</default>
     <pseudoconstant>
-      <optionGroupName>ssc_job_role</optionGroupName>
+      <optionGroupName>o8_job_role</optionGroupName>
     </pseudoconstant>
     <html>
       <type>Select</type>
@@ -84,7 +84,7 @@
     <length>3</length>
     <default>1</default>
     <pseudoconstant>
-      <optionGroupName>ssc_job_location</optionGroupName>
+      <optionGroupName>o8_job_location</optionGroupName>
     </pseudoconstant>
     <html>
       <type>Select</type>
@@ -98,7 +98,7 @@
     <length>3</length>
     <default>1</default>
     <pseudoconstant>
-      <optionGroupName>ssc_job_status</optionGroupName>
+      <optionGroupName>o8_job_status</optionGroupName>
     </pseudoconstant>
     <html>
       <type>Select</type>
@@ -109,7 +109,7 @@
     <name>created_date</name>
     <type>timestamp</type>
     <title>Job Proposal Created Date</title>
-    <required>true</required>
+    <required>false</required>
     <default>CURRENT_TIMESTAMP</default>
     <comment>Date and time the job was created</comment>
     <html>
@@ -117,12 +117,39 @@
       <formatType>activityDateTime</formatType>
     </html>
 
+
   </field>
   <field>
     <name>created_id</name>
+    <required>false</required>
     <type>int unsigned</type>
     <title>Created By Contact ID</title>
     <comment>FK to civicrm_contact, who created this application</comment>
+    <html>
+      <label>Created By</label>
+    </html>
+    <add>4.4</add>
+  </field>
+
+  <field>
+    <name>modified_date</name>
+    <type>timestamp</type>
+    <title>Job Proposal Created Date</title>
+    <required>false</required>
+    <default>CURRENT_TIMESTAMP</default>
+    <comment>Date and time the job was modified</comment>
+    <html>
+      <type>Select Date</type>
+      <formatType>activityDateTime</formatType>
+    </html>
+
+  </field>
+  <field>
+    <name>modified_id</name>
+    <required>false</required>
+    <type>int unsigned</type>
+    <title>Created By Contact ID</title>
+    <comment>FK to civicrm_contact, who modified this application</comment>
     <html>
       <label>Created By</label>
     </html>

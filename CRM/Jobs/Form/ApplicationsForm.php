@@ -26,7 +26,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 
     public function getDefaultEntityTable()
     {
-        return 'civicrm_ssc_application';
+        return 'civicrm_o8_application';
     }
 
     public function getEntityId()
@@ -70,7 +70,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             }
             $this->assign('myentity', $myentity);
             $contactId = $myentity['contact_id'];
-            $jobId = $myentity['ssc_job_id'];
+            $jobId = $myentity['o8_job_id'];
             $this->_jobId = $jobId;
         } else {
             $contactId = CRM_Utils_Request::retrieve('cid', 'Positive', $this, FALSE);;
@@ -135,18 +135,18 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'title', E::ts('Job Title'), ['class' => 'huge'], FALSE)->freeze();
                 $this->addEntityRef('employer_id',
                     E::ts('Employer'), [], FALSE)->freeze();
-                $jstatuses = CRM_Core_OptionGroup::values('ssc_job_status');
-                $this->add('select', 'ssc_job_status_id', E::ts('Job Status'),
+                $jstatuses = CRM_Core_OptionGroup::values('o8_job_status');
+                $this->add('select', 'o8_job_status_id', E::ts('Job Status'),
                     $jstatuses, FALSE, ['class' => 'huge crm-select2',
-                        'data-option-edit-path' => 'civicrm/admin/options/ssc_job_status'])->freeze();
-                $jlocations = CRM_Core_OptionGroup::values('ssc_job_location');
-                $this->add('select', 'ssc_job_location_id', E::ts('Job Location'),
+                        'data-option-edit-path' => 'civicrm/admin/options/o8_job_status'])->freeze();
+                $jlocations = CRM_Core_OptionGroup::values('o8_job_location');
+                $this->add('select', 'o8_job_location_id', E::ts('Job Location'),
                     $jlocations, FALSE, ['class' => 'huge crm-select2',
-                        'data-option-edit-path' => 'civicrm/admin/options/ssc_job_location'])->freeze();
-                $jroles = CRM_Core_OptionGroup::values('ssc_job_role');
-                $this->add('select', 'ssc_job_role_id', E::ts('Job Role'),
+                        'data-option-edit-path' => 'civicrm/admin/options/o8_job_location'])->freeze();
+                $jroles = CRM_Core_OptionGroup::values('o8_job_role');
+                $this->add('select', 'o8_job_role_id', E::ts('Job Role'),
                     $jroles, FALSE, ['class' => 'huge crm-select2',
-                        'data-option-edit-path' => 'civicrm/admin/options/ssc_job_role'])->freeze();
+                        'data-option-edit-path' => 'civicrm/admin/options/o8_job_role'])->freeze();
             } else {
 //                $this->addEntityRef('job_id', E::ts('Job'), [], TRUE);
                 $this->addEntityRef('job_id', E::ts('Job'), [
@@ -160,10 +160,10 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 //            $this->add('text', 'title', E::ts('Title'), ['class' => 'huge'], FALSE);
             //todo add pseudoconstants
 
-            $statuses = CRM_Core_OptionGroup::values('ssc_application_status');
+            $statuses = CRM_Core_OptionGroup::values('o8_application_status');
             $this->add('select', 'status_id', E::ts('Application Status'),
                 $statuses, TRUE, ['class' => 'huge crm-select2',
-                    'data-option-edit-path' => 'civicrm/admin/options/ssc_application_status']);
+                    'data-option-edit-path' => 'civicrm/admin/options/o8_application_status']);
 
             if ($this->_action == CRM_Core_Action::VIEW) {
                 $this->addButtons([
@@ -214,21 +214,21 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             $defaults['job_id'] = $this->_jobId;
 
             $defaults['title'] = $job['title'];
-            $defaults['ssc_job_status_id'] = $job['status_id'];
-            $defaults['ssc_job_location_id'] = $job['location_id'];
-            $defaults['ssc_job_role_id'] = $job['role_id'];
+            $defaults['o8_job_status_id'] = $job['status_id'];
+            $defaults['o8_job_location_id'] = $job['location_id'];
+            $defaults['o8_job_role_id'] = $job['role_id'];
             $defaults['employer_id'] = $job['contact_id'];
             $defaults['job_created_date'] = $job['created_date'];
         }
 
-        if (empty($defaults['ssc_application_status_id'])) {
+        if (empty($defaults['o8_application_status_id'])) {
             $defaults['job_application_status_id'] = CRM_Core_OptionGroup::getDefaultValue('job_application_status');
         }
         if ($this->_contactId) {
             $defaults['contact_id'] = $this->_contactId;
         }
         if ($this->_jobId) {
-            $defaults['ssc_job_id'] = $this->_jobId;
+            $defaults['o8_job_id'] = $this->_jobId;
         }
         return $defaults;
     }

@@ -5,6 +5,6 @@ return [
   [
     'name' => 'SscJob',
     'class' => 'CRM_Jobs_DAO_SscJob',
-    'table' => 'civicrm_ssc_job',
+    'table' => 'civicrm_o8_job',
   ],
 ];

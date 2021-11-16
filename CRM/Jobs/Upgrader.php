@@ -30,7 +30,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
                 'option_group_id' => "cg_extend_objects",
                 'label' => E::ts('Jobs'),
                 'value' => 'SscJob',
-                'name' => 'civicrm_ssc_job',
+                'name' => 'civicrm_o8_job',
                 'description' => 'CRM_Jobs_PseudoConstant::jobRole;',
             ]);
 
@@ -38,7 +38,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
             // Ignore exception.
         }
         try {
-            $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'ssc_job_role', 'title' => E::ts('Role')]);
+            $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'o8_job_role', 'title' => E::ts('Role')]);
             $typeOptionGroupId = $typeOptionGroupId['id'];
             civicrm_api3('OptionValue', 'create',
                 ['value' => 1,
@@ -77,7 +77,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
         }
         try {
 
-            $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'ssc_job_location', 'title' => E::ts('Location')]);
+            $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'o8_job_location', 'title' => E::ts('Location')]);
             $typeOptionGroupId = $typeOptionGroupId['id'];
             civicrm_api3('OptionValue', 'create',
                 ['value' => 1,
@@ -103,7 +103,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
             // Ignore exception.
         }
         try {
-            $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'ssc_job_status', 'title' => E::ts('Status')]);
+            $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'o8_job_status', 'title' => E::ts('Status')]);
             $typeOptionGroupId = $typeOptionGroupId['id'];
             civicrm_api3('OptionValue', 'create',
                 ['value' => 1,
@@ -131,7 +131,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
             // Ignore exception.
         }
         try {
-            $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'ssc_application_status', 'title' => E::ts('Status')]);
+            $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'o8_application_status', 'title' => E::ts('Status')]);
             $typeOptionGroupId = $typeOptionGroupId['id'];
             civicrm_api3('OptionValue', 'create',
                 ['value' => 1,
@@ -210,7 +210,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
   // }
    public function uninstall() {
        try {
-           $optionGroupId = civicrm_api3('OptionGroup', 'getvalue', ['return' => 'id', 'name' => 'ssc_job_role']);
+           $optionGroupId = civicrm_api3('OptionGroup', 'getvalue', ['return' => 'id', 'name' => 'o8_job_role']);
            $optionValues = civicrm_api3('OptionValue', 'get', ['option_group_id' => $optionGroupId, 'options' => ['limit' => 0]]);
            foreach ($optionValues['values'] as $optionValue) {
                civicrm_api3('OptionValue', 'delete', ['id' => $optionValue['id']]);
@@ -220,7 +220,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
            // Ignore exception.
        }
        try {
-           $optionGroupId = civicrm_api3('OptionGroup', 'getvalue', ['return' => 'id', 'name' => 'ssc_job_location']);
+           $optionGroupId = civicrm_api3('OptionGroup', 'getvalue', ['return' => 'id', 'name' => 'o8_job_location']);
            $optionValues = civicrm_api3('OptionValue', 'get', ['option_group_id' => $optionGroupId, 'options' => ['limit' => 0]]);
            foreach ($optionValues['values'] as $optionValue) {
                civicrm_api3('OptionValue', 'delete', ['id' => $optionValue['id']]);
@@ -230,7 +230,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
            // Ignore exception.
        }
        try {
-           $optionGroupId = civicrm_api3('OptionGroup', 'getvalue', ['return' => 'id', 'name' => 'ssc_job_status']);
+           $optionGroupId = civicrm_api3('OptionGroup', 'getvalue', ['return' => 'id', 'name' => 'o8_job_status']);
            $optionValues = civicrm_api3('OptionValue', 'get', ['option_group_id' => $optionGroupId, 'options' => ['limit' => 0]]);
            foreach ($optionValues['values'] as $optionValue) {
                civicrm_api3('OptionValue', 'delete', ['id' => $optionValue['id']]);
@@ -240,7 +240,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
            // Ignore exception.
        }
        try {
-           $optionGroupId = civicrm_api3('OptionGroup', 'getvalue', ['return' => 'id', 'name' => 'ssc_application_status']);
+           $optionGroupId = civicrm_api3('OptionGroup', 'getvalue', ['return' => 'id', 'name' => 'o8_application_status']);
            $optionValues = civicrm_api3('OptionValue', 'get', ['option_group_id' => $optionGroupId, 'options' => ['limit' => 0]]);
            foreach ($optionValues['values'] as $optionValue) {
                civicrm_api3('OptionValue', 'delete', ['id' => $optionValue['id']]);
