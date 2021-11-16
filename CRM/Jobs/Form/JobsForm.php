@@ -37,7 +37,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
     public function getDefaultEntityTable()
     {
-        return 'civicrm_ssc_job';
+        return 'civicrm_o8_job';
     }
 
     public function getEntityId()
@@ -188,18 +188,18 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $this->add('wysiwyg', 'description', E::ts('Description'), [], FALSE);
             //todo add pseudoconstants
 
-            $roles = CRM_Core_OptionGroup::values('ssc_job_role');
+            $roles = CRM_Core_OptionGroup::values('o8_job_role');
             $this->add('select', 'role_id', E::ts('Role'),
                 $roles, TRUE, ['class' => 'huge crm-select2',
-                    'data-option-edit-path' => 'civicrm/admin/options/ssc_job_role']);
-            $locations = CRM_Core_OptionGroup::values('ssc_job_location');
+                    'data-option-edit-path' => 'civicrm/admin/options/o8_job_role']);
+            $locations = CRM_Core_OptionGroup::values('o8_job_location');
             $this->add('select', 'location_id', E::ts('Location'),
                 $locations, TRUE, ['class' => 'huge crm-select2',
-                    'data-option-edit-path' => 'civicrm/admin/options/ssc_job_location']);
-            $statuses = CRM_Core_OptionGroup::values('ssc_job_status');
+                    'data-option-edit-path' => 'civicrm/admin/options/o8_job_location']);
+            $statuses = CRM_Core_OptionGroup::values('o8_job_status');
             $this->add('select', 'status_id', E::ts('Status'),
                 $statuses, TRUE, ['class' => 'huge crm-select2',
-                    'data-option-edit-path' => 'civicrm/admin/options/ssc_job_status']);
+                    'data-option-edit-path' => 'civicrm/admin/options/o8_job_status']);
 
             if ($this->_action == CRM_Core_Action::VIEW) {
                 if ($this->_myentity->contact_id != $this->_contactId) {
@@ -274,13 +274,13 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $defaults['employee_id'] = $this->_employeeId;
         }
         if (empty($defaults['role_id'])) {
-            $defaults['role_id'] = CRM_Core_OptionGroup::getDefaultValue('ssc_job_role');
+            $defaults['role_id'] = CRM_Core_OptionGroup::getDefaultValue('o8_job_role');
         }
         if (empty($defaults['location_id'])) {
-            $defaults['location_id'] = CRM_Core_OptionGroup::getDefaultValue('ssc_job_location');
+            $defaults['location_id'] = CRM_Core_OptionGroup::getDefaultValue('o8_job_location');
         }
         if (empty($defaults['status_id'])) {
-            $defaults['status_id'] = CRM_Core_OptionGroup::getDefaultValue('ssc_job_status');
+            $defaults['status_id'] = CRM_Core_OptionGroup::getDefaultValue('o8_job_status');
         }
 //        if ($this->_contactId) {
 //            $defaults['contact_id'] = $this->_contactId;
@@ -313,7 +313,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $params['created_id'] = $createdUserId;
             $params['created_date'] = date('YmdHis');
             $params['contact_id'] = $employeeId;
-            $params['ssc_job_id'] = $jobId;
+            $params['o8_job_id'] = $jobId;
             try {
                 civicrm_api4('SscApplication', $action, ['values' => $params]);
             } catch (Exception $exception) {

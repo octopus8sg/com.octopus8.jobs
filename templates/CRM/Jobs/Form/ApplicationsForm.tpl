@@ -43,20 +43,20 @@
 
 
         <div class="crm-section">
-            <div class="label">{$form.ssc_job_status_id.label}</div>
-            <div class="content">{$form.ssc_job_status_id.html}</div>
+            <div class="label">{$form.o8_job_status_id.label}</div>
+            <div class="content">{$form.o8_job_status_id.html}</div>
             <div class="clear"></div>
         </div>
 
         <div class="crm-section">
-            <div class="label">{$form.ssc_job_role_id.label}</div>
-            <div class="content">{$form.ssc_job_role_id.html}</div>
+            <div class="label">{$form.o8_job_role_id.label}</div>
+            <div class="content">{$form.o8_job_role_id.html}</div>
             <div class="clear"></div>
         </div>
 
         <div class="crm-section">
-            <div class="label">{$form.ssc_job_location_id.label}</div>
-            <div class="content">{$form.ssc_job_location_id.html}</div>
+            <div class="label">{$form.o8_job_location_id.label}</div>
+            <div class="content">{$form.o8_job_location_id.html}</div>
             <div class="clear"></div>
         </div>
 

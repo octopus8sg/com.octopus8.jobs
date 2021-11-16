@@ -28,28 +28,28 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form {
         $this->add('text', 'application_job_id', ts('Job ID or Title'), ['size' => 28, 'maxlength' => 128]);
 
         //Job Locations
-        $locations = CRM_Core_OptionGroup::values('ssc_job_location');
+        $locations = CRM_Core_OptionGroup::values('o8_job_location');
 
         // general job search
         $this->add('select', 'job_location_id',
             E::ts('Location'),
             $locations,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_location', 'placeholder' => ts('- Select Location -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_location', 'placeholder' => ts('- Select Location -'),
                 'select' => ['minimumInputLength' => 0]]);
         // general application search
         $this->add('select', 'application_location_id',
             E::ts('Location'),
             $locations,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_location', 'placeholder' => ts('- Select Location -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_location', 'placeholder' => ts('- Select Location -'),
                 'select' => ['minimumInputLength' => 0]]);
         //employer job search
         $this->add('select', 'employer_job_location_id',
             E::ts('Location'),
             $locations,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_location', 'placeholder' => ts('- Select Location -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_location', 'placeholder' => ts('- Select Location -'),
                 'select' => ['minimumInputLength' => 0]]);
 
         //employee job search
@@ -57,7 +57,7 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form {
             E::ts('Location'),
             $locations,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_location', 'placeholder' => ts('- Select Location -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_location', 'placeholder' => ts('- Select Location -'),
                 'select' => ['minimumInputLength' => 0]]);
 
         //employee application search
@@ -65,93 +65,93 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form {
             E::ts('Location'),
             $locations,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_location', 'placeholder' => ts('- Select Location -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_location', 'placeholder' => ts('- Select Location -'),
                 'select' => ['minimumInputLength' => 0]]);
 
         // job role
-        $roles = CRM_Core_OptionGroup::values('ssc_job_role');
+        $roles = CRM_Core_OptionGroup::values('o8_job_role');
 
         //general job search
         $this->add('select', 'job_role_id',
             E::ts('Role'),
             $roles,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_role', 'placeholder' => ts('- Select Role -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_role', 'placeholder' => ts('- Select Role -'),
                 'select' => ['minimumInputLength' => 0]]);
         //general application search
         $this->add('select', 'application_role_id',
             E::ts('Role'),
             $roles,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_role', 'placeholder' => ts('- Select Role -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_role', 'placeholder' => ts('- Select Role -'),
                 'select' => ['minimumInputLength' => 0]]);
         //employer job search
         $this->add('select', 'employer_job_role_id',
             E::ts('Role'),
             $roles,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_role', 'placeholder' => ts('- Select Role -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_role', 'placeholder' => ts('- Select Role -'),
                 'select' => ['minimumInputLength' => 0]]);
         //employee job search
         $this->add('select', 'employee_job_role_id',
             E::ts('Role'),
             $roles,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_role', 'placeholder' => ts('- Select Role -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_role', 'placeholder' => ts('- Select Role -'),
                 'select' => ['minimumInputLength' => 0]]);
         //employee application search
         $this->add('select', 'employee_application_job_role_id',
             E::ts('Role'),
             $roles,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_role', 'placeholder' => ts('- Select Role -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_role', 'placeholder' => ts('- Select Role -'),
                 'select' => ['minimumInputLength' => 0]]);
 
         //job statuses
-        $job_statuses = CRM_Core_OptionGroup::values('ssc_job_status');
+        $job_statuses = CRM_Core_OptionGroup::values('o8_job_status');
         // general search
         $this->add('select', 'job_status_id',
             E::ts('Status'),
             $job_statuses,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_status', 'placeholder' => ts('- Select Status -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_status', 'placeholder' => ts('- Select Status -'),
                 'select' => ['minimumInputLength' => 0]]);
         // general app search
         $this->add('select', 'application_job_status_id',
             E::ts('Job Status'),
             $job_statuses,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_status', 'placeholder' => ts('- Select Job Status -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_status', 'placeholder' => ts('- Select Job Status -'),
                 'select' => ['minimumInputLength' => 0]]);
         //eer
         $this->add('select', 'employer_job_status_id',
             E::ts('Status'),
             $job_statuses,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_status', 'placeholder' => ts('- Select Status -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_status', 'placeholder' => ts('- Select Status -'),
                 'select' => ['minimumInputLength' => 0]]);
         //eee
         $this->add('select', 'employee_job_status_id',
             E::ts('Status'),
             $job_statuses,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_job_status', 'placeholder' => ts('- Select Status -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_job_status', 'placeholder' => ts('- Select Status -'),
                 'select' => ['minimumInputLength' => 0]]);
         //app statuses
-        $app_statuses = CRM_Core_OptionGroup::values('ssc_application_status');
+        $app_statuses = CRM_Core_OptionGroup::values('o8_application_status');
         //gen app search
         $this->add('select', 'application_status_id',
             E::ts('Application Status'),
             $app_statuses,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_application_status', 'placeholder' => ts('- Select Application Status -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_application_status', 'placeholder' => ts('- Select Application Status -'),
                 'select' => ['minimumInputLength' => 0]]);
         //app search
         $this->add('select', 'employee_application_status_id',
             E::ts('Application Status'),
             $app_statuses,
             FALSE, ['class' => 'huge crm-select2',
-                'data-option-edit-path' => 'civicrm/admin/options/ssc_application_status', 'placeholder' => ts('- Select Application Status -'),
+                'data-option-edit-path' => 'civicrm/admin/options/o8_application_status', 'placeholder' => ts('- Select Application Status -'),
                 'select' => ['minimumInputLength' => 0]]);
 
         //gen search

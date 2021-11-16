@@ -122,13 +122,13 @@ SELECT  SQL_CALC_FOUND_ROWS
     l.label location,                            
     j.created_date,
     s.label job_status
-FROM civicrm_ssc_job j LEFT JOIN civicrm_ssc_application a on a.ssc_job_id = j.id
+FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                               INNER JOIN civicrm_option_value s on  j.status_id = s.value
-                              INNER JOIN civicrm_option_group gs on s.option_group_id = gs.id and gs.name = 'ssc_job_status'
+                              INNER JOIN civicrm_option_group gs on s.option_group_id = gs.id and gs.name = 'o8_job_status'
                               INNER JOIN civicrm_option_value l on  j.location_id = l.value
-                              INNER JOIN civicrm_option_group gl on l.option_group_id = gl.id and gl.name = 'ssc_job_location'
+                              INNER JOIN civicrm_option_group gl on l.option_group_id = gl.id and gl.name = 'o8_job_location'
                               INNER JOIN civicrm_option_value r on  j.role_id = r.value
-                              INNER JOIN civicrm_option_group gr on r.option_group_id = gr.id and gr.name = 'ssc_job_role'
+                              INNER JOIN civicrm_option_group gr on r.option_group_id = gr.id and gr.name = 'o8_job_role'
 ";
 
         $wheresql = " where 1 = 1";
