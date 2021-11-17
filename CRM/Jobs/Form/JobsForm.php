@@ -352,7 +352,6 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
             }else{
                 $params['created_id'] = $session->get('userID');
-                $params['modified_date'] = NULL;
                 $params['created_date'] = date('YmdHis');
             }
             $params['title'] = $values['title'];
