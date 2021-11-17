@@ -1,8 +1,10 @@
 <?php
 
 require_once 'jobs.civix.php';
+
 // phpcs:disable
 use CRM_Jobs_ExtensionUtil as E;
+
 // phpcs:enable
 
 /**
@@ -10,8 +12,9 @@ use CRM_Jobs_ExtensionUtil as E;
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config/
  */
-function jobs_civicrm_config(&$config) {
-  _jobs_civix_civicrm_config($config);
+function jobs_civicrm_config(&$config)
+{
+    _jobs_civix_civicrm_config($config);
 }
 
 /**
@@ -19,8 +22,9 @@ function jobs_civicrm_config(&$config) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_xmlMenu
  */
-function jobs_civicrm_xmlMenu(&$files) {
-  _jobs_civix_civicrm_xmlMenu($files);
+function jobs_civicrm_xmlMenu(&$files)
+{
+    _jobs_civix_civicrm_xmlMenu($files);
 }
 
 /**
@@ -28,8 +32,9 @@ function jobs_civicrm_xmlMenu(&$files) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
  */
-function jobs_civicrm_install() {
-  _jobs_civix_civicrm_install();
+function jobs_civicrm_install()
+{
+    _jobs_civix_civicrm_install();
 }
 
 /**
@@ -37,8 +42,9 @@ function jobs_civicrm_install() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
  */
-function jobs_civicrm_postInstall() {
-  _jobs_civix_civicrm_postInstall();
+function jobs_civicrm_postInstall()
+{
+    _jobs_civix_civicrm_postInstall();
 }
 
 /**
@@ -46,8 +52,9 @@ function jobs_civicrm_postInstall() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_uninstall
  */
-function jobs_civicrm_uninstall() {
-  _jobs_civix_civicrm_uninstall();
+function jobs_civicrm_uninstall()
+{
+    _jobs_civix_civicrm_uninstall();
 }
 
 /**
@@ -55,8 +62,9 @@ function jobs_civicrm_uninstall() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
-function jobs_civicrm_enable() {
-  _jobs_civix_civicrm_enable();
+function jobs_civicrm_enable()
+{
+    _jobs_civix_civicrm_enable();
 }
 
 /**
@@ -64,8 +72,9 @@ function jobs_civicrm_enable() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_disable
  */
-function jobs_civicrm_disable() {
-  _jobs_civix_civicrm_disable();
+function jobs_civicrm_disable()
+{
+    _jobs_civix_civicrm_disable();
 }
 
 /**
@@ -73,8 +82,9 @@ function jobs_civicrm_disable() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
  */
-function jobs_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _jobs_civix_civicrm_upgrade($op, $queue);
+function jobs_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL)
+{
+    return _jobs_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -85,8 +95,9 @@ function jobs_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_managed
  */
-function jobs_civicrm_managed(&$entities) {
-  _jobs_civix_civicrm_managed($entities);
+function jobs_civicrm_managed(&$entities)
+{
+    _jobs_civix_civicrm_managed($entities);
 }
 
 /**
@@ -98,8 +109,9 @@ function jobs_civicrm_managed(&$entities) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_caseTypes
  */
-function jobs_civicrm_caseTypes(&$caseTypes) {
-  _jobs_civix_civicrm_caseTypes($caseTypes);
+function jobs_civicrm_caseTypes(&$caseTypes)
+{
+    _jobs_civix_civicrm_caseTypes($caseTypes);
 }
 
 /**
@@ -112,8 +124,9 @@ function jobs_civicrm_caseTypes(&$caseTypes) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_angularModules
  */
-function jobs_civicrm_angularModules(&$angularModules) {
-  _jobs_civix_civicrm_angularModules($angularModules);
+function jobs_civicrm_angularModules(&$angularModules)
+{
+    _jobs_civix_civicrm_angularModules($angularModules);
 }
 
 /**
@@ -121,8 +134,9 @@ function jobs_civicrm_angularModules(&$angularModules) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_alterSettingsFolders
  */
-function jobs_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _jobs_civix_civicrm_alterSettingsFolders($metaDataFolders);
+function jobs_civicrm_alterSettingsFolders(&$metaDataFolders = NULL)
+{
+    _jobs_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**
@@ -132,15 +146,17 @@ function jobs_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
-function jobs_civicrm_entityTypes(&$entityTypes) {
-  _jobs_civix_civicrm_entityTypes($entityTypes);
+function jobs_civicrm_entityTypes(&$entityTypes)
+{
+    _jobs_civix_civicrm_entityTypes($entityTypes);
 }
 
 /**
  * Implements hook_civicrm_themes().
  */
-function jobs_civicrm_themes(&$themes) {
-  _jobs_civix_civicrm_themes($themes);
+function jobs_civicrm_themes(&$themes)
+{
+    _jobs_civix_civicrm_themes($themes);
 }
 
 // --- Functions below this ship commented out. Uncomment as required. ---
@@ -150,19 +166,25 @@ function jobs_civicrm_themes(&$themes) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_preProcess
  */
-function jobs_civicrm_preProcess($formName, &$form) {
-//    if ($formName == 'CRM_Jobs_Form_JobsForm') {
-//        _jobs_add_grouptree($form);
-////        _esignature_debug($form);
-//    }
-//    if ($formName == 'CRM_Custom_Form_CustomDataByType') {
-//        _jobs_add_grouptree($form);
-////        _esignature_debug($form);
-//    }
-//    if ($formName == 'CRM_Custom_Form_Group') {
-//        _jobs_add_grouptree($form);
-////        _esignature_debug($form);
-//    }
+function jobs_civicrm_preProcess($formName, &$form)
+{
+    try {
+        if ($formName == 'CRM_Jobs_Form_JobsForm') {
+            _jobs_add_grouptree($form);
+//        _esignature_debug($form);
+        }
+        if ($formName == 'CRM_Custom_Form_CustomDataByType') {
+            _jobs_add_grouptree($form);
+//        _esignature_debug($form);
+        }
+        if ($formName == 'CRM_Custom_Form_Group') {
+            _jobs_add_grouptree($form);
+//        _esignature_debug($form);
+        }
+
+    } catch (Exception $e) {
+
+    }
 }
 
 /**
@@ -170,8 +192,9 @@ function jobs_civicrm_preProcess($formName, &$form) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
-function jobs_civicrm_navigationMenu(&$menu) {
-    if (! CRM_Core_Permission::check('administer CiviCRM')) {
+function jobs_civicrm_navigationMenu(&$menu)
+{
+    if (!CRM_Core_Permission::check('administer CiviCRM')) {
         CRM_Core_Session::setStatus('', ts('Insufficient permission'), 'error');
         return;
     }
@@ -223,7 +246,7 @@ function jobs_civicrm_navigationMenu(&$menu) {
         'operator' => 'OR',
         'separator' => 0,
     ));
-  _jobs_civix_navigationMenu($menu);
+    _jobs_civix_navigationMenu($menu);
 }
 
 /**
@@ -272,7 +295,7 @@ function _jobs_add_grouptree(&$form)
 
     $groupTree = CRM_Core_BAO_CustomGroup::getTree(...$options);
 //    CRM_Core_Error::debug_var('gr0', $groupTree);
-    $groupTree = CRM_Core_BAO_CustomGroup::formatGroupTree($groupTree, TRUE, $form);
+    $groupTree = CRM_Core_BAO_CustomGroup::formatGroupTree($groupTree, 1, $form);
 //    CRM_Core_Error::debug_var('gr1', $groupTree);
     $form->assign('eSignature_groupTree', $groupTree);
     if ($groupTree) {

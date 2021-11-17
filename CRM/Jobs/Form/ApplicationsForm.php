@@ -250,15 +250,19 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
         } else {
             $values = $this->controller->exportValues();
             $action = 'create';
+            $session = CRM_Core_Session::singleton();
             if ($this->getEntityId()) {
                 $params['id'] = $this->getEntityId();
                 $action = 'update';
+                $params['modified_id'] = $session->get('userID');
+                $params['modified_date'] = date('YmdHis');
+            }else{
+                $params['created_id'] = $session->get('userID');
+                $params['modified_date'] = NULL;
+                $params['created_date'] = date('YmdHis');
             }
             $params['contact_id'] = $values['contact_id'];
             $params['job_id'] = $values['job_id'];
-            $session = CRM_Core_Session::singleton();
-            $params['created_id'] = $session->get('userID');
-            $params['created_date'] = date('YmdHis');
             //added pseudoconstants
             $params['job_application_status_id'] = $values['job_application_status_id'];
 //            CRM_Core_Error::debug_var('params', $params);

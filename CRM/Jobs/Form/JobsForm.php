@@ -129,7 +129,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         // CUSTOM FIELDS
         // when custom data is included in this page
         $role_id = $this->getSubmitValue('role_id');
-
+        CRM_Custom_Form_CustomData::setDefaultValues($this);
         if ((!$role_id) AND !empty($this->_submitValues['role_id'])) {
             $role_id = $this->_submitValues['role_id'];
         }
@@ -145,13 +145,19 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         $this->assign('type', 'SscJob');
         $this->assign('subType', $role_id);
         $this->assign('entityId', $this->_id);
-//        CRM_Core_Error::debug_var('type', 'SscJob');
 //        CRM_Core_Error::debug_var('subType', $role_id);
 //        CRM_Core_Error::debug_var('entityId', $this->_id);
-        if ($role_id) {
-            if (!empty($_POST['hidden_custom'])) {
-                $this->applyCustomData('SscJob', $role_id, $this->_id);
+//        CRM_Core_Error::debug_var('entityId', $this);
+        try {
+            if ($role_id) {
+                if (!empty($_POST['hidden_custom'])) {
+                    $this->applyCustomData('SscJob', $role_id, $this->_id);
+                }
             }
+
+        } catch (Exception $error) {
+            CRM_Core_Error::debug_var('errir', $error);
+
         }
 
     }
@@ -168,16 +174,18 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         $this->set('type', $type);
         $this->set('subType', $subType);
         $this->set('entityId', $entityId);
+//        CRM_Core_Error::debug_var('formbefore', $this);
         CRM_Custom_Form_CustomData::preProcess($this, NULL, $subType, 1, $type, $entityId);
-
+//        CRM_Core_Error::debug_var('formafter', $this);
         if ($this->_action != CRM_Core_Action::VIEW) {
             CRM_Custom_Form_CustomData::buildQuickForm($this);
         }
-        CRM_Custom_Form_CustomData::setDefaultValues($this);
+
     }
 
     public function buildQuickForm()
     {
+
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id');
         if ($this->_action != CRM_Core_Action::DELETE) {
@@ -272,6 +280,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
      */
     public function setDefaultValues()
     {
+
         if ($this->_myentity) {
             $defaults = $this->_myentity;
             $defaults['job_id'] = $defaults['id'];
@@ -300,6 +309,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
      */
     public function postProcess()
     {
+
         $session = CRM_Core_Session::singleton();
         $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
 //        CRM_Core_Error::debug_var('request', $_REQUEST);
@@ -337,18 +347,22 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             if ($this->getEntityId()) {
                 $params['id'] = $this->getEntityId();
                 $action = 'update';
+                $params['modified_id'] = $session->get('userID');
+                $params['modified_date'] = date('YmdHis');
+
+            }else{
+                $params['created_id'] = $session->get('userID');
+                $params['modified_date'] = NULL;
+                $params['created_date'] = date('YmdHis');
             }
             $params['title'] = $values['title'];
             $params['description'] = $values['description'];
             $params['contact_id'] = $values['contact_id'];
-            $params['created_id'] = $session->get('userID');
-            $params['created_date'] = date('YmdHis');
             //added pseudoconstants
 
             $params['role_id'] = $values['role_id'];
             $params['location_id'] = $values['location_id'];
             $params['status_id'] = $values['status_id'];
-            $params['a'] = 'b';
             $custom = \CRM_Core_BAO_CustomField::postProcess($values, $this->getEntityId(), $this->getDefaultEntity());
             $params['custom'] = $custom;
             //in case 'custom' disappears somewhere
@@ -356,7 +370,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             //Default Way
 //            CRM_Core_Error::debug_var('paramsfrom', $params);
 //            CRM_Core_Error::debug_var('values', $values);
-            $saver = (array) civicrm_api4('SscJob', $action, ['values' => $params]);
+            $saver = (array)civicrm_api4('SscJob', $action, ['values' => $params]);
 //            CRM_Core_Error::debug_var('saver', $saver);
         }
         parent::postProcess();

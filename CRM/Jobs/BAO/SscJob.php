@@ -26,7 +26,7 @@ class CRM_Jobs_BAO_SscJob extends CRM_Jobs_DAO_SscJob
      * } */
     public static function create($params)
     {
-        CRM_Core_Error::debug_var('paramsto', $params);
+//        CRM_Core_Error::debug_var('paramsto', $params);
         $className = 'CRM_Jobs_DAO_SscJob';
         $entityName = 'SscJob';
         $hook = empty($params['id']) ? 'create' : 'edit';
@@ -44,7 +44,7 @@ class CRM_Jobs_BAO_SscJob extends CRM_Jobs_DAO_SscJob
         if (!empty($custom) &&
             is_array($custom)
         ) {
-            CRM_Core_Error::debug_var('custom', $custom);
+//            CRM_Core_Error::debug_var('custom', $custom);
 
             CRM_Core_BAO_CustomValueTable::store($custom, self::$_tableName, $instance->id);
         }
