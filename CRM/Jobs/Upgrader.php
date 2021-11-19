@@ -122,8 +122,8 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
             );
             civicrm_api3('OptionValue', 'create',
                 ['value' => 3,
-                    'name' => 'withdrown',
-                    'label' => E::ts('Withdrown'),
+                    'name' => 'withdrawn',
+                    'label' => E::ts('Withdrawn'),
                     'option_group_id' => $typeOptionGroupId
                 ]
             );

@@ -65,8 +65,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
         $contactId = CRM_Utils_Request::retrieve('cid', 'Positive', $this, FALSE);
         if (!$contactId) {
-            $session = CRM_Core_Session::singleton();
-            $contactId = $session->get('userID');
+            $currentUserId = CRM_Core_Session::getLoggedInContactID();
+            $contactId = $currentUserId;
         }
 
         $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive', $this, FALSE);
@@ -314,19 +314,20 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
 //        CRM_Core_Error::debug_var('request', $_REQUEST);
 //        CRM_Core_Error::debug_var('post', $_POST);
+        $currentUserId = CRM_Core_Session::getLoggedInContactID();
         if ($this->_action == CRM_Core_Action::VIEW) {
 
             // makes application for the job
             $params = [];
             $jobId = CRM_Utils_Request::retrieve('id', 'Positive');
+
 //            CRM_Core_Error::debug_var('values', $values);
             $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
-            $createdUserId = $session->get('userID');
             if (!$employeeId) {
-                $employeeId = $createdUserId;
+                $employeeId = $currentUserId;
             }
             $action = 'create';
-            $params['created_id'] = $createdUserId;
+            $params['created_id'] = $currentUserId;
             $params['created_date'] = date('YmdHis');
             $params['contact_id'] = $employeeId;
             $params['o8_job_id'] = $jobId;
@@ -347,11 +348,11 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             if ($this->getEntityId()) {
                 $params['id'] = $this->getEntityId();
                 $action = 'update';
-                $params['modified_id'] = $session->get('userID');
+                $params['modified_id'] = $currentUserId;
                 $params['modified_date'] = date('YmdHis');
 
-            }else{
-                $params['created_id'] = $session->get('userID');
+            } else {
+                $params['created_id'] = $currentUserId;
                 $params['created_date'] = date('YmdHis');
             }
             $params['title'] = $values['title'];
