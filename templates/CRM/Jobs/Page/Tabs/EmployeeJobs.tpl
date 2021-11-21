@@ -26,9 +26,6 @@
                             {ts}Employer{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Applications Count{/ts}
-                        </th>
-                        <th scope="col">
                             {ts}Date Created{/ts}
                         </th>
                         <th scope="col">

@@ -107,7 +107,6 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
                 2 => 'role',
                 3 => 'location',
                 4 => 'job_contact_id',
-                5 => 'application_count',
                 6 => 'job_created_date',
                 7 => 'app_created_date',
                 8 => 'app_status',];
@@ -293,7 +292,9 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             $rows[$count][] = $dao->role;
             $rows[$count][] = $dao->location;
             $rows[$count][] = $job_contact;
-            $rows[$count][] = $dao->application_count;
+            if (!isset($employeeId)) {
+                $rows[$count][] = $dao->application_count;
+            }
             $rows[$count][] = $dao->job_created_date;
             if (!isset($employeeId)) {
                 $rows[$count][] = $app_contact;

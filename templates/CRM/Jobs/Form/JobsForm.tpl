@@ -30,6 +30,14 @@
       <div class="clear"></div>
     </div>
 
+
+    <div class="crm-section">
+      <h1>Active</h1>
+      <div class="label">{$form.is_active.label}</div>
+      <div class="content">{$form.is_active.html}</div>
+      <div class="clear"></div>
+    </div>
+
     <div class="crm-section">
       <div class="label">{$form.description.label}</div>
       <div class="content">{$form.description.html}</div>

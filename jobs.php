@@ -290,7 +290,7 @@ function _jobs_add_grouptree(&$form)
         TRUE,
         $onlySubtype,
         FALSE,
-        TRUE,
+        null,
         $singleRecord];
 
     $groupTree = CRM_Core_BAO_CustomGroup::getTree(...$options);

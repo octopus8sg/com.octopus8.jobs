@@ -85,18 +85,31 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
             $dateselect_from = null;
         }
 //        CRM_Core_Error::debug_var('dateselect_from', $dateselect_from);
-        if(!isset($employerId)){
-        $sortMapper = [
-            0 => 'id',
-            1 => 'title',
-            2 => 'role',
-            3 => 'location',
-            4 => 'contact_id',
-            5 => 'application_count',
-            6 => 'created_date',
-            7 => 'job_status',
-        ];
-        }else{
+        if (isset($employeeId)) {
+            //employee view
+            $sortMapper = [
+                0 => 'id',
+                1 => 'title',
+                2 => 'role',
+                3 => 'location',
+                4 => 'contact_id',
+                6 => 'created_date',
+                7 => 'job_status',
+            ];
+        } elseif (!isset($employerId)) {
+            //admin view
+            $sortMapper = [
+                0 => 'id',
+                1 => 'title',
+                2 => 'role',
+                3 => 'location',
+                4 => 'contact_id',
+                5 => 'application_count',
+                6 => 'created_date',
+                7 => 'job_status',
+            ];
+        } else {
+            //employer view view
             $sortMapper = [
                 0 => 'id',
                 1 => 'title',
@@ -241,9 +254,9 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             if ($employeeId) {
                 $r_view = CRM_Utils_System::url('civicrm/jobs/form',
                     ['action' => 'view', 'id' => $dao->id, 'employeeid' => $employeeId]);
-            }else{
-            $r_view = CRM_Utils_System::url('civicrm/jobs/form',
-                ['action' => 'view', 'id' => $dao->id]);
+            } else {
+                $r_view = CRM_Utils_System::url('civicrm/jobs/form',
+                    ['action' => 'view', 'id' => $dao->id]);
             }
             $u_action = ['action' => 'update',
                 'id' => $dao->id, 'reset' => 1];
@@ -263,10 +276,12 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->role;
             $rows[$count][] = $dao->location;
-            if(!isset($employerId)){
-            $rows[$count][] = $contact;
+            if (!isset($employerId)) {
+                $rows[$count][] = $contact;
             }
-            $rows[$count][] = $dao->application_count;
+            if (!isset($employeeId)) {
+                $rows[$count][] = $dao->application_count;
+            }
             $rows[$count][] = $dao->created_date;
             $rows[$count][] = $dao->job_status;
             $rows[$count][] = $action;

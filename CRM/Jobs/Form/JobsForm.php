@@ -22,6 +22,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
     protected $_contactId;
 
+    protected $_isActive;
+
     protected $_contactType;
 
     protected $_isEmployee;
@@ -99,10 +101,13 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $session = CRM_Core_Session::singleton();
             $session->replaceUserContext(CRM_Utils_System::url('civicrm/job/form', ['id' => $this->getEntityId(), 'action' => 'view']));
         }
+        $this->_isActive = null;
 
         if ($myentity) {
             $employerId = $myentity->contact_id;
             $contactId = $this->_contactId;
+            $isActive = $myentity->is_active;
+            $this->_isActive = $isActive;
             if ($employerId != $contactId) {
                 $contact = \Civi\Api4\Contact::get(0)
                     ->addWhere('id', '=', $contactId)
@@ -212,30 +217,33 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $this->add('select', 'status_id', E::ts('Status'),
                 $statuses, TRUE, ['class' => 'huge crm-select2',
                     'data-option-edit-path' => 'civicrm/admin/options/o8_job_status']);
+            $this->add('checkbox', 'is_active', E::ts('Is Active?'));
 
             if ($this->_action == CRM_Core_Action::VIEW) {
                 if ($this->_myentity->contact_id != $this->_contactId) {
                     if ($this->_isEmployee) {
                         $this->add('hidden', 'employee_id');
-                        $this->addButtons([
+                        if ($this->_isActive === 1) {
+                            $this->addButtons([
 
-                            [
-                                'type' => 'upload',
-                                'name' => E::ts('Apply'),
-                                'isDefault' => FALSE,
-                            ],
+                                [
+                                    'type' => 'upload',
+                                    'name' => E::ts('Apply'),
+                                    'isDefault' => FALSE,
+                                ],
 //                            [
 //                                'type' => 'submit',
 //                                'name' => E::ts('Delete'),
 //                                'formaction' => 'delete',
 //                                'isDefault' => FALSE,
 //                            ],
-                            [
-                                'type' => 'cancel',
-                                'name' => E::ts('Close'),
-                                'isDefault' => TRUE,
-                            ],
-                        ]);
+                                [
+                                    'type' => 'cancel',
+                                    'name' => E::ts('Close'),
+                                    'isDefault' => TRUE,
+                                ],
+                            ]);
+                        }
                     }
                 } else {
                     $this->addButtons([
@@ -248,13 +256,15 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
                 }
             } else {
+                $this->add('checkbox', 'is_active', E::ts('Is Active?'));
                 $this->addButtons([
                     [
                         'type' => 'upload',
                         'name' => E::ts('Submit'),
                         'isDefault' => TRUE,
                     ],
-                    ['type' => 'cancel', 'name' => E::ts('Cancel')]
+                    ['type' => 'cancel',
+                        'name' => E::ts('Cancel')]
                 ]);
             }
         } else {
@@ -356,6 +366,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                 $params['created_date'] = date('YmdHis');
             }
             $params['title'] = $values['title'];
+            $params['is_active'] = $values['is_active'];
             $params['description'] = $values['description'];
             $params['contact_id'] = $values['contact_id'];
             //added pseudoconstants
