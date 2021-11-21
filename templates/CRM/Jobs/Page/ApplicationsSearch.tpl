@@ -1,4 +1,4 @@
-{crmScope extensionKey='com.socialservicesconnect.jobs'}
+{crmScope extensionKey='com.octopus8.jobs'}
     <div class="crm-content-block">
         <div class="clear"></div>
         {include file="CRM/Jobs/Form/ApplicationFilter.tpl"}
@@ -47,5 +47,5 @@
             </div>
         </div>
     </div>
-{crmScript ext=com.socialservicesconnect.jobs file=js/applications.js}
+{crmScript ext=com.octopus8.jobs file=js/applications.js}
 {/crmScope}

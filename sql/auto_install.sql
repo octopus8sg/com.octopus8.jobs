@@ -15,12 +15,12 @@
 -- *
 -- *******************************************************/
 
-SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `civicrm_o8_job`;
 DROP TABLE IF EXISTS `civicrm_o8_application`;
 
-SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS = 1;
 -- /*******************************************************
 -- *
 -- * Create new tables
@@ -29,52 +29,55 @@ SET FOREIGN_KEY_CHECKS=1;
 
 -- /*******************************************************
 -- *
--- * civicrm_o8_application
--- *
--- * Social Services Connect Job Application
--- *
--- *******************************************************/
-
-
--- /*******************************************************
--- *
 -- * civicrm_o8_job
 -- *
 -- * Social Services Connect Job Proposals
 -- *
 -- *******************************************************/
-CREATE TABLE `civicrm_o8_job` (
-                                  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique SSC Job ID',
-                                  `contact_id` int unsigned COMMENT 'FK to Contact',
-                                  `title` varchar(255) NULL,
-                                  `description` longtext NULL,
-                                  `role_id` int DEFAULT 1,
-                                  `location_id` int DEFAULT 1,
-                                  `status_id` int DEFAULT 1,
-                                  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the job was created',
-                                  `created_id` int unsigned NULL COMMENT 'FK to civicrm_contact, who created this application',
-                                  `modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the job was modified',
-                                  `modified_id` int unsigned NULL COMMENT 'FK to civicrm_contact, who modified this application',
-                                  PRIMARY KEY (`id`),
-                                  CONSTRAINT FK_civicrm_o8_job_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,
-                                  CONSTRAINT FK_civicrm_o8_job_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL
+CREATE TABLE `civicrm_o8_job`
+(
+    `id`            int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique SSC Job ID',
+    `contact_id`    int unsigned COMMENT 'FK to Contact',
+    `title`         varchar(255) NULL,
+    `description`   longtext     NULL,
+    `role_id`       int                   DEFAULT 1,
+    `location_id`   int                   DEFAULT 1,
+    `is_active`     tinyint      NOT NULL DEFAULT 1 COMMENT 'Is the Job active or withdrawn?',
+    `status_id`     int                   DEFAULT 1,
+    `created_date`  timestamp    NULL     DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the job was created',
+    `created_id`    int unsigned COMMENT 'FK to civicrm_contact, who created this application',
+    `modified_date` timestamp    NULL COMMENT 'Date and time the job was modified',
+    `modified_id`   int unsigned COMMENT 'FK to civicrm_contact, who modified this application',
+    PRIMARY KEY (`id`),
+    CONSTRAINT FK_civicrm_o8_job_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact` (`id`) ON DELETE SET NULL,
+    CONSTRAINT FK_civicrm_o8_job_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact` (`id`) ON DELETE SET NULL,
+    CONSTRAINT FK_civicrm_o8_job_modified_id FOREIGN KEY (`modified_id`) REFERENCES `civicrm_contact` (`id`) ON DELETE SET NULL
 )
-    ENGINE=InnoDB;
+    ENGINE = InnoDB;
 
 
-CREATE TABLE `civicrm_o8_application` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique SSC Application ID',
-  `contact_id` int unsigned COMMENT 'FK to Contact',
-  `status_id` int DEFAULT 1,
-  `o8_job_id` int unsigned NOT NULL COMMENT 'FK to SSC Job',
-  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the application was created',
-  `created_id` int unsigned COMMENT 'FK to civicrm_contact, who created this application',
-  `modified_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the application was modified',
-  `modified_id` int unsigned COMMENT 'FK to civicrm_contact, who modified this application',
-  PRIMARY KEY (`id`),
-  CONSTRAINT FK_civicrm_o8_application_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FK_civicrm_o8_application_o8_job_id FOREIGN KEY (`o8_job_id`) REFERENCES `civicrm_o8_job`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FK_civicrm_o8_application_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL,
-  CONSTRAINT FK_civicrm_o8_application_modified_id FOREIGN KEY (`modified_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL
+-- /*******************************************************
+-- *
+-- * civicrm_o8_application
+-- *
+-- * Social Services Connect Job Application
+-- *
+-- *******************************************************/
+CREATE TABLE `civicrm_o8_application`
+(
+    `id`            int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique SSC Application ID',
+    `contact_id`    int unsigned COMMENT 'FK to Contact',
+    `status_id`     int                   DEFAULT 1,
+    `is_active`     tinyint      NOT NULL DEFAULT 1 COMMENT 'Is the Application active or withdrawn?',
+    `o8_job_id`     int unsigned NOT NULL COMMENT 'FK to SSC Job',
+    `created_date`  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the application was created',
+    `created_id`    int unsigned NULL COMMENT 'FK to civicrm_contact, who created this application',
+    `modified_date` timestamp    NULL COMMENT 'Date and time the application was modified',
+    `modified_id`   int unsigned COMMENT 'FK to civicrm_contact, who modified this application',
+    PRIMARY KEY (`id`),
+    CONSTRAINT FK_civicrm_o8_application_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact` (`id`) ON DELETE SET NULL,
+    CONSTRAINT FK_civicrm_o8_application_o8_job_id FOREIGN KEY (`o8_job_id`) REFERENCES `civicrm_o8_job` (`id`) ON DELETE CASCADE,
+    CONSTRAINT FK_civicrm_o8_application_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact` (`id`) ON DELETE SET NULL,
+    CONSTRAINT FK_civicrm_o8_application_modified_id FOREIGN KEY (`modified_id`) REFERENCES `civicrm_contact` (`id`) ON DELETE SET NULL
 )
-ENGINE=InnoDB;
+    ENGINE = InnoDB;

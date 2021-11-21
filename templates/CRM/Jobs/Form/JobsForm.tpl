@@ -1,4 +1,4 @@
-{crmScope extensionKey='com.socialservicesconnect.jobs'}
+{crmScope extensionKey='com.octopus8.jobs'}
 {if $action eq 8}
   {* Are you sure to delete form *}
   <h3>{ts}Delete Job{/ts}</h3>

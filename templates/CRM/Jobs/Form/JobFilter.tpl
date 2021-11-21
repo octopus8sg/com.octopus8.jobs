@@ -1,4 +1,4 @@
-{crmScope extensionKey='com.socialservicesconnect.jobs'}
+{crmScope extensionKey='com.octopus8.jobs'}
   <div class="crm-content-block">
 
     <div class="crm-block crm-form-block crm-basic-criteria-form-block">

@@ -1,4 +1,4 @@
-{crmScope extensionKey='com.socialservicesconnect.jobs'}
+{crmScope extensionKey='com.octopus8.jobs'}
     <div class="jobs-tab view-content">
         <div id="secondaryTabContainer1" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
             {include file="CRM/common/TabSelected.tpl" defaultTab="data" tabContainer="#secondaryTabContainer1"}

@@ -8,7 +8,7 @@
  */
 class CRM_Jobs_ExtensionUtil {
   const SHORT_NAME = 'jobs';
-  const LONG_NAME = 'com.socialservicesconnect.jobs';
+  const LONG_NAME = 'com.octopus8.jobs';
   const CLASS_PREFIX = 'CRM_Jobs';
 
   /**

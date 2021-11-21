@@ -1,4 +1,4 @@
-{crmScope extensionKey='com.socialservicesconnect.jobs'}
+{crmScope extensionKey='com.octopus8.jobs'}
     <div class="crm-content-block">
         <div class="action-link">
             {*        {debug}*}
@@ -48,5 +48,5 @@
             </div>
         </div>
     </div>
-{crmScript ext=com.socialservicesconnect.jobs file=js/jobs.js}
+{crmScript ext=com.octopus8.jobs file=js/jobs.js}
 {/crmScope}
