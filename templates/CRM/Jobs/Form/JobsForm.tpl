@@ -10,6 +10,9 @@
     {include file="CRM/common/formButtons.tpl" location="bottom"}
   </div>
 {else}
+  <div class="crm-submit-buttons">
+    {include file="CRM/common/formButtons.tpl" location="bottom"}
+  </div>
 
   <div class="crm-block crm-form-block">
     <div class="crm-section">
@@ -68,12 +71,12 @@
       <div class="clear"></div>
     </div>
     {* Add the line below: *}
-
-    {include file="CRM/common/customDataBlock.tpl" customDataType='SscJob' entityID=$id}
-
     <div class="crm-submit-buttons">
       {include file="CRM/common/formButtons.tpl" location="bottom"}
     </div>
+    {include file="CRM/common/customDataBlock.tpl" customDataType='SscJob' entityID=$id}
+
+
 
   </div>
 {/if}

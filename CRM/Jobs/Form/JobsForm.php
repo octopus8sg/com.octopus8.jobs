@@ -26,6 +26,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
     protected $_contactType;
 
+    protected $_isAdmin;
+
     protected $_isEmployee;
 
     protected $_isEmployer;
@@ -81,6 +83,9 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         } else {
             $this->_employeeId = $contactId;
         }
+        if (CRM_Core_Permission::check('administer CiviCRM')) {
+            $this->_isAdmin = TRUE;
+        }
         $contact = $myentity = null;
 
         CRM_Utils_System::setTitle('Add Job');
@@ -111,9 +116,9 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         $this->_isActive = null;
 
         if ($myentity) {
-            $employerId = $myentity->contact_id;
+            $employerId = $myentity['contact_id'];
             $contactId = $this->_contactId;
-            $isActive = $myentity->is_active;
+            $isActive = $myentity['is_active'];
             $this->_isActive = $isActive;
             if ($employerId != $contactId) {
                 $contact = \Civi\Api4\Contact::get(0)
@@ -223,17 +228,24 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $statuses = CRM_Core_OptionGroup::values('o8_job_status');
             $this->add('hidden', 'status_id');
             $this->add('advcheckbox', 'is_active', E::ts('Is Active?'));
+            CRM_Core_Error::debug_var('this_contactId', $this->_contactId);
+            $currentUserId = CRM_Core_Session::getLoggedInContactID();
 
             if ($this->_action == CRM_Core_Action::VIEW) {
-
-
-                if ($this->_myentity->contact_id != $this->_contactId) {
-                    if ($this->_isEmployee) {
-
+                if ($this->_myentity['contact_id'] != $currentUserId) {
+                    //if user is not employer
+                    if ($this->_isEmployee or $this->_isAdmin) {
+                        CRM_Core_Error::debug_var('_isActive', $this->_isActive);
                         $this->add('hidden', 'employee_id');
-                        if ($this->_isActive === 1) {
+                        if ($this->_isActive) {
+                            CRM_Core_Error::debug_var('currentUserId', $currentUserId);
+                            CRM_Core_Error::debug_var('this_isEmployee', $this->_isEmployee);
+                            CRM_Core_Error::debug_var('this_isEmployer', $this->_isEmployer);
+                            CRM_Core_Error::debug_var('this_isAdmin', $this->_isAdmin);
+                            CRM_Core_Error::debug_var('this_myentcontactid', $this->_myentity['contact_id']);
+                            CRM_Core_Error::debug_var('this_contactid', $this->_contactId);
+                            $this->add('hidden', 'employee_id');
                             $this->addButtons([
-
                                 [
                                     'type' => 'upload',
                                     'name' => E::ts('Apply'),
@@ -306,11 +318,11 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         if ($this->_myentity) {
             $defaults = $this->_myentity;
             $defaults['job_id'] = $defaults['id'];
-            if (CRM_Core_Permission::check('administer CiviCRM')) {
+            if ($this->_isAdmin) {
                 $defaults['app_count'] = "<a target='_blank' href='" .
                     CRM_Utils_System::url('civicrm/applications/search',
                         ['jobid' => $this->getEntityId()]) . "'>" . $this->_appCount . "</a> ";
-            } else {
+            } elseif($this->_isEmployer) {
                 $defaults['app_count'] = "<a target='_blank' href='" .
                     CRM_Utils_System::url('civicrm/applications/search',
                         ['jobid' => $this->getEntityId(), 'employerid' => $this->_contactId]) . "'>" . $this->_appCount . "</a> ";
