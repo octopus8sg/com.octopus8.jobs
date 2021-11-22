@@ -28,9 +28,6 @@
                         <th scope="col">
                             {ts}Date Created{/ts}
                         </th>
-                        <th scope="col">
-                            {ts}Job Status{/ts}
-                        </th>
                         <th id="nosort">&nbsp;Action</th>
                     </tr>
                     </thead>

@@ -18,7 +18,6 @@ CRM.$(function ($) {
     $(document).ready(function () {
 
 
-
         //Reset Table, add Filter and Search Possibility
         //devices datatable
         var jobs_tab = $('.selector-jobs');
@@ -26,7 +25,7 @@ CRM.$(function ($) {
         var jobs_dtsettings = jobs_table.settings().init();
         jobs_dtsettings.bFilter = true;
         //turn on search
-        jobs_dtsettings.fnInitComplete = function(oSettings, json){
+        jobs_dtsettings.fnInitComplete = function (oSettings, json) {
             // $("a.view-job").css('background','red');
             // $("a.view-job").click(function (event) {
             //     event.preventDefault();
@@ -54,7 +53,7 @@ CRM.$(function ($) {
             //     });
             // });
         };
-        jobs_dtsettings.fnDrawCallback = function(oSettings){
+        jobs_dtsettings.fnDrawCallback = function (oSettings) {
             // $("a.view-job").css('background','red');
             $("a.view-job").click(function (event) {
                 event.preventDefault();
@@ -115,11 +114,13 @@ CRM.$(function ($) {
                 "name": "role_id",
                 "value": $('#job_role_id').val()
             });
+            var ischecked = $('#job_is_active').prop("checked");
+            // alert(ischecked);
             aoData.push({
                 "name":
-                    "status_id",
+                    "is_active",
                 "value":
-                    $('#job_status_id').val()
+                ischecked
             });
             aoData.push({
                 "name":
@@ -150,7 +151,7 @@ CRM.$(function ($) {
             new_jobs_table.draw();
         });
 
-        $('#job_id').keyup(function() {
+        $('#job_id').keyup(function () {
             new_jobs_table.draw();
         });
     });

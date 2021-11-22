@@ -62,7 +62,10 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
 //        CRM_Core_Error::debug_var('device_type_id', $location_id);
 
         $status_id = CRM_Utils_Request::retrieveValue('status_id', 'Positive', null);
-////        CRM_Core_Error::debug_var('sensor_id', $status_id);
+
+        $is_active = CRM_Utils_Request::retrieveValue('is_active', 'Boolean', null);
+
+        CRM_Core_Error::debug_var('is_active', $is_active);
 
         $contact_id = CRM_Utils_Request::retrieveValue('job_contact_id', 'Positive', null);
 ////        CRM_Core_Error::debug_var('sensor_id', $status_id);
@@ -93,8 +96,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
                 2 => 'role',
                 3 => 'location',
                 4 => 'contact_id',
-                6 => 'created_date',
-                7 => 'job_status',
+                5 => 'created_date',
             ];
         } elseif (!isset($employerId)) {
             //admin view
@@ -106,7 +108,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
                 4 => 'contact_id',
                 5 => 'application_count',
                 6 => 'created_date',
-                7 => 'job_status',
+                7 => 'is_active',
             ];
         } else {
             //employer view view
@@ -117,7 +119,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
                 3 => 'location',
                 4 => 'application_count',
                 5 => 'created_date',
-                6 => 'job_status',
+                6 => 'is_active',
             ];
         }
 
@@ -134,10 +136,8 @@ SELECT  SQL_CALC_FOUND_ROWS
     r.label role,                            
     l.label location,                            
     j.created_date,
-    s.label job_status
+    j.is_active
 FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
-                              INNER JOIN civicrm_option_value s on  j.status_id = s.value
-                              INNER JOIN civicrm_option_group gs on s.option_group_id = gs.id and gs.name = 'o8_job_status'
                               INNER JOIN civicrm_option_value l on  j.location_id = l.value
                               INNER JOIN civicrm_option_group gl on l.option_group_id = gl.id and gl.name = 'o8_job_location'
                               INNER JOIN civicrm_option_value r on  j.role_id = r.value
@@ -145,7 +145,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
 ";
 
         $wheresql = " where 1 = 1";
-        $groupsql = " group by j.id, j.title, s.label, l.label, r.label, j.created_date";
+        $groupsql = " group by j.id, j.title, j.is_active, l.label, r.label, j.created_date";
         $ordersql = " ORDER BY j.id desc";
         if (isset($contact_id)) {
             $wheresql .= " AND j.`contact_id` = " . $contact_id . " ";
@@ -154,6 +154,10 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
         if (isset($employerId)) {
             $wheresql .= " AND j.`contact_id` = " . $employerId . " ";
         }
+
+//        if (isset($is_active)) {
+//            $wheresql .= " AND j.`is_active` != false ";
+//        }
 
         if (isset($jobId)) {
             if ($jobId !== null) {
@@ -173,6 +177,10 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             if ($status_id > 0) {
                 $wheresql .= " AND j.`status_id` = " . $status_id . " ";
             }
+        }
+
+        if (isset($is_active)) {
+                $wheresql .= " AND j.`is_active` = " . strval($is_active) . " ";
         }
 
         if (isset($role_id)) {
@@ -258,6 +266,11 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $r_view = CRM_Utils_System::url('civicrm/jobs/form',
                     ['action' => 'view', 'id' => $dao->id]);
             }
+            $is_active_view = "No";
+//                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
+            if($dao->is_active > 0){
+                $is_active_view = "Yes";
+            }
             $u_action = ['action' => 'update',
                 'id' => $dao->id, 'reset' => 1];
             $r_update = CRM_Utils_System::url('civicrm/jobs/form',
@@ -283,7 +296,9 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $rows[$count][] = $dao->application_count;
             }
             $rows[$count][] = $dao->created_date;
-            $rows[$count][] = $dao->job_status;
+            if (!isset($employeeId)) {
+                $rows[$count][] = $is_active_view;
+            }
             $rows[$count][] = $action;
             $count++;
         }

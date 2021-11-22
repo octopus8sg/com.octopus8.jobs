@@ -234,6 +234,18 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form {
             '_to',
             '_from');
 
+
+        $this->add('checkbox', 'job_is_active', ts('Is Active?'))->setChecked(true);
+
+        $this->add('checkbox', 'application_is_active', ts('Is Active?'))->setChecked(true);
+
+        $this->add('checkbox', 'application_job_is_active', ts('Is Active?'))->setChecked(true);
+
+        $this->add('checkbox', 'employer_job_is_active', ts('Is Active?'))->setChecked(true);
+
+        $this->add('checkbox', 'employee_application_is_active', ts('Is Active?'))->setChecked(true);
+
+
         $this->assign('suppressForm', FALSE);
 
     }
