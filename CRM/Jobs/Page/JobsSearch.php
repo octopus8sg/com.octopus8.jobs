@@ -65,7 +65,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
 
         $is_active = CRM_Utils_Request::retrieveValue('is_active', 'Boolean', null);
 
-        CRM_Core_Error::debug_var('is_active', $is_active);
+//        CRM_Core_Error::debug_var('is_active', $is_active);
 
         $contact_id = CRM_Utils_Request::retrieveValue('job_contact_id', 'Positive', null);
 ////        CRM_Core_Error::debug_var('sensor_id', $status_id);

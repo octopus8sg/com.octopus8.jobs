@@ -57,8 +57,8 @@
     </div>
 
     <div class="crm-section">
-      <div class="label">{$form.status_id.label}</div>
-      <div class="content">{$form.status_id.html}</div>
+      <div class="label">{$form.app_count.label}</div>
+      <div class="content">{$form.app_count.html}</div>
       <div class="clear"></div>
     </div>
 

@@ -231,9 +231,20 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'name' => E::ts('Withdraw'),
                     'icon' => 'fa-trash',
                 ];
+                if(!$this->_myentity['is_active']){
+                    $this->addButtons([
+                        [
+                            'type' => 'cancel',
+                            'name' => E::ts('Close'),
+                            'isDefault' => TRUE,
+                        ],
+                    ]);
+
+                }else{
                 if ($userACL == 'admin') {
+
 //        CRM_Core_Error::debug_var('myjob', $this->_myentity);
-                    CRM_Core_Error::debug_var('myapp', $this->_myentity);
+//        CRM_Core_Error::debug_var('myapp', $this->_myentity);
 
                     $buttons = [
                         $review,
@@ -258,6 +269,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                             $withdraw
                         ]);
                     }
+                }
                 }
             }
         } else {

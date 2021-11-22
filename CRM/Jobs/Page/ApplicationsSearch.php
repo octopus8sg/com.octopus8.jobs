@@ -15,6 +15,20 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
 //        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
 //        $this->assign('contactId', $contactId);
 //        $urlQry['cid'] = $contactId;
+        $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive');
+        $employerId = CRM_Utils_Request::retrieve('employerid', 'Positive');
+        $jobId = CRM_Utils_Request::retrieve('jobid', 'Positive');
+        if ($employeeId > 0) {
+            $urlQry['employeeid'] = $employeeId;
+        }
+        if ($employerId > 0) {
+            $urlQry['employerid'] = $employerId;
+        }
+        if ($jobId > 0) {
+            $urlQry['jobid'] = $jobId;
+        }
+//        CRM_Core_Error::debug_var('employerId', $employerId);
+//        CRM_Core_Error::debug_var('employeeId', $employeeId);
         $app_source_url = CRM_Utils_System::url('civicrm/jobs/applicationsajax', $urlQry, FALSE, NULL, FALSE);
         $sourceUrl['application_sourceUrl'] = $app_source_url;
         $this->assign('useAjax', true);
@@ -41,17 +55,28 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
 //        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
 
         $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive');
+        $employerId = CRM_Utils_Request::retrieve('employerid', 'Positive');
+        $thejobId = CRM_Utils_Request::retrieve('jobid', 'Positive');
+        $is_admin = false;
+        $is_employer = false;
+        $is_employee = false;
+
+        if (CRM_Core_Permission::check('administer CiviCRM')) {
+            $is_admin = true;
+        }
+        $currentUserId = CRM_Core_Session::getLoggedInContactID();
+        if ($currentUserId == $employeeId) {
+            $is_employee = true;
+        }
+        if ($currentUserId == $employerId) {
+            $is_employer = true;
+        }
 
         $employerIds = CRM_Utils_Request::retrieveValue('employer_ids', 'String', null);
-
         $employeeIds = CRM_Utils_Request::retrieveValue('employee_ids', 'String', null);
-
         $appId = CRM_Utils_Request::retrieveValue('application_id', 'String', null);
-
         $jobId = CRM_Utils_Request::retrieveValue('application_job_id', 'String', null);
-
         $is_active = CRM_Utils_Request::retrieveValue('is_active', 'Boolean', null);
-
         $job_is_active = CRM_Utils_Request::retrieveValue('job_is_active', 'Boolean', null);
 
 //        CRM_Core_Error::debug_var('job_is_active', $job_is_active);
@@ -148,7 +173,22 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
     INNER JOIN civicrm_option_value r on  j.role_id = r.value
     INNER JOIN civicrm_option_group gr on r.option_group_id = gr.id and gr.name = 'o8_job_role'
 ";
-        $wheresql = " where 1 = 1";
+        $wheresql = " where 1 = 2 ";
+        if ($is_admin) {
+            $wheresql = " where 1 = 1 ";
+            if ($employeeId) {
+                $wheresql = " where ap.contact_id = " . $employeeId . " ";
+            }
+            if ($employerId) {
+                $wheresql = " where j.contact_id = " . $employerId . " ";
+            }
+        }
+        if ($is_employee) {
+            $wheresql = " where ap.contact_id = " . $employeeId . " ";
+        }
+        if ($is_employer) {
+            $wheresql = " where j.contact_id = " . $employerId . " ";
+        }
         $groupsql = " group by j.id, j.is_active, ap.is_active, j.title, s.label, l.label, r.label, j.created_date, j.contact_id, app_id";
         $ordersql = " ORDER BY app_id desc";
         if (isset($employerIds)) {
@@ -192,6 +232,14 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             if ($jobId !== null) {
                 if ($jobId !== "") {
                     $wheresql .= " AND (j.`id` = " . intval($jobId) . " OR  j.`title` like '%" . strval($jobId) . "%')";
+                }
+            }
+        }
+
+        if (isset($thejobId)) {
+            if ($thejobId !== null) {
+                if ($thejobId > 0) {
+                    $wheresql .= " AND j.`id` = " . $thejobId . " ";
                 }
             }
         }
@@ -296,12 +344,12 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             }
             $is_active_view = "No";
 //                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
-            if($dao->is_active > 0){
+            if ($dao->is_active > 0) {
                 $is_active_view = "Yes";
             }
             $jis_active_view = "No";
 //                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
-            if($dao->job_is_active > 0){
+            if ($dao->job_is_active > 0) {
                 $jis_active_view = "Yes";
             }
 

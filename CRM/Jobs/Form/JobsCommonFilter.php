@@ -235,15 +235,15 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form {
             '_from');
 
 
-        $this->add('advcheckbox', 'job_is_active', ts('Is Active?'));
+        $this->add('advcheckbox', 'job_is_active', ts('Is Active?'))->setChecked(true);
 
-        $this->add('advcheckbox', 'application_is_active', ts('Is App Active?'));
+        $this->add('advcheckbox', 'application_is_active', ts('Is App Active?'))->setChecked(true);
 
-        $this->add('advcheckbox', 'application_job_is_active', ts('Is Job Active?'));
+        $this->add('advcheckbox', 'application_job_is_active', ts('Is Job Active?'))->setChecked(true);
 
-        $this->add('advcheckbox', 'employer_job_is_active', ts('Is Job Active?'));
+        $this->add('advcheckbox', 'employer_job_is_active', ts('Is Job Active?'))->setChecked(true);
 
-        $this->add('advcheckbox', 'employee_application_is_active', ts('Is App Active?'));
+        $this->add('advcheckbox', 'employee_application_is_active', ts('Is App Active?'))->setChecked(true);
 
 
         $this->assign('suppressForm', FALSE);

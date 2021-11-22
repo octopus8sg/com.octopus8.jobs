@@ -32,6 +32,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
     protected $_employeeId;
 
+    protected $_appCount;
+
     public function getDefaultEntity()
     {
         return 'SscJob';
@@ -99,7 +101,12 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $this->assign('myentity', $this->_myentity);
 
             $session = CRM_Core_Session::singleton();
-            $session->replaceUserContext(CRM_Utils_System::url('civicrm/job/form', ['id' => $this->getEntityId(), 'action' => 'view']));
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/jobs/form', ['id' => $this->getEntityId(), 'action' => 'view']));
+            $appEntities = \Civi\Api4\SscApplication::get()
+                ->selectRowCount()
+                ->addWhere('o8_job_id', '=', $this->getEntityId())
+                ->execute();
+            $this->_appCount = $appEntities->count();
         }
         $this->_isActive = null;
 
@@ -218,8 +225,11 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $this->add('advcheckbox', 'is_active', E::ts('Is Active?'));
 
             if ($this->_action == CRM_Core_Action::VIEW) {
+
+
                 if ($this->_myentity->contact_id != $this->_contactId) {
                     if ($this->_isEmployee) {
+
                         $this->add('hidden', 'employee_id');
                         if ($this->_isActive === 1) {
                             $this->addButtons([
@@ -273,6 +283,10 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         }
         if ($this->_action == CRM_Core_Action::VIEW) {
             $this->add('text', 'job_id', E::ts('ID'), ['class' => 'huge'], FALSE);
+//            $this->add('html', 'app_count', E::ts('App Count'), ['class' => 'huge'], FALSE);
+//            $coli = $this->createElement('link', ['target' => '_blank']);
+//            $this->addElement($coli);
+            $this->add('static', 'app_count', E::ts('App Count'));
             $this->add('datepicker', 'created_date', E::ts('Created Time'), ['class' => 'huge'], FALSE);
             $this->freeze();
         }
@@ -288,10 +302,19 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
      */
     public function setDefaultValues()
     {
-
+        $defaults['app_count'] = "0";
         if ($this->_myentity) {
             $defaults = $this->_myentity;
             $defaults['job_id'] = $defaults['id'];
+            if (CRM_Core_Permission::check('administer CiviCRM')) {
+                $defaults['app_count'] = "<a target='_blank' href='" .
+                    CRM_Utils_System::url('civicrm/applications/search',
+                        ['jobid' => $this->getEntityId()]) . "'>" . $this->_appCount . "</a> ";
+            } else {
+                $defaults['app_count'] = "<a target='_blank' href='" .
+                    CRM_Utils_System::url('civicrm/applications/search',
+                        ['jobid' => $this->getEntityId(), 'employerid' => $this->_contactId]) . "'>" . $this->_appCount . "</a> ";
+            }
             $defaults['employee_id'] = $this->_employeeId;
         }
         if (empty($defaults['role_id'])) {
