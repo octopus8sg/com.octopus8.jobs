@@ -17,8 +17,8 @@
                     <tr>
                         <td class="label">{$form.employer_job_role_id.label}</td>
                         <td>{$form.employer_job_role_id.html}</td>
-                        <td class="label">{$form.employer_job_status_id.label}</td>
-                        <td>{$form.employer_job_status_id.html}</td>
+                        <td class="label">{$form.employer_job_is_active.label}</td>
+                        <td>{$form.employer_job_is_active.html}</td>
                     </tr>
                     <tr>
                         <td class="label">Date From ... {$form.employer_job_dateselect_from.label}</td>

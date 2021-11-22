@@ -14,6 +14,9 @@
                             {ts}ID{/ts}
                         </th>
                         <th scope="col">
+                            {ts}Active App{/ts}
+                        </th>
+                        <th scope="col">
                             {ts}Job Title{/ts}
                         </th>
                         <th scope="col">
@@ -30,6 +33,9 @@
                         </th>
                         <th scope="col">
                             {ts}Job Created Date{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Active Job{/ts}
                         </th>
                         <th scope="col">
                             {ts}Employee{/ts}

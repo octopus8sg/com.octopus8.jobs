@@ -215,7 +215,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                     'data-option-edit-path' => 'civicrm/admin/options/o8_job_location']);
             $statuses = CRM_Core_OptionGroup::values('o8_job_status');
             $this->add('hidden', 'status_id');
-            $this->add('checkbox', 'is_active', E::ts('Is Active?'));
+            $this->add('advcheckbox', 'is_active', E::ts('Is Active?'));
 
             if ($this->_action == CRM_Core_Action::VIEW) {
                 if ($this->_myentity->contact_id != $this->_contactId) {

@@ -75,6 +75,7 @@ CRM.$(function ($) {
                 "value":
                     $('#employee_application_status_id').val()
             });
+
             aoData.push({
                 "name":
                     "location_id",

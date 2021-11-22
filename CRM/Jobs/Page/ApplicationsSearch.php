@@ -50,7 +50,11 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
 
         $jobId = CRM_Utils_Request::retrieveValue('application_job_id', 'String', null);
 
-//        CRM_Core_Error::debug_var('contact', $contactId);
+        $is_active = CRM_Utils_Request::retrieveValue('is_active', 'Boolean', null);
+
+        $job_is_active = CRM_Utils_Request::retrieveValue('job_is_active', 'Boolean', null);
+
+//        CRM_Core_Error::debug_var('job_is_active', $job_is_active);
 
 //start and end date
         $offset = CRM_Utils_Request::retrieveValue('iDisplayStart', 'Positive', 0);
@@ -90,26 +94,31 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
         if (!isset($employeeId)) {
             $sortMapper = [
                 0 => 'app_id',
-                1 => 'title',
-                2 => 'role',
-                3 => 'location',
-                4 => 'job_contact_id',
-                5 => 'application_count',
-                6 => 'job_created_date',
-                7 => 'app_contact_id',
-                8 => 'app_created_date',
-                9 => 'app_status',
+                1 => 'is_active',
+                2 => 'title',
+                3 => 'role',
+                4 => 'location',
+                5 => 'job_contact_id',
+                6 => 'application_count',
+                7 => 'job_created_date',
+                8 => 'job_is_active',
+                9 => 'app_contact_id',
+                10 => 'app_created_date',
+                11 => 'app_status',
             ];
         } else {
             $sortMapper = [
                 0 => 'app_id',
-                1 => 'title',
-                2 => 'role',
-                3 => 'location',
-                4 => 'job_contact_id',
+                1 => 'is_active',
+                2 => 'title',
+                3 => 'role',
+                4 => 'location',
+                5 => 'job_contact_id',
                 6 => 'job_created_date',
-                7 => 'app_created_date',
-                8 => 'app_status',];
+                7 => 'job_is_active',
+                8 => 'app_created_date',
+                9 => 'app_status'
+            ];
         }
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
         $sortOrder = isset($_REQUEST['sSortDir_0']) ? CRM_Utils_Type::escape($_REQUEST['sSortDir_0'], 'String') : 'asc';
@@ -120,6 +129,8 @@ SELECT  SQL_CALC_FOUND_ROWS
     j.id job_id,
     count(a.id) application_count,
     j.title,
+    j.is_active job_is_active,
+    ap.is_active,                            
     j.contact_id job_contact_id,
     r.label role,                            
     l.label location,                            
@@ -138,7 +149,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
     INNER JOIN civicrm_option_group gr on r.option_group_id = gr.id and gr.name = 'o8_job_role'
 ";
         $wheresql = " where 1 = 1";
-        $groupsql = " group by j.id, j.title, s.label, l.label, r.label, j.created_date, j.contact_id, app_id";
+        $groupsql = " group by j.id, j.is_active, ap.is_active, j.title, s.label, l.label, r.label, j.created_date, j.contact_id, app_id";
         $ordersql = " ORDER BY app_id desc";
         if (isset($employerIds)) {
             if ($employerIds !== null) {
@@ -214,6 +225,12 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
 
         $today = strtotime("+1 day", time());
         $date_today = date("Y-m-d H:i:s", $today);
+        if (isset($is_active)) {
+            $wheresql .= " AND ap.`is_active` = " . strval($is_active) . " ";
+        }
+        if (isset($job_is_active)) {
+            $wheresql .= " AND j.`is_active` = " . strval($job_is_active) . " ";
+        }
 
         if (isset($dateselect_from)) {
             if ($dateselect_from != null) {
@@ -277,6 +294,17 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                         ['reset' => 1, 'cid' => $dao->app_contact_id]) . '">' .
                     CRM_Contact_BAO_Contact::displayName($dao->app_contact_id) . '</a>';
             }
+            $is_active_view = "No";
+//                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
+            if($dao->is_active > 0){
+                $is_active_view = "Yes";
+            }
+            $jis_active_view = "No";
+//                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
+            if($dao->job_is_active > 0){
+                $jis_active_view = "Yes";
+            }
+
             $r_view = CRM_Utils_System::url('civicrm/applications/form',
                 ['action' => 'view', 'id' => $dao->app_id]);
             $r_update = CRM_Utils_System::url('civicrm/applications/form',
@@ -288,6 +316,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
 //            $delete = '<a target="_blank" class="action-item delete-application crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$view</span>";
             $rows[$count][] = $dao->app_id;
+            $rows[$count][] = $is_active_view;
             $rows[$count][] = $dao->title;
             $rows[$count][] = $dao->role;
             $rows[$count][] = $dao->location;
@@ -296,6 +325,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $rows[$count][] = $dao->application_count;
             }
             $rows[$count][] = $dao->job_created_date;
+            $rows[$count][] = $jis_active_view;
             if (!isset($employeeId)) {
                 $rows[$count][] = $app_contact;
             }

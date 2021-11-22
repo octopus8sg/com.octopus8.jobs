@@ -27,10 +27,14 @@
                         <td>{$form.application_location_id.html}</td>
                     </tr>
                     <tr>
+                        <td class="label">{$form.application_job_is_active.label}</td>
+                        <td>{$form.application_job_is_active.html}</td>
+                        <td class="label">{$form.application_is_active.label}</td>
+                        <td>{$form.application_is_active.html}</td>
+                    </tr>
+                    <tr>
                         <td class="label">{$form.application_status_id.label}</td>
                         <td>{$form.application_status_id.html}</td>
-                        <td class="label">{$form.application_job_status_id.label}</td>
-                        <td>{$form.application_job_status_id.html}</td>
                     </tr>
                     <tr>
                         <td class="label">{$form.application_dateselect_from.label}</td>

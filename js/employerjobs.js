@@ -83,12 +83,21 @@ CRM.$(function ($) {
                 "name": "role_id",
                 "value": $('#employer_job_role_id').val()
             });
+            var ischecked = $('#employer_job_is_active').prop("checked");
+            // alert(ischecked);
             aoData.push({
                 "name":
-                    "status_id",
+                    "is_active",
                 "value":
-                    $('#employer_job_status_id').val()
+                ischecked
             });
+
+            // aoData.push({
+            //     "name":
+            //         "status_id",
+            //     "value":
+            //         $('#employer_job_status_id').val()
+            // });
             aoData.push({
                 "name":
                     "location_id",

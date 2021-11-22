@@ -98,11 +98,27 @@ CRM.$(function ($) {
                 "value":
                     $('#application_status_id').val()
             });
+            // aoData.push({
+            //     "name":
+            //         "job_status_id",
+            //     "value":
+            //         $('#application_job_status_id').val()
+            // });
+            var jischecked = $('#application_job_is_active').prop("checked");
+            // alert(jischecked);
             aoData.push({
                 "name":
-                    "job_status_id",
+                    "job_is_active",
                 "value":
-                    $('#application_job_status_id').val()
+                jischecked
+            });
+            var ischecked = $('#application_is_active').prop("checked");
+            // alert(ischecked);
+            aoData.push({
+                "name":
+                    "is_active",
+                "value":
+                ischecked
             });
             aoData.push({
                 "name":

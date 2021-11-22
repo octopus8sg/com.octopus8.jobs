@@ -174,6 +174,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'data-option-edit-path' => 'civicrm/admin/options/o8_application_status']);
 
             if ($this->_action == CRM_Core_Action::PREVIEW) {
+                $this->add('advcheckbox', 'is_active', E::ts('Active App'))->freeze();
+                $this->add('advcheckbox', 'job_is_active', E::ts('Active Job'))->freeze();
                 $this->addButtons([
                     [
                         'type' => 'cancel',
@@ -183,6 +185,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 ]);
                 $this->freeze();
             } elseif ($this->_action == CRM_Core_Action::VIEW) {
+                $this->add('advcheckbox', 'is_active', E::ts('Active App'))->freeze();
+                $this->add('advcheckbox', 'job_is_active', E::ts('Active Job'))->freeze();
                 $this->_acceptButtonName = $this->getButtonName('submit', 'accept');
                 $this->_reviewButtonName = $this->getButtonName('submit', 'review');
                 $this->_rejectButtonName = $this->getButtonName('submit', 'reject');
@@ -227,14 +231,20 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'name' => E::ts('Withdraw'),
                     'icon' => 'fa-trash',
                 ];
-
                 if ($userACL == 'admin') {
-                    $this->addButtons([
+//        CRM_Core_Error::debug_var('myjob', $this->_myentity);
+                    CRM_Core_Error::debug_var('myapp', $this->_myentity);
+
+                    $buttons = [
                         $review,
                         $accept,
                         $reject,
-                        $withdraw
-                    ]);
+                    ];
+                    if ($this->_myentity['is_active']) {
+                        $buttons[] = $withdraw;
+                    }
+                    $this->addButtons($buttons);
+
                 } elseif ($userACL == 'employer') {
                     $this->addButtons([
                         $review,
@@ -242,11 +252,13 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                         $reject
                     ]);
 
-                } elseif ($userACL == 'employee')
-                    $this->addButtons([
-                        $withdraw
-                    ]);
-
+                } elseif ($userACL == 'employee') {
+                    if ($this->_myentity['is_active']) {
+                        $this->addButtons([
+                            $withdraw
+                        ]);
+                    }
+                }
             }
         } else {
             $this->addButtons([
@@ -281,6 +293,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             $defaults['o8_job_location_id'] = $job['location_id'];
             $defaults['o8_job_role_id'] = $job['role_id'];
             $defaults['employer_id'] = $job['contact_id'];
+            $defaults['job_is_active'] = $job['is_active'];
             $defaults['job_created_date'] = $job['created_date'];
         }
 
@@ -326,14 +339,6 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 ]);
 //                CRM_Core_Error::debug_var('accept', $accept);
             }
-            if ($withdraw) {
-                $result = civicrm_api3('OptionValue', 'getvalue', [
-                    'return' => "value",
-                    'option_group_id' => "o8_application_status",
-                    'name' => "withdrawn",
-                ]);
-//                CRM_Core_Error::debug_var('accept', $accept);
-            }
             if ($review) {
                 $result = civicrm_api3('OptionValue', 'getvalue', [
                     'return' => "value",
@@ -354,15 +359,20 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 //                }
 //            }
             if ($statusId) {
-                //            $action = 'create';
-                $session = CRM_Core_Session::singleton();
-//                $values = $this->controller->exportValues();
-//                $params = $values;
                 $params['id'] = $this->getEntityId();
                 $action = 'update';
                 $currentUserId = CRM_Core_Session::getLoggedInContactID();
                 $params['modified_id'] = $currentUserId;
                 $params['status_id'] = $statusId;
+                $params['modified_date'] = date('YmdHis');
+                civicrm_api4('SscApplication', $action, ['values' => $params]);
+            }
+            if ($withdraw) {
+                $params['id'] = $this->getEntityId();
+                $action = 'update';
+                $currentUserId = CRM_Core_Session::getLoggedInContactID();
+                $params['is_active'] = False;
+                $params['modified_id'] = $currentUserId;
                 $params['modified_date'] = date('YmdHis');
                 civicrm_api4('SscApplication', $action, ['values' => $params]);
             }
