@@ -150,6 +150,9 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
         if (isset($contact_id)) {
             $wheresql .= " AND j.`contact_id` = " . $contact_id . " ";
         }
+        if (isset($contactId)) {
+            $wheresql .= " AND j.is_active = true";
+        }
 
         if (isset($employerId)) {
             $wheresql .= " AND j.`contact_id` = " . $employerId . " ";

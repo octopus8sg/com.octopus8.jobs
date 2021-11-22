@@ -10,14 +10,12 @@
             <tr>
               <td class="label">{$form.employee_job_contact_id.label}</td>
               <td>{$form.employee_job_contact_id.html}</td>
-              <td class="label">{$form.employee_job_location_id.label}</td>
-              <td>{$form.employee_job_location_id.html}</td>
             </tr>
             <tr>
+              <td class="label">{$form.employee_job_location_id.label}</td>
+              <td>{$form.employee_job_location_id.html}</td>
               <td class="label">{$form.employee_job_role_id.label}</td>
               <td>{$form.employee_job_role_id.html}</td>
-              <td class="label">{$form.employee_job_status_id.label}</td>
-              <td>{$form.employee_job_status_id.html}</td>
             </tr>
             <tr>
               <td class="label">{$form.employee_job_dateselect_from.label}</td>

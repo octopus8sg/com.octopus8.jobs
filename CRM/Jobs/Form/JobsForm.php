@@ -238,12 +238,12 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                         CRM_Core_Error::debug_var('_isActive', $this->_isActive);
                         $this->add('hidden', 'employee_id');
                         if ($this->_isActive) {
-                            CRM_Core_Error::debug_var('currentUserId', $currentUserId);
-                            CRM_Core_Error::debug_var('this_isEmployee', $this->_isEmployee);
-                            CRM_Core_Error::debug_var('this_isEmployer', $this->_isEmployer);
-                            CRM_Core_Error::debug_var('this_isAdmin', $this->_isAdmin);
-                            CRM_Core_Error::debug_var('this_myentcontactid', $this->_myentity['contact_id']);
-                            CRM_Core_Error::debug_var('this_contactid', $this->_contactId);
+//                            CRM_Core_Error::debug_var('currentUserId', $currentUserId);
+//                            CRM_Core_Error::debug_var('this_isEmployee', $this->_isEmployee);
+//                            CRM_Core_Error::debug_var('this_isEmployer', $this->_isEmployer);
+//                            CRM_Core_Error::debug_var('this_isAdmin', $this->_isAdmin);
+//                            CRM_Core_Error::debug_var('this_myentcontactid', $this->_myentity['contact_id']);
+//                            CRM_Core_Error::debug_var('this_contactid', $this->_contactId);
                             $this->add('hidden', 'employee_id');
                             $this->addButtons([
                                 [
