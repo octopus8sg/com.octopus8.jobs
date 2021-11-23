@@ -227,8 +227,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                     'data-option-edit-path' => 'civicrm/admin/options/o8_job_location']);
             $statuses = CRM_Core_OptionGroup::values('o8_job_status');
             $this->add('hidden', 'status_id');
-            $this->add('advcheckbox', 'is_active', E::ts('Is Active?'));
-            CRM_Core_Error::debug_var('this_contactId', $this->_contactId);
+            $this->add('checkbox', 'is_active', E::ts('Is Active?'));
+//            CRM_Core_Error::debug_var('this_contactId', $this->_contactId);
             $currentUserId = CRM_Core_Session::getLoggedInContactID();
 
             if ($this->_action == CRM_Core_Action::VIEW) {
@@ -387,19 +387,19 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
         } else {
             $values = $this->controller->exportValues();
+        CRM_Core_Error::debug_var('values', $values);
             $action = 'create';
             if ($this->getEntityId()) {
                 $params['id'] = $this->getEntityId();
                 $action = 'update';
                 $params['modified_id'] = $currentUserId;
                 $params['modified_date'] = date('YmdHis');
-
             } else {
                 $params['created_id'] = $currentUserId;
                 $params['created_date'] = date('YmdHis');
             }
             $params['title'] = $values['title'];
-            $params['is_active'] = $values['is_active'];
+            $params['is_active'] = boolval($values['is_active']);
             $params['description'] = $values['description'];
             $params['contact_id'] = $values['contact_id'];
             //added pseudoconstants

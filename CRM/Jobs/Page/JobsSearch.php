@@ -151,7 +151,19 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             $wheresql .= " AND j.`contact_id` = " . $contact_id . " ";
         }
         if (isset($contactId)) {
-            $wheresql .= " AND j.is_active = true";
+            $contact = \Civi\Api4\Contact::get(0)
+                ->addWhere('id', '=', $contactId)
+                ->execute()->single();
+            $contactType = $contact['contact_type'];
+            $employees = array("Individual",
+                "Student",
+                "Parent",
+                "Staff",
+            );
+            if (in_array($contactType, $employees)) {
+                $wheresql .= " AND j.is_active = true";
+            }
+
         }
 
         if (isset($employerId)) {
