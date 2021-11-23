@@ -144,7 +144,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
             civicrm_api3('OptionValue', 'create',
                 ['value' => 2,
                     'name' => 'shortlisted',
-                    'label' => E::ts('$values'),
+                    'label' => E::ts('Shortlisted'),
                     'option_group_id' => $typeOptionGroupId
                 ]
             );
