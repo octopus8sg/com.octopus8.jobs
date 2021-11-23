@@ -36,7 +36,7 @@
                         {ts}Date Created{/ts}
                     </th>
                     <th scope="col">
-                        {ts}Is Active{/ts}
+                        {ts}Open/Closed{/ts}
                     </th>
                     <th id="nosort">&nbsp;Action</th>
                 </tr>

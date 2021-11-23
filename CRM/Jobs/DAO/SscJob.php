@@ -246,8 +246,8 @@ class CRM_Jobs_DAO_SscJob extends CRM_Core_DAO {
         'is_active' => [
           'name' => 'is_active',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => E::ts('Is Job Active?'),
-          'description' => E::ts('Is the Job active or withdrawn?'),
+          'title' => E::ts('Is Job Open?'),
+          'description' => E::ts('Is the Job Open or Closed?'),
           'required' => TRUE,
           'where' => 'civicrm_o8_job.is_active',
           'default' => '1',

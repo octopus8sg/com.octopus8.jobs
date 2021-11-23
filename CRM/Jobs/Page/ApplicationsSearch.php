@@ -342,15 +342,15 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                         ['reset' => 1, 'cid' => $dao->app_contact_id]) . '">' .
                     CRM_Contact_BAO_Contact::displayName($dao->app_contact_id) . '</a>';
             }
-            $is_active_view = "No";
+            $is_active_view = "Withdrawn";
 //                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
             if ($dao->is_active > 0) {
-                $is_active_view = "Yes";
+                $is_active_view = "Applied";
             }
-            $jis_active_view = "No";
+            $jis_active_view = "Closed";
 //                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
             if ($dao->job_is_active > 0) {
-                $jis_active_view = "Yes";
+                $jis_active_view = "Open";
             }
 
             $r_view = CRM_Utils_System::url('civicrm/applications/form',

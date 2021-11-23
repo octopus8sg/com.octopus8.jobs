@@ -176,8 +176,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'data-option-edit-path' => 'civicrm/admin/options/o8_application_status']);
 
             if ($this->_action == CRM_Core_Action::PREVIEW) {
-                $this->add('advcheckbox', 'is_active', E::ts('Active App'))->freeze();
-                $this->add('advcheckbox', 'job_is_active', E::ts('Active Job'))->freeze();
+                $this->add('advcheckbox', 'is_active', E::ts('Applied'))->freeze();
+                $this->add('advcheckbox', 'job_is_active', E::ts('Open Job'))->freeze();
                 $this->addButtons([
                     [
                         'type' => 'cancel',
@@ -187,8 +187,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 ]);
                 $this->freeze();
             } elseif ($this->_action == CRM_Core_Action::VIEW) {
-                $this->add('advcheckbox', 'is_active', E::ts('Active App'))->freeze();
-                $this->add('advcheckbox', 'job_is_active', E::ts('Active Job'))->freeze();
+                $this->add('advcheckbox', 'is_active', E::ts('Applied'))->freeze();
+                $this->add('advcheckbox', 'job_is_active', E::ts('Open Job'))->freeze();
                 $this->_changeitButtonName = $this->getButtonName('submit', 'changeit');
                 $this->_acceptButtonName = $this->getButtonName('submit', 'accept');
                 $this->_reviewButtonName = $this->getButtonName('submit', 'review');

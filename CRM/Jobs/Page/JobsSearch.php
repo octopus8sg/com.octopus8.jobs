@@ -281,10 +281,10 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $r_view = CRM_Utils_System::url('civicrm/jobs/form',
                     ['action' => 'view', 'id' => $dao->id]);
             }
-            $is_active_view = "No";
+            $is_active_view = "Closed";
 //                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
             if($dao->is_active > 0){
-                $is_active_view = "Yes";
+                $is_active_view = "Open";
             }
             $u_action = ['action' => 'update',
                 'id' => $dao->id, 'reset' => 1];

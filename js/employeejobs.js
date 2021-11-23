@@ -35,6 +35,9 @@ CRM.$(function ($) {
                     var hm_tab = $('.selector-employee-jobs');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
+                    var hm_tab2 = $('.selector-employee-applications');
+                    var hm_table2 = hm_tab2.DataTable();
+                    hm_table2.draw();
                 });
             });
             // $("a.update-job").css('background','blue');
@@ -48,6 +51,9 @@ CRM.$(function ($) {
                     var hm_tab = $('.selector-employee-jobs');
                     var hm_table = hm_tab.DataTable();
                     hm_table.draw();
+                    var hm_tab2 = $('.selector-employee-applications');
+                    var hm_table2 = hm_tab2.DataTable();
+                    hm_table2.draw();
                 });
             });
         };
@@ -107,6 +113,7 @@ CRM.$(function ($) {
         //End Reset Table
         $('.employee-job-filter :input').change(function () {
             new_jobs_table.draw();
+
         });
 
     });

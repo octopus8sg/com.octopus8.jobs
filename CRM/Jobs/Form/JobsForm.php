@@ -227,7 +227,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                     'data-option-edit-path' => 'civicrm/admin/options/o8_job_location']);
             $statuses = CRM_Core_OptionGroup::values('o8_job_status');
             $this->add('hidden', 'status_id');
-            $this->add('checkbox', 'is_active', E::ts('Is Active?'));
+            $this->add('checkbox', 'is_active', E::ts('Is Open?'));
 //            CRM_Core_Error::debug_var('this_contactId', $this->_contactId);
             $currentUserId = CRM_Core_Session::getLoggedInContactID();
 
@@ -276,7 +276,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
                 }
             } else {
-                $this->add('checkbox', 'is_active', E::ts('Is Active?'));
+                $this->add('checkbox', 'is_active', E::ts('Is Open?'));
                 $this->addButtons([
                     [
                         'type' => 'upload',

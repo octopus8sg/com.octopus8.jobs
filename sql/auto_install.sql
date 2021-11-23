@@ -42,7 +42,7 @@ CREATE TABLE `civicrm_o8_job`
     `description`   longtext     NULL,
     `role_id`       int                   DEFAULT 1,
     `location_id`   int                   DEFAULT 1,
-    `is_active`     tinyint      NOT NULL DEFAULT 1 COMMENT 'Is the Job active or withdrawn?',
+    `is_active`     tinyint      NOT NULL DEFAULT 1 COMMENT 'Is the Job Open or Closed?',
     `status_id`     int                   DEFAULT 1,
     `created_date`  timestamp    NULL     DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the job was created',
     `created_id`    int unsigned COMMENT 'FK to civicrm_contact, who created this application',
