@@ -136,36 +136,29 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
             civicrm_api3('OptionValue', 'create',
                 ['value' => 1,
                     'is_default' => '1',
-                    'name' => 'new',
-                    'label' => E::ts('New'),
+                    'name' => 'not_shortlisted',
+                    'label' => E::ts('Not Shortlisted'),
                     'option_group_id' => $typeOptionGroupId
                 ]
             );
             civicrm_api3('OptionValue', 'create',
                 ['value' => 2,
-                    'name' => 'under_revision',
-                    'label' => E::ts('Under Revision'),
+                    'name' => 'shortlisted',
+                    'label' => E::ts('$values'),
                     'option_group_id' => $typeOptionGroupId
                 ]
             );
             civicrm_api3('OptionValue', 'create',
-                ['value' => 4,
-                    'name' => 'approved',
-                    'label' => E::ts('Approved'),
-                    'option_group_id' => $typeOptionGroupId
-                ]
-            );
-            civicrm_api3('OptionValue', 'create',
-                ['value' => 5,
+                ['value' => 3,
                     'name' => 'rejected',
                     'label' => E::ts('Rejected'),
                     'option_group_id' => $typeOptionGroupId
                 ]
             );
             civicrm_api3('OptionValue', 'create',
-                ['value' => 6,
-                    'name' => 'withdrown',
-                    'label' => E::ts('Withdrown'),
+                ['value' => 4,
+                    'name' => 'selected',
+                    'label' => E::ts('Selected'),
                     'option_group_id' => $typeOptionGroupId
                 ]
             );
