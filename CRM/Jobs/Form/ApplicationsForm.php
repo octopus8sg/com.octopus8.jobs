@@ -21,6 +21,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 
     protected $_acceptButtonName;
 
+    protected $_changeitButtonName;
+
     protected $_reviewButtonName;
 
     protected $_rejectButtonName;
@@ -143,10 +145,10 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'title', E::ts('Job Title'), ['class' => 'huge'], FALSE)->freeze();
                 $this->addEntityRef('employer_id',
                     E::ts('Employer'), [], FALSE)->freeze();
-                $jstatuses = CRM_Core_OptionGroup::values('o8_job_status');
-                $this->add('select', 'o8_job_status_id', E::ts('Job Status'),
-                    $jstatuses, FALSE, ['class' => 'huge crm-select2',
-                        'data-option-edit-path' => 'civicrm/admin/options/o8_job_status'])->freeze();
+//                $jstatuses = CRM_Core_OptionGroup::values('o8_job_status');
+//                $this->add('select', 'o8_job_status_id', E::ts('Job Status'),
+//                    $jstatuses, FALSE, ['class' => 'huge crm-select2',
+//                        'data-option-edit-path' => 'civicrm/admin/options/o8_job_status'])->freeze();
                 $jlocations = CRM_Core_OptionGroup::values('o8_job_location');
                 $this->add('select', 'o8_job_location_id', E::ts('Job Location'),
                     $jlocations, FALSE, ['class' => 'huge crm-select2',
@@ -187,6 +189,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             } elseif ($this->_action == CRM_Core_Action::VIEW) {
                 $this->add('advcheckbox', 'is_active', E::ts('Active App'))->freeze();
                 $this->add('advcheckbox', 'job_is_active', E::ts('Active Job'))->freeze();
+                $this->_changeitButtonName = $this->getButtonName('submit', 'changeit');
                 $this->_acceptButtonName = $this->getButtonName('submit', 'accept');
                 $this->_reviewButtonName = $this->getButtonName('submit', 'review');
                 $this->_rejectButtonName = $this->getButtonName('submit', 'reject');
@@ -210,8 +213,13 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'type' => 'submit',
                     'subName' => 'review',
                     'name' => E::ts('Review Later'),
-                    'isDefault' => TRUE,
                     'icon' => 'fa-clock-o',
+                ];
+                $changeit = [
+                    'type' => 'submit',
+                    'subName' => 'changeit',
+                    'name' => E::ts('Change Status'),
+                    'isDefault' => TRUE,
                 ];
                 $accept = [
                     'type' => 'submit',
@@ -231,7 +239,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'name' => E::ts('Withdraw'),
                     'icon' => 'fa-trash',
                 ];
-                if(!$this->_myentity['is_active']){
+                if (!$this->_myentity['is_active']) {
                     $this->addButtons([
                         [
                             'type' => 'cancel',
@@ -240,36 +248,38 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                         ],
                     ]);
 
-                }else{
-                if ($userACL == 'admin') {
+                } else {
+                    if ($userACL == 'admin') {
 
 //        CRM_Core_Error::debug_var('myjob', $this->_myentity);
 //        CRM_Core_Error::debug_var('myapp', $this->_myentity);
 
-                    $buttons = [
-                        $review,
-                        $accept,
-                        $reject,
-                    ];
-                    if ($this->_myentity['is_active']) {
-                        $buttons[] = $withdraw;
-                    }
-                    $this->addButtons($buttons);
+                        $buttons = [
+//                        $review,
+//                        $accept,
+//                        $reject,
+//                    $changeit
+                        ];
+                        if ($this->_myentity['is_active']) {
+                            $buttons[] = $changeit;
+                            $buttons[] = $withdraw;
+                        }
+                        $this->addButtons($buttons);
 
-                } elseif ($userACL == 'employer') {
-                    $this->addButtons([
-                        $review,
-                        $accept,
-                        $reject
-                    ]);
+                    } elseif ($userACL == 'employer') {
+                        if ($this->_myentity['is_active']) {
+                            $buttons[] = $changeit;
+//                        $buttons[] = $withdraw;
+                        }
+                        $this->addButtons($buttons);
 
-                } elseif ($userACL == 'employee') {
-                    if ($this->_myentity['is_active']) {
-                        $this->addButtons([
-                            $withdraw
-                        ]);
+                    } elseif ($userACL == 'employee') {
+                        if ($this->_myentity['is_active']) {
+                            $this->addButtons([
+                                $withdraw
+                            ]);
+                        }
                     }
-                }
                 }
             }
         } else {
@@ -280,6 +290,12 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
         }
         if ($this->_action == CRM_Core_Action::VIEW) {
             $this->freeze();
+            if ($userACL == 'admin') {
+                $this->getElement('status_id')->unfreeze();
+            }
+            if ($userACL == 'employer') {
+                $this->getElement('status_id')->unfreeze();
+            }
         }
         parent::buildQuickForm();
     }
@@ -336,40 +352,47 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             civicrm_api4('Job', 'delete', ['where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
         } elseif ($this->_action == CRM_Core_Action::VIEW) {
+            $values = $this->controller->exportValues();
             $post = $_POST;
+            $changeit = $post[$this->_changeitButtonName];
             $accept = $post[$this->_acceptButtonName];
             $review = $post[$this->_reviewButtonName];
             $reject = $post[$this->_rejectButtonName];
             $withdraw = $post[$this->_withdrawButtonName];
             $statusId = NULL;
 //            try {
-            if ($accept) {
-                $result = civicrm_api3('OptionValue', 'getvalue', [
-                    'return' => "value",
-                    'option_group_id' => "o8_application_status",
-                    'name' => "approved",
-                ]);
+            if ($changeit) {
 //                CRM_Core_Error::debug_var('accept', $accept);
-            }
-            if ($review) {
-                $result = civicrm_api3('OptionValue', 'getvalue', [
-                    'return' => "value",
-                    'option_group_id' => "o8_application_status",
-                    'name' => "under_revision",
-                ]);
-            }
-            if ($reject) {
-                $result = civicrm_api3('OptionValue', 'getvalue', [
-                    'return' => "value",
-                    'option_group_id' => "o8_application_status",
-                    'name' => "rejected",
-                ]);
-            }
+                $statusId = $values['status_id'];
+            } else {
+                if ($accept) {
+                    $result = civicrm_api3('OptionValue', 'getvalue', [
+                        'return' => "value",
+                        'option_group_id' => "o8_application_status",
+                        'name' => "approved",
+                    ]);
+//                CRM_Core_Error::debug_var('accept', $accept);
+                }
+                if ($review) {
+                    $result = civicrm_api3('OptionValue', 'getvalue', [
+                        'return' => "value",
+                        'option_group_id' => "o8_application_status",
+                        'name' => "under_revision",
+                    ]);
+                }
+                if ($reject) {
+                    $result = civicrm_api3('OptionValue', 'getvalue', [
+                        'return' => "value",
+                        'option_group_id' => "o8_application_status",
+                        'name' => "rejected",
+                    ]);
+                }
 //            } catch (Exception $e) {
 //                if (!empty($value['label'])) {
-            $statusId = $result['value'];
+                $statusId = $result['value'];
 //                }
 //            }
+            }
             if ($statusId) {
                 $params['id'] = $this->getEntityId();
                 $action = 'update';
