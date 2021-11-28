@@ -134,15 +134,13 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
         } else {
             $sortMapper = [
                 0 => 'app_id',
-                1 => 'is_active',
-                2 => 'title',
-                3 => 'role',
-                4 => 'location',
-                5 => 'job_contact_id',
-                6 => 'job_created_date',
-                7 => 'job_is_active',
-                8 => 'app_created_date',
-                9 => 'app_status'
+                1 => 'title',
+                2 => 'role',
+                3 => 'location',
+                4 => 'job_contact_id',
+                5 => 'job_created_date',
+                6 => 'app_created_date',
+                7 => 'app_status',
             ];
         }
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -363,24 +361,34 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             $update = '<a target="_blank" class="action-item update-application crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
 //            $delete = '<a target="_blank" class="action-item delete-application crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             $action = "<span>$view</span>";
-            $rows[$count][] = $dao->app_id;
-            $rows[$count][] = $is_active_view;
-            $rows[$count][] = $dao->title;
-            $rows[$count][] = $dao->role;
-            $rows[$count][] = $dao->location;
-            $rows[$count][] = $job_contact;
             if (!isset($employeeId)) {
+                $rows[$count][] = $dao->app_id;
+                $rows[$count][] = $is_active_view;
+                $rows[$count][] = $dao->title;
+                $rows[$count][] = $dao->role;
+                $rows[$count][] = $dao->location;
+                $rows[$count][] = $job_contact;
                 $rows[$count][] = $dao->application_count;
-            }
-            $rows[$count][] = $dao->job_created_date;
-            $rows[$count][] = $jis_active_view;
-            if (!isset($employeeId)) {
+                $rows[$count][] = $dao->job_created_date;
+                $rows[$count][] = $jis_active_view;
                 $rows[$count][] = $app_contact;
+                $rows[$count][] = $dao->app_created_date;
+                $rows[$count][] = $dao->app_status;
+                $rows[$count][] = $action;
+                $count++;
+            } else {
+                $rows[$count][] = $dao->app_id;
+                $rows[$count][] = $dao->title;
+                $rows[$count][] = $dao->role;
+                $rows[$count][] = $dao->location;
+                $rows[$count][] = $job_contact;
+                $rows[$count][] = $dao->job_created_date;
+                $rows[$count][] = $dao->app_created_date;
+                $rows[$count][] = $is_active_view;
+                $rows[$count][] = $action;
+                $count++;
+
             }
-            $rows[$count][] = $dao->app_created_date;
-            $rows[$count][] = $dao->app_status;
-            $rows[$count][] = $action;
-            $count++;
         }
 
         $searchRows = $rows;
