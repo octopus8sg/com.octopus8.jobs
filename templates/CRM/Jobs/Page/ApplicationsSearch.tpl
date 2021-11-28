@@ -14,7 +14,7 @@
                             {ts}ID{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Active App{/ts}
+                            {ts}Applied/Withdrawn{/ts}
                         </th>
                         <th scope="col">
                             {ts}Job Title{/ts}
@@ -35,7 +35,7 @@
                             {ts}Job Created Date{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Active Job{/ts}
+                            {ts}Job Open/Closed{/ts}
                         </th>
                         <th scope="col">
                             {ts}Employee{/ts}
@@ -44,7 +44,7 @@
                             {ts}App Created Date{/ts}
                         </th>
                         <th scope="col">
-                            {ts}App Status{/ts}
+                            {ts}Status{/ts}
                         </th>
                         <th id="nosort">&nbsp;Action</th>
                     </tr>
