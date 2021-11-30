@@ -14,7 +14,8 @@
  * @package CRM
  * @copyright CiviCRM LLC https://civicrm.org/licensing
  */
-class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
+class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form
+{
 
     protected $_summary = NULL;
 
@@ -23,9 +24,57 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
     protected $noDisplayContributionOrSoftColumn = FALSE;
 
     protected $_customGroupExtends = [
+        'SscJob',
         'Contact',
         'Individual',
+        'Organisation',
     ];
+    public function customDataFrom($joinsForFiltersOnly = FALSE) {
+        if (empty($this->_customGroupExtends)) {
+            return;
+        }
+        $mapper = CRM_Core_BAO_CustomQuery::$extendsMap;
+        $mapper['SscJob'] = 'civicrm_o8_job';
+        $mapper['SscApplication'] = 'civicrm_o8_application';
+        //CRM-18276 GROUP_CONCAT could be used with singleValueQuery and then exploded,
+        //but by default that truncates to 1024 characters, which causes errors with installs with lots of custom field sets
+        $customTables = [];
+        $customTablesDAO = CRM_Core_DAO::executeQuery("SELECT table_name FROM civicrm_custom_group");
+        while ($customTablesDAO->fetch()) {
+            $customTables[] = $customTablesDAO->table_name;
+        }
+
+        foreach ($this->_columns as $table => $prop) {
+            if (in_array($table, $customTables)) {
+                $extendsTable = $mapper[$prop['extends']];
+        CRM_Core_Error::debug_var('mapper', $mapper);
+        CRM_Core_Error::debug_var('prop', $prop);
+        CRM_Core_Error::debug_var('extendsTable', $extendsTable);
+//
+                // Check field is required for rendering the report.
+                if ((!$this->isFieldSelected($prop)) || ($joinsForFiltersOnly && !$this->isFieldFiltered($prop))) {
+                    continue;
+                }
+                $baseJoin = CRM_Utils_Array::value($prop['extends'], $this->_customGroupExtendsJoin, "{$this->_aliases[$extendsTable]}.id");
+
+                $customJoin = is_array($this->_customGroupJoin) ? $this->_customGroupJoin[$table] : $this->_customGroupJoin;
+                $this->_from .= "
+{$customJoin} {$table} {$this->_aliases[$table]} ON {$this->_aliases[$table]}.entity_id = {$baseJoin}";
+                // handle for ContactReference
+                if (array_key_exists('fields', $prop)) {
+                    foreach ($prop['fields'] as $fieldName => $field) {
+                        if (CRM_Utils_Array::value('dataType', $field) ==
+                            'ContactReference'
+                        ) {
+                            $columnName = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_CustomField', CRM_Core_BAO_CustomField::getKeyID($fieldName), 'column_name');
+                            $this->_from .= "
+LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_aliases[$table]}.{$columnName} ";
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     protected $groupConcatTested = TRUE;
 
@@ -83,7 +132,7 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
                     'dao' => 'CRM_Core_DAO_Email',
                     'fields' => [
                         'email' => [
-                            'title' => ts('Employee Email'),
+                            'title' => ts('Employer Email'),
                             'default' => TRUE,
                         ],
                     ],
@@ -92,24 +141,40 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
 //        'civicrm_line_item' => [
 //          'dao' => 'CRM_Price_DAO_LineItem',
 //        ],
-                'civicrm_phone' => [
-                    'dao' => 'CRM_Core_DAO_Phone',
-                    'fields' => [
-                        'phone' => [
-                            'title' => ts('Employee Phone'),
-                            'default' => TRUE,
-                            'no_repeat' => TRUE,
-                        ],
-                    ],
-                    'grouping' => 'contact-fields',
-                ],
+//                'civicrm_phone' => [
+//                    'dao' => 'CRM_Core_DAO_Phone',
+//                    'fields' => [
+//                        'phone' => [
+//                            'title' => ts('Employer Phone'),
+//                            'default' => TRUE,
+//                            'no_repeat' => TRUE,
+//                        ],
+//                    ],
+//                    'grouping' => 'contact-fields',
+//                ],
                 'civicrm_o8_job' => [
                     'dao' => 'CRM_Jobs_DAO_SscJob',
                     'fields' => [
                         'ssc_job_id' => [
                             'name' => 'id',
-                            'no_display' => TRUE,
+                            'title' => ts('Job ID'),
+                            'no_display' => FALSE,
                             'required' => TRUE,
+                        ],
+                        'title' => [
+                            'title' => ts('Title'),
+                        ],
+                        'description' => [
+                            'title' => ts('Description'),
+                        ],
+                        'role_id' => [
+                            'title' => ts('Role'),
+                        ],
+                        'location_id' => [
+                            'title' => ts('Location'),
+                        ],
+                        'is_active' => [
+                            'title' => ts('Open/Closed'),
                         ],
                         'created_date' => ['type' => CRM_Utils_Type::T_INT,
 //                            'required' => TRUE,
@@ -117,16 +182,29 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
                             'title' => ts('Job Created Date'),
                             'default' => TRUE,
                         ],
-//                        'device_id' => [
-//                            'title' => ts('Device'),
-////                            'required' => TRUE,
-//                            'default' => TRUE,
-//                        ],
-//                        'sensor_id' => [
-//                            'title' => ts('Sensor'),
-////                            'required' => TRUE,
-//                            'default' => TRUE,
-//                        ],
+                        'created_id' => ['type' => 'Contact',
+//                            'required' => TRUE,
+                            'order_bys_defaults' => ['sort_name' => 'ASC '],
+                            'fields_defaults' => ['sort_name'],
+                            'name' => 'created_id',
+                            'title' => ts('Job Created By'),
+                            'default' => TRUE,
+                        ],
+                        'modified_date' => ['type' => CRM_Utils_Type::T_INT,
+//                            'required' => TRUE,
+                            'name' => 'modified_date',
+                            'title' => ts('Job Modified Date'),
+                            'default' => TRUE,
+                        ],
+                        'modified_id' => ['type' => 'Contact',
+//                            'required' => TRUE,
+                            'name' => 'modified_id',
+                            'order_bys_defaults' => ['sort_name' => 'ASC '],
+                            'fields_defaults' => ['sort_name'],
+                            'title' => ts('Job Modified By'),
+                            'default' => TRUE,
+                        ],
+
 //                        'sensor_value' => [
 //                            'title' => ts('Value'),
 ////                            'required' => TRUE,
@@ -137,7 +215,15 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
                         'date' => ['operatorType' => CRM_Report_Form::OP_DATE],
                     ],
                     'order_bys' => [
+                        'id' => ['title' => ts('Job ID')],
+                        'title' => ['title' => ts('Job Title')],
+                        'description' => ['title' => ts('Job Description')],
+                        'role_id' => ['title' => ts('Role')],
+                        'location_id' => ['title' => ts('Location')],
                         'created_date' => ['title' => ts('Job Created Date')],
+                        'created_id' => ['title' => ts('Job Created By')],
+                        'modified_date' => ['title' => ts('Job Modified Date')],
+                        'modified_id' => ['title' => ts('Job Modified By')],
 //                        'sensor_id' => ['title' => ts('Sensor')],
 //                        'device_id' => ['title' => ts('Device')],
                     ],
@@ -162,7 +248,7 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
 //      $this->getColumns('Address')
         );
         // The tests test for this variation of the sort_name field. Don't argue with the tests :-).
-        $this->_columns['civicrm_contact']['fields']['sort_name']['title'] = ts('Employee Name');
+        $this->_columns['civicrm_contact']['fields']['sort_name']['title'] = ts('Employer Name');
         $this->_groupFilter = TRUE;
         $this->_tagFilter = TRUE;
         parent::__construct();
@@ -219,7 +305,15 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
 
         // 1. use main contribution query to build temp table 1
         $sql = $this->buildQuery();
-        $this->createTemporaryTable('civireport_contribution_detail_temp1', $sql);
+
+//        .entity_id = .id;
+        CRM_Core_Error::debug_var('sql', $sql);
+        $checked_sql = str_replace(".entity_id = .id", ".entity_id = o8_job_civireport.id", $sql);
+        CRM_Core_Error::debug_var('checked_sql', $checked_sql);
+        CRM_Core_Error::debug_var('aliases', $this->_aliases);
+
+        //        .entity_id = .id
+        $this->createTemporaryTable('civireport_contribution_detail_temp1', $checked_sql);
         $this->limit();
         $this->setPager();
     }
@@ -252,9 +346,9 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
         $entryFound = FALSE;
         $display_flag = $prev_cid = $cid = 0;
         foreach ($rows as $rowNum => $row) {
-            CRM_Core_Error::debug_var('rows', $rows);
-            CRM_Core_Error::debug_var('rowNum', $rowNum);
-            CRM_Core_Error::debug_var('row', $row);
+//            CRM_Core_Error::debug_var('rows', $rows);
+//            CRM_Core_Error::debug_var('rowNum', $rowNum);
+            CRM_Core_Error::debug_var('row_before', $row);
 
             if (!empty($this->_noRepeats) && $this->_outputMode != 'csv') {
                 // don't repeat contact details if its same as the previous row
@@ -300,11 +394,30 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
                 $rows[$rowNum]['civicrm_contact_sort_name_hover'] = ts("View Contact Summary for this Contact.");
             }
 
-            if ($val = CRM_Utils_Array::value('civicrm_health_monitor_sensor_id', $row)) {
+            if ($val = CRM_Utils_Array::value('civicrm_o8_job_role_id', $row)) {
 //                            CRM_Core_Error::debug_var('val', $val);
                 $val = intval($val);
-                $rows[$rowNum]['civicrm_health_monitor_sensor_id']
-                    = CRM_Core_PseudoConstant::getLabel("CRM_Healthmonitor_BAO_HealthAlarmRule", "sensor_id", $val);
+                $rows[$rowNum]['civicrm_o8_job_role_id']
+                    = CRM_Core_PseudoConstant::getLabel("CRM_Jobs_BAO_SscJob", "role_id", $val);
+            }
+            if ($val = CRM_Utils_Array::value('civicrm_o8_job_location_id', $row)) {
+//                            CRM_Core_Error::debug_var('val', $val);
+                $val = intval($val);
+                $rows[$rowNum]['civicrm_o8_job_location_id']
+                    = CRM_Core_PseudoConstant::getLabel("CRM_Jobs_BAO_SscJob", "location_id", $val);
+            }
+            if ($val = CRM_Utils_Array::value('civicrm_o8_job_description', $row)) {
+//                            CRM_Core_Error::debug_var('val', $val);
+                if (strlen($val) > 1) {
+                    $val = trim(strip_tags($val));
+                    $words = preg_split("/[\s]+/", $val);
+                    if (sizeof($words) > 5) {
+                        $val = implode(' ', array_slice($words, 0, 5)) . "...";
+                    }
+                }
+//                $val =
+                $rows[$rowNum]['civicrm_o8_job_description']
+                    = $val;
             }
             if ($val = CRM_Utils_Array::value('civicrm_health_monitor_date', $row)) {
 //                            CRM_Core_Error::debug_var('val', $val);
@@ -320,6 +433,7 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
                 $rows[$rowNum]['civicrm_health_monitor_device_id']
                     = $device_code;
             }
+            CRM_Core_Error::debug_var('row_after', $rows[$rowNum]);
             $lastKey = $rowNum;
         }
     }
@@ -433,6 +547,13 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
         $this->appendAdditionalFromJoins();
     }
 
+    public function getFrozenHtml($string)
+    {
+        $value = htmlspecialchars($string);
+        $html = nl2br($value) . "\n";
+        return $html;
+    }
+
     /**
      * Append the joins that are required regardless of context.
      */
@@ -443,7 +564,6 @@ class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form {
         $this->joinEmailFromContact();
 
     }
-
 
 
 }
