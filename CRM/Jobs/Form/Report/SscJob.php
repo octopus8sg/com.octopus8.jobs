@@ -225,6 +225,16 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                         'modified_date' => [
                             'operatorType' => CRM_Report_Form::OP_DATE,
                             'title' => ts('Job Modified Date')],
+                        'role_id' => [
+                            'title' => ts('Role'),
+                            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+                            'options' => CRM_Core_PseudoConstant::get('CRM_Jobs_DAO_SscJob', 'role_id'),
+                        ],                        
+                        'location_id' => [
+                            'title' => ts('Location'),
+                            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+                            'options' => CRM_Core_PseudoConstant::get('CRM_Jobs_DAO_SscJob', 'location_id'),
+                        ],                        
                     ],
                     'order_bys' => [
                         'id' => ['title' => ts('Job ID')],
