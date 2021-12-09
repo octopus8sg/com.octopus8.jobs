@@ -235,6 +235,11 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                             'operatorType' => CRM_Report_Form::OP_MULTISELECT,
                             'options' => CRM_Core_PseudoConstant::get('CRM_Jobs_DAO_SscJob', 'location_id'),
                         ],                        
+                        'is_active' => [
+                            'title' => ts('Open/Closed'),
+                            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+                            'options' => [1 => 'Open', 0 => 'Closed'],
+                        ],
                     ],
                     'order_bys' => [
                         'id' => ['title' => ts('Job ID')],
