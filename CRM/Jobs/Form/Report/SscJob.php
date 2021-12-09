@@ -331,8 +331,8 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                                 'title' => ts('Created User Name')],
 //                            'source' => ['title' => ts('Modified User Source')],
 //                            'id' => ['title' => ts('Modified User ID')],
-                            'gender_id' => ['title' => ts('Created User Gender')],
-                            'birth_date' => ['title' => ts('Created User Birth Date')],
+//                            'gender_id' => ['title' => ts('Created User Gender')],
+//                            'birth_date' => ['title' => ts('Created User Birth Date')],
                         ]),
                     'grouping' => 'contact-fields',
                     'order_bys' => array(
@@ -367,8 +367,8 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                                 'title' => ts('Modified User Name')],
 //                            'source' => ['title' => ts('Modified User Source')],
 //                            'id' => ['title' => ts('Modified User ID')],
-                            'gender_id' => ['title' => ts('Modified User Gender')],
-                            'birth_date' => ['title' => ts('Modified User Birth Date')],
+//                            'gender_id' => ['title' => ts('Modified User Gender')],
+//                            'birth_date' => ['title' => ts('Modified User Birth Date')],
                         ]),
                     'grouping' => 'contact-fields',
                     'order_bys' => array(

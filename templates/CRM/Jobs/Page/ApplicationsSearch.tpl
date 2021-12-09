@@ -35,10 +35,10 @@
                             {ts}Job Created Date{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Job Open/Closed{/ts}
+                            {ts}Position Open/Closed{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Employee{/ts}
+                            {ts}Applicant{/ts}
                         </th>
                         <th scope="col">
                             {ts}App Created Date{/ts}

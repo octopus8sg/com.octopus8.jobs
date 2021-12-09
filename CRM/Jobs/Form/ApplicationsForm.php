@@ -128,7 +128,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 //        CRM_Core_Error::debug_var('myjob', $this->_myjob);
         if ($this->_action != CRM_Core_Action::DELETE) {
             if ($this->_contactId) {
-                $this->addEntityRef('contact_id', E::ts('Employee'), [], TRUE)->freeze();
+                $this->addEntityRef('contact_id', E::ts('Applicant'), [], TRUE)->freeze();
             } else {
                 $this->addEntityRef('contact_id', E::ts('Employee'), [], TRUE);
             }
@@ -253,7 +253,6 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 
 //        CRM_Core_Error::debug_var('myjob', $this->_myentity);
 //        CRM_Core_Error::debug_var('myapp', $this->_myentity);
-
                         $buttons = [
 //                        $review,
 //                        $accept,
@@ -261,14 +260,16 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 //                    $changeit
                         ];
                         if ($this->_myentity['is_active']) {
-                            $buttons[] = $changeit;
+//                            $buttons[] = $changeit;
                             $buttons[] = $withdraw;
+                            $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
                         }
                         $this->addButtons($buttons);
 
                     } elseif ($userACL == 'employer') {
                         if ($this->_myentity['is_active']) {
                             $buttons[] = $changeit;
+                            $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
 //                        $buttons[] = $withdraw;
                         }
                         $this->addButtons($buttons);
@@ -276,7 +277,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     } elseif ($userACL == 'employee') {
                         if ($this->_myentity['is_active']) {
                             $this->addButtons([
-                                $withdraw
+                                $withdraw,
+                                ['type' => 'cancel', 'name' => E::ts('Cancel')]
                             ]);
                         }
                     }
@@ -290,8 +292,9 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
         }
         if ($this->_action == CRM_Core_Action::VIEW) {
             $this->freeze();
-            if ($userACL == 'admin') {
-                $this->getElement('status_id')->unfreeze();
+            if ($userACL != 'employer') {
+//                $a = $this->getElement('status_id');
+                $this->removeElement('status_id');
             }
             if ($userACL == 'employer') {
                 $this->getElement('status_id')->unfreeze();

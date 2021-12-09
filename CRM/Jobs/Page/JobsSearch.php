@@ -308,7 +308,12 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $rows[$count][] = $contact;
             }
             if (!isset($employeeId)) {
-                $rows[$count][] = $dao->application_count;
+                $app_count =  $dao->application_count;
+                $jobid = $dao->id;
+                $app_count_link = "<a target='_blank' href='" .
+                    CRM_Utils_System::url('civicrm/applications/search',
+                        ['jobid' => $jobid]) . "'>" . $app_count . "</a> ";
+                $rows[$count][] = $app_count_link;
             }
             $rows[$count][] = $dao->created_date;
             if (!isset($employeeId)) {

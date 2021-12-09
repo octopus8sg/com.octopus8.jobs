@@ -39,7 +39,7 @@
                             {ts}Date Created{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Open/Closed{/ts}
+                            {ts}Position Open/Closed{/ts}
                         </th>
                         <th id="nosort">&nbsp;Action</th>
                     </tr>

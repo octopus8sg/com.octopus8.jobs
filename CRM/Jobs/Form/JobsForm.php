@@ -227,14 +227,14 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                     'data-option-edit-path' => 'civicrm/admin/options/o8_job_location']);
             $statuses = CRM_Core_OptionGroup::values('o8_job_status');
             $this->add('hidden', 'status_id');
-            $this->add('checkbox', 'is_active', E::ts('Is Open?'));
+            $this->add('checkbox', 'is_active', E::ts('Position Open?'));
 //            CRM_Core_Error::debug_var('this_contactId', $this->_contactId);
             $currentUserId = CRM_Core_Session::getLoggedInContactID();
 
             if ($this->_action == CRM_Core_Action::VIEW) {
                 if ($this->_myentity['contact_id'] != $currentUserId) {
                     //if user is not employer
-                    if ($this->_isEmployee or $this->_isAdmin) {
+                    if ($this->_isAdmin) {
                         CRM_Core_Error::debug_var('_isActive', $this->_isActive);
                         $this->add('hidden', 'employee_id');
                         if ($this->_isActive) {
@@ -246,17 +246,48 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 //                            CRM_Core_Error::debug_var('this_contactid', $this->_contactId);
                             $this->add('hidden', 'employee_id');
                             $this->addButtons([
+//                                [
+//                                    'type' => 'upload',
+//                                    'name' => E::ts('Apply'),
+//                                    'isDefault' => FALSE,
+//                                ],
                                 [
-                                    'type' => 'upload',
-                                    'name' => E::ts('Apply'),
+                                    'type' => 'submit',
+                                    'subName' => 'delete',
+                                    'name' => E::ts('Delete'),
+                                    'formaction' => 'delete',
                                     'isDefault' => FALSE,
                                 ],
-//                            [
-//                                'type' => 'submit',
-//                                'name' => E::ts('Delete'),
-//                                'formaction' => 'delete',
-//                                'isDefault' => FALSE,
-//                            ],
+                                [
+                                    'type' => 'cancel',
+                                    'name' => E::ts('Close'),
+                                    'isDefault' => TRUE,
+                                ],
+                            ]);
+                        }
+                    } elseif ($this->_isEmployee) {
+                        CRM_Core_Error::debug_var('_isActive', $this->_isActive);
+                        $this->add('hidden', 'employee_id');
+                        if ($this->_isActive) {
+//                            CRM_Core_Error::debug_var('currentUserId', $currentUserId);
+//                            CRM_Core_Error::debug_var('this_isEmployee', $this->_isEmployee);
+//                            CRM_Core_Error::debug_var('this_isEmployer', $this->_isEmployer);
+//                            CRM_Core_Error::debug_var('this_isAdmin', $this->_isAdmin);
+//                            CRM_Core_Error::debug_var('this_myentcontactid', $this->_myentity['contact_id']);
+//                            CRM_Core_Error::debug_var('this_contactid', $this->_contactId);
+                            $this->add('hidden', 'employee_id');
+                            $this->addButtons([
+//                                [
+//                                    'type' => 'upload',
+//                                    'name' => E::ts('Apply'),
+//                                    'isDefault' => FALSE,
+//                                ],
+//                                [
+//                                    'type' => 'submit',
+//                                    'name' => E::ts('Delete'),
+//                                    'formaction' => 'delete',
+//                                    'isDefault' => FALSE,
+//                                ],
                                 [
                                     'type' => 'cancel',
                                     'name' => E::ts('Close'),
@@ -276,7 +307,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
                 }
             } else {
-                $this->add('checkbox', 'is_active', E::ts('Is Open?'));
+                $this->add('checkbox', 'is_active', E::ts('Position Open?'));
                 $this->addButtons([
                     [
                         'type' => 'upload',
@@ -322,7 +353,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                 $defaults['app_count'] = "<a target='_blank' href='" .
                     CRM_Utils_System::url('civicrm/applications/search',
                         ['jobid' => $this->getEntityId()]) . "'>" . $this->_appCount . "</a> ";
-            } elseif($this->_isEmployer) {
+            } elseif ($this->_isEmployer) {
                 $defaults['app_count'] = "<a target='_blank' href='" .
                     CRM_Utils_System::url('civicrm/applications/search',
                         ['jobid' => $this->getEntityId(), 'employerid' => $this->_contactId]) . "'>" . $this->_appCount . "</a> ";
@@ -359,35 +390,42 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 //        CRM_Core_Error::debug_var('post', $_POST);
         $currentUserId = CRM_Core_Session::getLoggedInContactID();
         if ($this->_action == CRM_Core_Action::VIEW) {
-
+//        CRM_Core_Error::debug_var('request', $_REQUEST);
+//        CRM_Core_Error::debug_var('post', $_POST);
             // makes application for the job
             $params = [];
             $jobId = CRM_Utils_Request::retrieve('id', 'Positive');
-
-//            CRM_Core_Error::debug_var('values', $values);
-            $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
-            if (!$employeeId) {
-                $employeeId = $currentUserId;
-            }
-            $action = 'create';
-            $params['created_id'] = $currentUserId;
-            $params['created_date'] = date('YmdHis');
-            $params['contact_id'] = $employeeId;
-            $params['o8_job_id'] = $jobId;
-            try {
-                civicrm_api4('SscApplication', $action, ['values' => $params]);
-                // makes application for the job
-            } catch (Exception $exception) {
-                CRM_Core_Error::debug_var('error', $exception->getMessage());
+            $post = $_POST;
+            $delete = $post['_qf_JobsForm_submit_delete'];
+            if ($delete) {
+                civicrm_api4('SscJob', 'delete', ['where' => [['id', '=', $this->_id]]]);
+                CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
+            } else {
+                //            CRM_Core_Error::debug_var('values', $values);
+                $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
+                if (!$employeeId) {
+                    $employeeId = $currentUserId;
+                }
+                $action = 'create';
+                $params['created_id'] = $currentUserId;
+                $params['created_date'] = date('YmdHis');
+                $params['contact_id'] = $employeeId;
+                $params['o8_job_id'] = $jobId;
+                try {
+                    civicrm_api4('SscApplication', $action, ['values' => $params]);
+                    // makes application for the job
+                } catch (Exception $exception) {
+                    CRM_Core_Error::debug_var('error', $exception->getMessage());
+                    return;
+                }
                 return;
             }
-            return;
         } elseif ($this->_action == CRM_Core_Action::DELETE) {
             civicrm_api4('SscJob', 'delete', ['where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
         } else {
             $values = $this->controller->exportValues();
-        CRM_Core_Error::debug_var('values', $values);
+            CRM_Core_Error::debug_var('values', $values);
             $action = 'create';
             if ($this->getEntityId()) {
                 $params['id'] = $this->getEntityId();
