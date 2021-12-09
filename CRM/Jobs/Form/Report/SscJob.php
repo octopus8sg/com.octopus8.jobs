@@ -471,10 +471,13 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
     {
         $entryFound = FALSE;
         $display_flag = $prev_cid = $cid = 0;
-        foreach ($rows as $rowNum => $row) {
 //            CRM_Core_Error::debug_var('rows', $rows);
+        foreach ($rows as $rowNum => $row) {
 //            CRM_Core_Error::debug_var('rowNum', $rowNum);
 //            CRM_Core_Error::debug_var('row_before', $row);
+////            if (!$rows[$rowNum]['civicrm_o8_job_is_active']) {
+//                $rows[$rowNum]['civicrm_o8_job_is_active'] = intval($rows[$rowNum]['civicrm_o8_job_is_active']);
+////            }
 
             if (!empty($this->_noRepeats) && $this->_outputMode != 'csv') {
                 // don't repeat contact details if its same as the previous row
@@ -563,17 +566,18 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                 $rows[$rowNum]['civicrm_o8_job_description']
                     = $val;
             }
-            if ($val = CRM_Utils_Array::value('civicrm_o8_job_is_active', $row)) {
-
+            if (1 === 1) {
+                $val = CRM_Utils_Array::value('civicrm_o8_job_is_active', $row);
 //                            CRM_Core_Error::debug_var('val', $val);
-                if (intval($val) > 0) {
-                    $val = 'Open';
+                $bal = 'Closed';
+                if (boolval($val) === True) {
+                    $bal = 'Open';
                 } else {
-                    $val = 'Closed';
+                    $bal = 'Closed';
                 }
 //                $val =
                 $rows[$rowNum]['civicrm_o8_job_is_active']
-                    = $val;
+                    = $bal;
             }
             if ($val = CRM_Utils_Array::value('civicrm_health_monitor_date', $row)) {
 //                            CRM_Core_Error::debug_var('val', $val);
