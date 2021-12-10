@@ -14,7 +14,7 @@
  * @package CRM
  * @copyright CiviCRM LLC https://civicrm.org/licensing
  */
-class CRM_Jobs_Form_Report_SscJob extends CRM_Report_Form
+class CRM_Jobs_Form_Report_EmployerReport extends CRM_Report_Form
 {
 
     protected $_summary = NULL;
@@ -229,12 +229,12 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                             'title' => ts('Role'),
                             'operatorType' => CRM_Report_Form::OP_MULTISELECT,
                             'options' => CRM_Core_PseudoConstant::get('CRM_Jobs_DAO_SscJob', 'role_id'),
-                        ],                        
+                        ],
                         'location_id' => [
                             'title' => ts('Location'),
                             'operatorType' => CRM_Report_Form::OP_MULTISELECT,
                             'options' => CRM_Core_PseudoConstant::get('CRM_Jobs_DAO_SscJob', 'location_id'),
-                        ],                        
+                        ],
                         'is_active' => [
                             'title' => ts('Position Open?'),
                             'operatorType' => CRM_Report_Form::OP_MULTISELECT,

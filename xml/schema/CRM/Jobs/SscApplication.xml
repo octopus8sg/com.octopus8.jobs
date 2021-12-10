@@ -72,7 +72,7 @@
         <name>o8_job_id</name>
         <table>civicrm_o8_job</table>
         <key>id</key>
-        <onDelete>CASCADE</onDelete>
+        <onDelete>RESTRICT</onDelete>
     </foreignKey>
 
     <field>
