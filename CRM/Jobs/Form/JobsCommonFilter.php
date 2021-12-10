@@ -7,7 +7,8 @@ use CRM_Jobs_ExtensionUtil as E;
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/quickform/
  */
-class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form {
+class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form
+{
     public function buildQuickForm()
     {
 
@@ -175,21 +176,31 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form {
 
 
         $this->addDatePickerRange('job_dateselect',
-            'Select Job Date',
+            'Select Job Creation Date',
             FALSE,
             FALSE,
-            'From: ',
-            'To: ',
+            'Created From: ',
+            'Created To: ',
             null,
             '_to',
             '_from');
 
-        $this->addDatePickerRange('application_job_dateselect',
-            'Select Job Date',
+        $this->addDatePickerRange('job_due_dateselect',
+            'Select Job Due Date',
             FALSE,
             FALSE,
-            'From: ',
-            'To: ',
+            'Due Date From: ',
+            'Due To: ',
+            null,
+            '_to',
+            '_from');
+
+        $this->addDatePickerRange('application_job_due_dateselect',
+            'Select Job Due Date',
+            FALSE,
+            FALSE,
+            'Due Date From: ',
+            'Due To: ',
             null,
             '_to',
             '_from');
@@ -205,21 +216,41 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form {
             '_from');
 
         $this->addDatePickerRange('employer_job_dateselect',
-            'Select Date',
+            'Select Create Date',
             FALSE,
             FALSE,
-            'From: ',
-            'To: ',
+            'Created From: ',
+            'Created To: ',
+            null,
+            '_to',
+            '_from');
+
+        $this->addDatePickerRange('employer_job_due_dateselect',
+            'Select Due Date',
+            FALSE,
+            FALSE,
+            'Due Date From: ',
+            'Due To: ',
+            null,
+            '_to',
+            '_from');
+
+        $this->addDatePickerRange('employee_job_due_dateselect',
+            'Select Due Date',
+            FALSE,
+            FALSE,
+            'Due Date From: ',
+            'Due To: ',
             null,
             '_to',
             '_from');
 
         $this->addDatePickerRange('employee_job_dateselect',
-            'Select Date',
+            'Select Created Date',
             FALSE,
             FALSE,
-            'From: ',
-            'To: ',
+            'Created From: ',
+            'Created To: ',
             null,
             '_to',
             '_from');
@@ -234,18 +265,32 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form {
             '_to',
             '_from');
 
+        $this->addElement('select', 'job_due_date_open',
+            ts('Due Date Open/Closed') . ' ', [0 => "Closed", 1 => "Open"],
+            [
+                'size' => 2,
+                'style' => 'min-width:250px',
+                'class' => 'crm-select2 huge',
+                'multiple' => TRUE,
+                'placeholder' => ts('- select -'),
+            ]
+        );
 
-        $this->add('advcheckbox', 'job_is_active', ts('Position Open?'))->setChecked(true);
+        $this->setDefaults(array('job_due_date_open' => array(0, 1)));
+
+        //        $this->add('advcheckbox', 'job_date_open', ts('Date Open?'))->setChecked(true);
+//
+//        $this->add('advcheckbox', 'job_date_closed', ts('Date Closed?'))->setChecked(true);
 
         $this->add('advcheckbox', 'application_is_active', ts('Applied?'))->setChecked(true);
 
-        $this->add('advcheckbox', 'application_job_is_active', ts('Position Open?'))->setChecked(true);
+//        $this->add('advcheckbox', 'application_job_is_active', ts('Date Closed?'))->setChecked(true);
 
-        $this->add('advcheckbox', 'employer_job_is_active', ts('Is Position Open?'))->setChecked(true);
+        $this->add('advcheckbox', 'employer_job_is_active', ts('Date Closed?'))->setChecked(true);
 
-        $this->add('advcheckbox', 'employee_application_is_active', ts('Applied?'))->setChecked(true);
+//        $this->add('advcheckbox', 'employee_application_is_active', ts('Applied?'))->setChecked(true);
 
-        $this->add('advcheckbox', 'employee_application_job_is_active', ts('Is Position Open?'))->setChecked(true);
+//        $this->add('advcheckbox', 'employee_application_job_is_active', ts('Date Closed?'))->setChecked(true);
 
 
         $this->assign('suppressForm', FALSE);

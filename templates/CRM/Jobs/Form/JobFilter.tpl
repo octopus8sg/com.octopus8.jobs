@@ -10,18 +10,14 @@
             <tr>
               <td class="label">{$form.job_id.label}</td>
               <td>{$form.job_id.html}</td>
-            </tr>
-            <tr>
               <td class="label">{$form.job_contact_id.label}</td>
               <td>{$form.job_contact_id.html}</td>
-              <td class="label">{$form.job_location_id.label}</td>
-              <td>{$form.job_location_id.html}</td>
             </tr>
             <tr>
               <td class="label">{$form.job_role_id.label}</td>
               <td>{$form.job_role_id.html}</td>
-              <td class="label">{$form.job_is_active.label}</td>
-              <td>{$form.job_is_active.html}</td>
+              <td class="label">{$form.job_location_id.label}</td>
+              <td>{$form.job_location_id.html}</td>
             </tr>
             <tr>
               <td class="label">{$form.job_dateselect_from.label}</td>
@@ -29,6 +25,16 @@
               <td class="label">{$form.job_dateselect_to.label}</td>
               <td>{$form.job_dateselect_to.html}</td>
             </tr>
+            <tr>
+              <td class="label">{$form.job_due_dateselect_from.label}</td>
+              <td>{$form.job_due_dateselect_from.html}</td>
+              <td class="label">{$form.job_due_dateselect_to.label}</td>
+              <td>{$form.job_due_dateselect_to.html}</td>
+            </tr>
+{*            <tr>*}
+{*              <td class="label">{$form.job_due_date_open.label}</td>*}
+{*              <td>{$form.job_due_date_open.html}</td>*}
+{*            </tr>*}
             </tbody>
           </table>
           <div class="crm-submit-buttons">

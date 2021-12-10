@@ -111,17 +111,29 @@ CRM.$(function ($) {
                 "value": $('#job_dateselect_to').val()
             });
             aoData.push({
+                "name": "due_dateselect_from",
+                "value": $('#job_due_dateselect_from').val()
+            });
+            aoData.push({
+                "name": "job_due_date_open",
+                "value": $('#job_due_date_open').val()
+            });
+            aoData.push({
+                "name": "due_dateselect_to",
+                "value": $('#job_due_dateselect_to').val()
+            });
+            aoData.push({
                 "name": "role_id",
                 "value": $('#job_role_id').val()
             });
-            var ischecked = $('#job_is_active').prop("checked");
-            // alert(ischecked);
-            aoData.push({
-                "name":
-                    "is_active",
-                "value":
-                ischecked
-            });
+            // var ischecked = $('#job_is_active').prop("checked");
+            // // alert(ischecked);
+            // aoData.push({
+            //     "name":
+            //         "is_active",
+            //     "value":
+            //     ischecked
+            // });
             aoData.push({
                 "name":
                     "location_id",

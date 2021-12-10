@@ -324,7 +324,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             $defaults['o8_job_location_id'] = $job['location_id'];
             $defaults['o8_job_role_id'] = $job['role_id'];
             $defaults['employer_id'] = $job['contact_id'];
-            $defaults['job_is_active'] = $job['is_active'];
+//            $defaults['job_is_active'] = $job['is_active'];
             $defaults['job_created_date'] = $job['created_date'];
         }
 

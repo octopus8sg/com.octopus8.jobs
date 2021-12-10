@@ -36,10 +36,10 @@
                             {ts}Applications Count{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Date Created{/ts}
+                            {ts}Due Date{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Position Open/Closed{/ts}
+                            {ts}Date Created{/ts}
                         </th>
                         <th id="nosort">&nbsp;Action</th>
                     </tr>
