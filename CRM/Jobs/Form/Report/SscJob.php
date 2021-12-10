@@ -237,7 +237,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                         ],                        
                         'is_active' => [
                             'title' => ts('Position Open?'),
-                            'operatorType' => CRM_Report_Form::OP_SELECT,
+                            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
                             'options' => [1 => 'Open', 0 => 'Closed'],
                         ],
                     ],
