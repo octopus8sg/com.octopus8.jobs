@@ -260,7 +260,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 //                            CRM_Core_Error::debug_var('this_contactid', $this->_contactId);
                             $this->add('hidden', 'employee_id');
 
-                            if ($this->_employeeId) {
+                            if ($this->_employeeId and $currentUserId != $this->_employeeId) {
+
                                 $this->addButtons([
                                     [
                                         'type' => 'upload',
