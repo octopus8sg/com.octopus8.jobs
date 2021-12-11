@@ -49,8 +49,8 @@
 
 
         <div class="crm-section">
-            <div class="label">{$form.o8_job_status_id.label}</div>
-            <div class="content">{$form.o8_job_status_id.html}</div>
+            <div class="label">{$form.job_due_date.label}</div>
+            <div class="content">{$form.job_due_date.html}</div>
             <div class="clear"></div>
         </div>
 

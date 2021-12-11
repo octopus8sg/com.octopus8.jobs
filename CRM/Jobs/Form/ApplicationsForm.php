@@ -188,7 +188,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 $this->freeze();
             } elseif ($this->_action == CRM_Core_Action::VIEW) {
                 $this->add('advcheckbox', 'is_active', E::ts('Applied'))->freeze();
-                $this->add('advcheckbox', 'job_is_active', E::ts('Open Job'))->freeze();
+                $this->add('advcheckbox', 'job_is_active', E::ts('Position Open'))->freeze();
+                $this->add('datepicker', 'job_due_date', E::ts('Job Due Date'))->freeze();
                 $this->_changeitButtonName = $this->getButtonName('submit', 'changeit');
                 $this->_acceptButtonName = $this->getButtonName('submit', 'accept');
                 $this->_reviewButtonName = $this->getButtonName('submit', 'review');
@@ -324,7 +325,24 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             $defaults['o8_job_location_id'] = $job['location_id'];
             $defaults['o8_job_role_id'] = $job['role_id'];
             $defaults['employer_id'] = $job['contact_id'];
-//            $defaults['job_is_active'] = $job['is_active'];
+            $now = new DateTime;
+//            CRM_Core_Error::debug_var('now', $now);
+            $due_date = $job['due_date'];
+//            CRM_Core_Error::debug_var('due_date', $due_date);
+            $otherDate = new DateTime($due_date);
+//            CRM_Core_Error::debug_var('otherDate', $otherDate);
+            $now->setTime( 0, 0, 0 );
+            $otherDate->setTime( 0, 0, 0 );
+            CRM_Core_Error::debug_var('otherDate', $otherDate);
+            $daydiff = $now->diff($otherDate)->days;
+            CRM_Core_Error::debug_var('daydiff', $daydiff);
+            $jisActive = False;
+            if ($now <= $otherDate) {
+                $jisActive = True;
+//                CRM_Core_Error::debug_var('isActive', $isActive);
+            }
+            $defaults['job_is_active'] = $jisActive;
+            $defaults['job_due_date'] = $job['due_date'];
             $defaults['job_created_date'] = $job['created_date'];
         }
 
