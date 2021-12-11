@@ -152,7 +152,7 @@ SELECT  SQL_CALC_FOUND_ROWS
     j.id job_id,
     count(a.id) application_count,
     j.title,
-    j.is_active job_is_active,
+    j.due_date job_is_active,
     ap.is_active,                            
     j.contact_id job_contact_id,
     r.label role,                            
@@ -187,7 +187,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
         if ($is_employer) {
             $wheresql = " where j.contact_id = " . $employerId . " ";
         }
-        $groupsql = " group by j.id, j.is_active, ap.is_active, j.title, s.label, l.label, r.label, j.created_date, j.contact_id, app_id";
+        $groupsql = " group by j.id, j.due_date, ap.is_active, j.title, s.label, l.label, r.label, j.created_date, j.contact_id, app_id";
         $ordersql = " ORDER BY app_id desc";
         if (isset($employerIds)) {
             if ($employerIds !== null) {
@@ -347,8 +347,19 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             }
             $jis_active_view = "Closed";
 //                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
-            if ($dao->job_is_active > 0) {
+            $now = new DateTime;
+            CRM_Core_Error::debug_var('now', $now);
+            $due_date = $dao->job_is_active;
+            CRM_Core_Error::debug_var('due_date', $due_date);
+            $otherDate = new DateTime($due_date);
+            $now->setTime( 0, 0, 0 );
+            $otherDate->setTime( 0, 0, 0 );
+            CRM_Core_Error::debug_var('otherDate', $otherDate);
+            $daydiff = $now->diff($otherDate)->days;
+            CRM_Core_Error::debug_var('daydiff', $daydiff);
+            if ($now <= $otherDate) {
                 $jis_active_view = "Open";
+                CRM_Core_Error::debug_var('isActive', $jis_active_view);
             }
 
             $r_view = CRM_Utils_System::url('civicrm/applications/form',

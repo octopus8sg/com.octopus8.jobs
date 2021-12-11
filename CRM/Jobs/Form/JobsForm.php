@@ -118,7 +118,21 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         if ($myentity) {
             $employerId = $myentity['contact_id'];
             $contactId = $this->_contactId;
-            $isActive = $myentity['is_active'];
+            $now = new DateTime;
+//            CRM_Core_Error::debug_var('now', $now);
+            $due_date = $myentity['due_date'];
+//            CRM_Core_Error::debug_var('due_date', $due_date);
+            $otherDate = new DateTime($due_date);
+//            CRM_Core_Error::debug_var('otherDate', $otherDate);
+            $now->setTime( 0, 0, 0 );
+            $otherDate->setTime( 0, 0, 0 );
+            CRM_Core_Error::debug_var('otherDate', $otherDate);
+            $daydiff = $now->diff($otherDate)->days;
+            CRM_Core_Error::debug_var('daydiff', $daydiff);
+            if ($now <= $otherDate) {
+                $isActive = True;
+//                CRM_Core_Error::debug_var('isActive', $isActive);
+            }
             $this->_isActive = $isActive;
             if ($employerId != $contactId) {
                 $contact = \Civi\Api4\Contact::get(0)
@@ -213,7 +227,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                 $this->addEntityRef('contact_id', E::ts('Employer'), [], TRUE);
             }
             $this->add('text', 'title', E::ts('Title'), ['class' => 'huge'], FALSE);
-
+            $this->add('datepicker', 'due_date', ts('Due Date'), [], FALSE, ['time' => FALSE]);
             $this->add('wysiwyg', 'description', E::ts('Description'), [], FALSE);
             //todo add pseudoconstants
 
@@ -245,28 +259,49 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 //                            CRM_Core_Error::debug_var('this_myentcontactid', $this->_myentity['contact_id']);
 //                            CRM_Core_Error::debug_var('this_contactid', $this->_contactId);
                             $this->add('hidden', 'employee_id');
-                            $this->addButtons([
-//                                [
-//                                    'type' => 'upload',
-//                                    'name' => E::ts('Apply'),
-//                                    'isDefault' => FALSE,
-//                                ],
-                                [
-                                    'type' => 'submit',
-                                    'subName' => 'delete',
-                                    'name' => E::ts('Delete'),
-                                    'formaction' => 'delete',
-                                    'isDefault' => FALSE,
-                                ],
-                                [
-                                    'type' => 'cancel',
-                                    'name' => E::ts('Close'),
-                                    'isDefault' => TRUE,
-                                ],
-                            ]);
+
+                            if ($this->_employeeId) {
+                                $this->addButtons([
+                                    [
+                                        'type' => 'upload',
+                                        'name' => E::ts('Apply For This User'),
+                                        'isDefault' => FALSE
+                                    ],
+//                                    [
+//                                        'type' => 'submit',
+//                                        'subName' => 'delete',
+//                                        'icon' => 'fa-trash',
+//                                        'name' => E::ts('Delete'),
+//                                        'formaction' => 'delete',
+//                                        'isDefault' => FALSE,
+//                                    ],
+                                    [
+                                        'type' => 'cancel',
+                                        'name' => E::ts('Close'),
+                                        'isDefault' => TRUE,
+                                    ],
+                                ]);
+
+                            } else {
+                                $this->addButtons([
+//                                    [
+//                                        'type' => 'submit',
+//                                        'subName' => 'delete',
+//                                        'name' => E::ts('Delete'),
+//                                        'formaction' => 'delete',
+//                                        'icon' => 'fa-trash',
+//                                        'isDefault' => FALSE,
+//                                    ],
+                                    [
+                                        'type' => 'cancel',
+                                        'name' => E::ts('Close'),
+                                        'isDefault' => TRUE,
+                                    ],
+                                ]);
+                            }
                         }
                     } elseif ($this->_isEmployee) {
-                        CRM_Core_Error::debug_var('_isActive', $this->_isActive);
+//                        CRM_Core_Error::debug_var('_isActive', $this->_isActive);
                         $this->add('hidden', 'employee_id');
                         if ($this->_isActive) {
 //                            CRM_Core_Error::debug_var('currentUserId', $currentUserId);
@@ -425,7 +460,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
         } else {
             $values = $this->controller->exportValues();
-            CRM_Core_Error::debug_var('values', $values);
+//            CRM_Core_Error::debug_var('values', $values);
             $action = 'create';
             if ($this->getEntityId()) {
                 $params['id'] = $this->getEntityId();
@@ -437,6 +472,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                 $params['created_date'] = date('YmdHis');
             }
             $params['title'] = $values['title'];
+            $params['due_date'] = $values['due_date'];
 //            $params['is_active'] = boolval($values['is_active']);
             $params['description'] = $values['description'];
             $params['contact_id'] = $values['contact_id'];

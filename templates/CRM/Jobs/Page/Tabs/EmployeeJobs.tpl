@@ -26,6 +26,9 @@
                             {ts}Employer{/ts}
                         </th>
                         <th scope="col">
+                            {ts}Due Date{/ts}
+                        </th>
+                        <th scope="col">
                             {ts}Date Created{/ts}
                         </th>
                         <th id="nosort">&nbsp;Action</th>

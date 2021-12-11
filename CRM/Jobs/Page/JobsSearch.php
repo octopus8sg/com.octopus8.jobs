@@ -176,7 +176,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 "Staff",
             );
             if (in_array($contactType, $employees)) {
-                $wheresql .= " AND j.is_active = true";
+                $wheresql .= " AND j.due_date >= CURDATE()";
             }
 
         }
@@ -295,7 +295,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
 
 //        CRM_Core_Error::debug_var('sql', $sql);
         $sql = $selectsql . $wheresql . $groupsql . $ordersql;
-//        CRM_Core_Error::debug_var('search_sql', $sql);
+        CRM_Core_Error::debug_var('search_sql', $sql);
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();

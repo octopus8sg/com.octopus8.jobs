@@ -83,6 +83,19 @@ CRM.$(function ($) {
                 "name": "role_id",
                 "value": $('#employer_job_role_id').val()
             });
+            aoData.push({
+                "name": "due_dateselect_from",
+                "value": $('#employer_job_due_dateselect_from').val()
+            });
+            aoData.push({
+                "name": "job_due_date_open",
+                "value": $('#employer_job_due_date_open').val()
+            });
+            aoData.push({
+                "name": "due_dateselect_to",
+                "value": $('#employer_job_due_dateselect_to').val()
+            });
+
             // var ischecked = $('#employer_job_is_active').prop("checked");
             // // alert(ischecked);
             // aoData.push({
