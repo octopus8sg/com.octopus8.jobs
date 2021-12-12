@@ -283,7 +283,7 @@ class CRM_Jobs_DAO_SscJob extends CRM_Core_DAO {
         'due_date' => [
           'name' => 'due_date',
           'type' => CRM_Utils_Type::T_TIMESTAMP,
-          'title' => E::ts('Job Due Date'),
+          'title' => E::ts('Job Closed'),
           'description' => E::ts('Date and time the job proposal will expire'),
           'required' => FALSE,
           'where' => 'civicrm_o8_job.due_date',

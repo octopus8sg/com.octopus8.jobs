@@ -177,7 +177,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 
             if ($this->_action == CRM_Core_Action::PREVIEW) {
                 $this->add('advcheckbox', 'is_active', E::ts('Applied'))->freeze();
-                $this->add('advcheckbox', 'job_is_active', E::ts('Open Job'))->freeze();
+                $this->add('datepicker', 'job_due_date', E::ts('Job Closed'))->freeze();
+//                $this->add('advcheckbox', 'job_is_active', E::ts('Open Job'))->freeze();
                 $this->addButtons([
                     [
                         'type' => 'cancel',
@@ -188,8 +189,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 $this->freeze();
             } elseif ($this->_action == CRM_Core_Action::VIEW) {
                 $this->add('advcheckbox', 'is_active', E::ts('Applied'))->freeze();
-                $this->add('advcheckbox', 'job_is_active', E::ts('Position Open'))->freeze();
-                $this->add('datepicker', 'job_due_date', E::ts('Job Due Date'))->freeze();
+//                $this->add('advcheckbox', 'job_is_active', E::ts('Position Open'))->freeze();
+                $this->add('datepicker', 'job_due_date', E::ts('Job Closed'))->freeze();
                 $this->_changeitButtonName = $this->getButtonName('submit', 'changeit');
                 $this->_acceptButtonName = $this->getButtonName('submit', 'accept');
                 $this->_reviewButtonName = $this->getButtonName('submit', 'review');

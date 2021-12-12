@@ -227,7 +227,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                 $this->addEntityRef('contact_id', E::ts('Employer'), [], TRUE);
             }
             $this->add('text', 'title', E::ts('Title'), ['class' => 'huge'], FALSE);
-            $this->add('datepicker', 'due_date', ts('Due Date'), [], FALSE, ['time' => FALSE]);
+            $this->add('datepicker', 'due_date', ts('Job Closed'), [], FALSE, ['time' => FALSE]);
             $this->add('wysiwyg', 'description', E::ts('Description'), [], FALSE);
             //todo add pseudoconstants
 
@@ -265,7 +265,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                                 $this->addButtons([
                                     [
                                         'type' => 'upload',
-                                        'name' => E::ts('Apply For This User'),
+                                        'name' => E::ts('Apply'),
                                         'isDefault' => FALSE
                                     ],
 //                                    [

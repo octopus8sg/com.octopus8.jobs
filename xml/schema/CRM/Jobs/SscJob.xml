@@ -120,7 +120,7 @@
     <field>
         <name>due_date</name>
         <type>timestamp</type>
-        <title>Job Due Date</title>
+        <title>Job Closed</title>
         <required>false</required>
         <default>DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 6 month )</default>
         <comment>Date and time the job proposal will expire</comment>

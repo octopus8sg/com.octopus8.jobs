@@ -125,8 +125,8 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
                 4 => 'location',
                 5 => 'job_contact_id',
                 6 => 'application_count',
-                7 => 'job_is_active',
-                8 => 'job_created_date',
+                7 => 'job_created_date',
+                8 => 'job_is_active',
                 9 => 'app_contact_id',
                 10 => 'app_created_date',
                 11 => 'app_status',
@@ -138,9 +138,9 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
                 2 => 'role',
                 3 => 'location',
                 4 => 'job_contact_id',
-                8 => 'job_is_active',
-                6 => 'app_created_date',
-                7 => 'app_status',
+                5 => 'app_created_date',
+                6 => 'job_is_active',
+                7 => 'is_active',
             ];
         }
         $sort = isset($_REQUEST['iSortCol_0']) ? CRM_Utils_Array::value(CRM_Utils_Type::escape($_REQUEST['iSortCol_0'], 'Integer'), $sortMapper) : NULL;
@@ -380,8 +380,8 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $rows[$count][] = $dao->location;
                 $rows[$count][] = $job_contact;
                 $rows[$count][] = $dao->application_count;
-                $rows[$count][] = $jis_active_view;
                 $rows[$count][] = $dao->job_created_date;
+                $rows[$count][] = $jis_active_view;
                 $rows[$count][] = $app_contact;
                 $rows[$count][] = $dao->app_created_date;
                 $rows[$count][] = $dao->app_status;
@@ -393,8 +393,8 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $rows[$count][] = $dao->role;
                 $rows[$count][] = $dao->location;
                 $rows[$count][] = $job_contact;
-                $rows[$count][] = $jis_active_view;
                 $rows[$count][] = $dao->app_created_date;
+                $rows[$count][] = $jis_active_view;
                 $rows[$count][] = $is_active_view;
                 $rows[$count][] = $action;
                 $count++;

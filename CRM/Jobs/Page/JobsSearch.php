@@ -122,8 +122,8 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
                 3 => 'location',
                 4 => 'contact_id',
                 5 => 'application_count',
-                6 => 'due_date',
-                7 => 'created_date',
+                6 => 'created_date',
+                7 => 'due_date',
             ];
         } else {
             //employer view view
@@ -133,8 +133,8 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
                 2 => 'role',
                 3 => 'location',
                 4 => 'application_count',
-                6 => 'due_date',
                 5 => 'created_date',
+                6 => 'due_date',
             ];
         }
 
@@ -336,6 +336,9 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             if ($can_update) {
                 $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
             }
+            if ($dao->application_count > 0) {
+                $can_delete = false;
+            }
             if ($can_delete) {
                 $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
             }
@@ -348,17 +351,15 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $rows[$count][] = $contact;
             }
             if (!isset($employeeId)) {
-                $app_count =  $dao->application_count;
+                $app_count = $dao->application_count;
                 $jobid = $dao->id;
                 $app_count_link = "<a target='_blank' href='" .
                     CRM_Utils_System::url('civicrm/applications/search',
                         ['jobid' => $jobid]) . "'>" . $app_count . "</a> ";
                 $rows[$count][] = $app_count_link;
             }
-//            if (!isset($employeeId)) {
-            $rows[$count][] = $dao->due_date;
-//            }
             $rows[$count][] = $dao->created_date;
+            $rows[$count][] = $dao->due_date;
             $rows[$count][] = $action;
             $count++;
         }

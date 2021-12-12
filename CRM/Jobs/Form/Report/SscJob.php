@@ -162,10 +162,10 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                             'title' => ts('Location'),
                             'default' => TRUE,
                         ],
-                        'is_active' => [
-                            'title' => ts('Position Open?'),
-                            'default' => TRUE,
-                        ],
+//                        'is_active' => [
+//                            'title' => ts('Position Open?'),
+//                            'default' => TRUE,
+//                        ],
                         'contact_id' => [
 //                            'type' => 'Contact',
 //                            'required' => TRUE,
@@ -235,11 +235,11 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                             'operatorType' => CRM_Report_Form::OP_MULTISELECT,
                             'options' => CRM_Core_PseudoConstant::get('CRM_Jobs_DAO_SscJob', 'location_id'),
                         ],                        
-                        'is_active' => [
-                            'title' => ts('Position Open?'),
-                            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
-                            'options' => [1 => 'Open', 0 => 'Closed'],
-                        ],
+//                        'is_active' => [
+//                            'title' => ts('Position Open?'),
+//                            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+//                            'options' => [1 => 'Open', 0 => 'Closed'],
+//                        ],
                     ],
                     'order_bys' => [
                         'id' => ['title' => ts('Job ID')],
@@ -581,19 +581,19 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                 $rows[$rowNum]['civicrm_o8_job_description']
                     = $val;
             }
-            if (1 === 1) {
-                $val = CRM_Utils_Array::value('civicrm_o8_job_is_active', $row);
-//                            CRM_Core_Error::debug_var('val', $val);
-                $bal = 'Closed';
-                if (boolval($val) === True) {
-                    $bal = 'Open';
-                } else {
-                    $bal = 'Closed';
-                }
-//                $val =
-                $rows[$rowNum]['civicrm_o8_job_is_active']
-                    = $bal;
-            }
+//            if (1 === 1) {
+//                $val = CRM_Utils_Array::value('civicrm_o8_job_is_active', $row);
+////                            CRM_Core_Error::debug_var('val', $val);
+//                $bal = 'Closed';
+//                if (boolval($val) === True) {
+//                    $bal = 'Open';
+//                } else {
+//                    $bal = 'Closed';
+//                }
+////                $val =
+//                $rows[$rowNum]['civicrm_o8_job_is_active']
+//                    = $bal;
+//            }
             if ($val = CRM_Utils_Array::value('civicrm_health_monitor_date', $row)) {
 //                            CRM_Core_Error::debug_var('val', $val);
                 $rows[$rowNum]['civicrm_health_monitor_date']

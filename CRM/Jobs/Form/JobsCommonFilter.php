@@ -186,21 +186,21 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form
             '_from');
 
         $this->addDatePickerRange('job_due_dateselect',
-            'Select Job Due Date',
+            'Job Closed',
             FALSE,
             FALSE,
-            'Due Date From: ',
-            'Due To: ',
+            'Job Closed From: ',
+            'Job Closed To: ',
             null,
             '_to',
             '_from');
 
         $this->addDatePickerRange('application_job_due_dateselect',
-            'Select Job Due Date',
+            'Job Closed',
             FALSE,
             FALSE,
-            'Due Date From: ',
-            'Due To: ',
+            'Job Closed From: ',
+            'Job Closed To: ',
             null,
             '_to',
             '_from');
@@ -209,8 +209,8 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form
             'Select Application Date',
             FALSE,
             FALSE,
-            'From: ',
-            'To: ',
+            'Created From: ',
+            'Created To: ',
             null,
             '_to',
             '_from');
@@ -226,21 +226,21 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form
             '_from');
 
         $this->addDatePickerRange('employer_job_due_dateselect',
-            'Select Due Date',
+            'Job Closed',
             FALSE,
             FALSE,
-            'Due Date From: ',
-            'Due To: ',
+            'Job Closed From: ',
+            'Job Closed To: ',
             null,
             '_to',
             '_from');
 
         $this->addDatePickerRange('employee_job_due_dateselect',
-            'Select Due Date',
+            'Job Closed',
             FALSE,
             FALSE,
-            'Due Date From: ',
-            'Due To: ',
+            'Job Closed From: ',
+            'Job Closed To: ',
             null,
             '_to',
             '_from');
@@ -259,14 +259,14 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form
             'Select Date',
             FALSE,
             FALSE,
-            'From: ',
+            'Applied From: ',
             'To: ',
             null,
             '_to',
             '_from');
 
         $this->addElement('select', 'job_due_date_open',
-            ts('Due Date Open/Closed') . ' ', [0 => "Closed", 1 => "Open"],
+            ts('Job Closed') . ' ', [0 => "Closed", 1 => "Open"],
             [
                 'size' => 2,
                 'style' => 'min-width:250px',
@@ -286,7 +286,7 @@ class CRM_Jobs_Form_JobsCommonFilter extends CRM_Core_Form
 
 //        $this->add('advcheckbox', 'application_job_is_active', ts('Date Closed?'))->setChecked(true);
 
-        $this->add('advcheckbox', 'employer_job_is_active', ts('Date Closed?'))->setChecked(true);
+        $this->add('advcheckbox', 'employer_job_is_active', ts('Job Closed?'))->setChecked(true);
 
 //        $this->add('advcheckbox', 'employee_application_is_active', ts('Applied?'))->setChecked(true);
 
