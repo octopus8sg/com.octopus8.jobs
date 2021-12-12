@@ -33,7 +33,7 @@
                         {ts}Applications Count{/ts}
                     </th>
                     <th scope="col">
-                        {ts}Date Open/Closed{/ts}
+                        {ts}Job Closed{/ts}
                     </th>
                     <th scope="col">
                         {ts}Date Created{/ts}

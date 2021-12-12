@@ -14,7 +14,7 @@
  * @package CRM
  * @copyright CiviCRM LLC https://civicrm.org/licensing
  */
-class CRM_Jobs_Form_Report_EmployerReport extends CRM_Report_Form
+class CRM_Jobs_Form_Report_EmployeeReport extends CRM_Report_Form
 {
 
     protected $_summary = NULL;
