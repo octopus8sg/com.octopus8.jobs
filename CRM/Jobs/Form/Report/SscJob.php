@@ -181,6 +181,12 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                             'title' => ts('Job Created Date'),
                             'default' => TRUE,
                         ],
+                        'due_date' => ['type' => CRM_Utils_Type::T_INT,
+//                            'required' => TRUE,
+                            'name' => 'due_date',
+                            'title' => ts('Job Closed'),
+                            'default' => TRUE,
+                        ],
                         'created_id' => [
 //                            'type' => 'Contact',
 //                            'required' => TRUE,
@@ -219,6 +225,9 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                         'description' => [
                             'operator' => 'like',
                             'title' => ts('Job Description')],
+                        'due_date' => [
+                            'operatorType' => CRM_Report_Form::OP_DATE,
+                            'title' => ts('Job Closed')],
                         'created_date' => [
                             'operatorType' => CRM_Report_Form::OP_DATE,
                             'title' => ts('Job Created Date')],
@@ -247,6 +256,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                         'description' => ['title' => ts('Job Description')],
                         'role_id' => ['title' => ts('Role')],
                         'location_id' => ['title' => ts('Location')],
+                        'due_date' => ['title' => ts('Job Closed')],
                         'created_date' => ['title' => ts('Job Created Date')],
 //                        'created_id' => ['title' => ts('Job Created By')],
                         'modified_date' => ['title' => ts('Job Modified Date')],
@@ -581,34 +591,6 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                 $rows[$rowNum]['civicrm_o8_job_description']
                     = $val;
             }
-//            if (1 === 1) {
-//                $val = CRM_Utils_Array::value('civicrm_o8_job_is_active', $row);
-////                            CRM_Core_Error::debug_var('val', $val);
-//                $bal = 'Closed';
-//                if (boolval($val) === True) {
-//                    $bal = 'Open';
-//                } else {
-//                    $bal = 'Closed';
-//                }
-////                $val =
-//                $rows[$rowNum]['civicrm_o8_job_is_active']
-//                    = $bal;
-//            }
-            if ($val = CRM_Utils_Array::value('civicrm_health_monitor_date', $row)) {
-//                            CRM_Core_Error::debug_var('val', $val);
-                $rows[$rowNum]['civicrm_health_monitor_date']
-                    = $val;
-            }
-            if ($val = CRM_Utils_Array::value('civicrm_health_monitor_device_id', $row)) {
-                $val = intval($val);
-//                            CRM_Core_Error::debug_var('val', $val);
-                $device_sql = "SELECT civicrm_device.name
-                           from civicrm_device where civicrm_device.id = {$val}";
-                $device_code = CRM_Core_DAO::singleValueQuery($device_sql);
-                $rows[$rowNum]['civicrm_health_monitor_device_id']
-                    = $device_code;
-            }
-//            CRM_Core_Error::debug_var('row_after', $rows[$rowNum]);
             $lastKey = $rowNum;
         }
     }
