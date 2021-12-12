@@ -27,9 +27,9 @@ class CRM_Jobs_Form_Report_EmployeeReport extends CRM_Report_Form
 
     protected $_customGroupExtends = [
         'SscJob',
-//        'Contact',
-//        'Individual',
-        'Organisation',
+        'Contact',
+        'Individual',
+//        'Organisation',
     ];
 
     public function customDataFrom($joinsForFiltersOnly = FALSE)
@@ -123,12 +123,14 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
     public function __construct()
     {
         $this->_autoIncludeIndexedFieldsAsOrderBys = 1;
-        $this->_columns = array_merge(
-            ['civicrm_contact_organization' => [
+        $this->_columns =
+            array_merge(
+            [
+                'civicrm_contact_applicant' => [
                 'dao' => 'CRM_Contact_DAO_Contact',
                 'fields' => [
-                    'organization_name' => [
-                        'title' => ts('Organization Name'),
+                    'display_name' => [
+                        'title' => ts('Applicant Name'),
                         'required' => TRUE,
                         'no_repeat' => TRUE,
                     ],
@@ -137,54 +139,134 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                         'required' => TRUE,
                     ],
                     'contact_type' => [
-                        'title' => ts('Contact Type'),
+                        'title' => ts('Applicant Type'),
                     ],
                     'contact_sub_type' => [
-                        'title' => ts('Contact Subtype'),
+                        'title' => ts('Applicant Subtype'),
                     ],
                 ],
                 'order_bys' => [
-                    'organization_name' => [
-                        'title' => ts('Organization Name'),
+                    'display_name' => [
+                        'title' => ts('Applicant Name'),
                     ],
-                    'organization_id' => [
+                    'employee_id' => [
                         'name' => 'id',
-                        'title' => ts('Organization ID'),
+                        'title' => ts('Applicant ID'),
                     ],
                 ],
                 'filters' => [
-                    'organization_name' => [
-                        'title' => ts('Organization Name'),
+                    'display_name' => [
+                        'title' => ts('Applicant Name'),
                     ],
                     'is_deleted' => [
                         'default' => 0,
-                        'title' => ts('Is Organization Deleted?'),
+                        'title' => ts('Is Applicant Deleted?'),
                         'type' => CRM_Utils_Type::T_BOOLEAN,
                     ],
                 ],
-                'grouping' => 'organization-fields',
+                'grouping' => 'applicant-fields',
             ],
                 'civicrm_email' => [
                     'dao' => 'CRM_Core_DAO_Email',
                     'fields' => [
                         'email' => [
-                            'title' => ts('Employer Email'),
+                            'title' => ts('Applicant Email'),
                             'default' => TRUE,
                             'no_repeat' => TRUE,
                         ],
                     ],
-                    'grouping' => 'contact-fields',
+                    'grouping' => 'applicant-fields',
                 ],
                 'civicrm_phone' => [
                     'dao' => 'CRM_Core_DAO_Phone',
                     'fields' => [
                         'phone' => [
-                            'title' => ts('Employer Phone'),
+                            'title' => ts('Applicant\'s Phone'),
                             'default' => FALSE,
                             'no_repeat' => TRUE,
                         ],
                     ],
-                    'grouping' => 'contact-fields',
+                    'grouping' => 'applicant-fields',
+                ],
+                'civicrm_o8_application' => [
+                    'dao' => 'CRM_Jobs_DAO_SscApplication',
+                    'fields' => [
+                        'ssc_app_id' => [
+                            'name' => 'id',
+                            'title' => ts('App ID'),
+                            'no_display' => FALSE,
+                            'required' => TRUE,
+                        ],
+                        'status_id' => [
+                            'title' => ts('App Status'),
+                            'default' => TRUE,
+                        ],
+                        'is_active' => [
+                            'title' => ts('Applied'),
+                            'default' => TRUE,
+                        ],
+                        'created_date' => ['type' => CRM_Utils_Type::T_INT,
+//                            'required' => TRUE,
+                            'name' => 'created_date',
+                            'title' => ts('Applied Date'),
+                            'default' => TRUE,
+                        ],
+                    ],
+                    'filters' => [
+                        'created_date' => [
+                            'operatorType' => CRM_Report_Form::OP_DATE,
+                            'title' => ts('App Created Date')],
+                        'status_id' => [
+                            'title' => ts('Status'),
+                            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+                            'options' => CRM_Core_PseudoConstant::get('CRM_Jobs_DAO_SscApplication', 'status_id'),
+                        ],
+                        'is_active' => [
+                            'title' => ts('Applied'),
+                            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
+                            'options' => [1 => 'Applied', 0 => 'Withdrawn'],
+                        ],
+                    ],
+                    'order_bys' => [
+                        'status_id' => ['title' => ts('Status')],
+                        'is_active' => ['title' => ts('Applied')],
+                        'created_date' => ['title' => ts('Created Date')],
+                    ],
+                    'grouping' => 'app-fields',
+                ],
+                'civicrm_contact_organization' => [
+                    'dao' => 'CRM_Contact_DAO_Contact',
+                    'fields' => [
+                        'organization_name' => [
+                            'title' => ts('Organization Name'),
+                            'required' => TRUE,
+                            'no_repeat' => TRUE,
+                        ],
+                        'id' => [
+                            'no_display' => TRUE,
+                            'required' => TRUE,
+                        ],
+                    ],
+                    'order_bys' => [
+                        'organization_name' => [
+                            'title' => ts('Organization Name'),
+                        ],
+                        'organization_id' => [
+                            'name' => 'id',
+                            'title' => ts('Organization ID'),
+                        ],
+                    ],
+                    'filters' => [
+                        'organization_name' => [
+                            'title' => ts('Organization Name'),
+                        ],
+                        'is_deleted' => [
+                            'default' => 0,
+                            'title' => ts('Is Organization Deleted?'),
+                            'type' => CRM_Utils_Type::T_BOOLEAN,
+                        ],
+                    ],
+                    'grouping' => 'job-fields',
                 ],
                 'civicrm_o8_job' => [
                     'dao' => 'CRM_Jobs_DAO_SscJob',
@@ -211,15 +293,6 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                             'title' => ts('Location'),
                             'default' => TRUE,
                         ],
-//                        'contact_id' => [
-////                            'type' => 'Contact',
-////                            'required' => TRUE,
-//                            'order_bys_defaults' => ['sort_name' => 'ASC '],
-//                            'fields_defaults' => ['sort_name'],
-//                            'name' => 'contact_id',
-//                            'title' => ts('Employer'),
-//                            'default' => TRUE,
-//                        ],
                         'created_date' => ['type' => CRM_Utils_Type::T_INT,
 //                            'required' => TRUE,
                             'name' => 'created_date',
@@ -232,36 +305,6 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                             'title' => ts('Job Closed'),
                             'default' => TRUE,
                         ],
-                        'created_id' => [
-//                            'type' => 'Contact',
-//                            'required' => TRUE,
-                            'order_bys_defaults' => ['sort_name' => 'ASC '],
-                            'fields_defaults' => ['sort_name'],
-                            'name' => 'created_id',
-                            'title' => ts('Job Created By'),
-                            'no_display' => TRUE,
-                        ],
-//                        'modified_date' => ['type' => CRM_Utils_Type::T_INT,
-////                            'required' => TRUE,
-//                            'name' => 'modified_date',
-//                            'title' => ts('Job Modified Date'),
-//                            'no_display' => TRUE,
-//                        ],
-//                        'modified_id' => [
-////                            'type' => 'Contact',
-////                            'required' => TRUE,
-//                            'name' => 'modified_id',
-//                            'order_bys_defaults' => ['sort_name' => 'ASC '],
-//                            'fields_defaults' => ['sort_name'],
-//                            'title' => ts('Job Modified By'),
-//                            'no_display' => TRUE,
-//                        ],
-
-//                        'sensor_value' => [
-//                            'title' => ts('Value'),
-////                            'required' => TRUE,
-//                            'default' => TRUE,
-//                        ],
                     ],
                     'filters' => [
                         'title' => [
@@ -296,7 +339,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                         'created_date' => ['title' => ts('Created Date')],
                         'due_date' => ['title' => ts('Job Closed')],
                     ],
-                    'grouping' => 'contact-fields',
+                    'grouping' => 'job-fields',
                 ],
                 'civicrm_contact' => [
                     'dao' => 'CRM_Contact_DAO_Contact',
@@ -304,7 +347,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                         'id' => [
                             'no_display' => TRUE,
                             'required' => TRUE,
-                            'alias' => 'contact_civireport'
+                            'alias' => 'contact_applicant_civireport'
                         ],
                     ],
                 ],
@@ -324,16 +367,22 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
      */
     public function from()
     {
-        $this->setFromBase('civicrm_o8_job');
+        $this->setFromBase('civicrm_o8_application');
 // todo joins
+//        $this->_from .= "
+//        INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact']}
+//        ON {$this->_aliases['civicrm_contact']}.id = {$this->_aliases['civicrm_o8_application']}.contact_id
+//        ";
         $this->_from .= "
+        LEFT JOIN civicrm_o8_job {$this->_aliases['civicrm_o8_job']}
+        ON {$this->_aliases['civicrm_o8_job']}.id = {$this->_aliases['civicrm_o8_application']}.o8_job_id
         INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact']}
-        ON {$this->_aliases['civicrm_contact']}.id = {$this->_aliases['civicrm_o8_job']}.contact_id
+        ON {$this->_aliases['civicrm_contact']}.id = {$this->_aliases['civicrm_o8_application']}.contact_id
         INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact_organization']}
         ON {$this->_aliases['civicrm_contact_organization']}.id = {$this->_aliases['civicrm_o8_job']}.contact_id
-        AND {$this->_aliases['civicrm_contact_organization']}.contact_type='Organization'
+        INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact_applicant']}
+        ON {$this->_aliases['civicrm_contact_applicant']}.id = {$this->_aliases['civicrm_o8_application']}.contact_id
         ";
-
         $this->appendAdditionalFromJoins();
     }
 
@@ -374,11 +423,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
         // 1. use main contribution query to build temp table 1
         $sql = $this->buildQuery();
 
-//        .entity_id = .id;
-//        CRM_Core_Error::debug_var('sql', $sql);
         $checked_sql = str_replace(".entity_id = .id", ".entity_id = o8_job_civireport.id", $sql);
-//        CRM_Core_Error::debug_var('checked_sql', $checked_sql);
-//        CRM_Core_Error::debug_var('aliases', $this->_aliases);
 
         //        .entity_id = .id
         $this->createTemporaryTable('civireport_contribution_detail_temp1', $checked_sql);
@@ -416,7 +461,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
 //            CRM_Core_Error::debug_var('rows', $rows);
         foreach ($rows as $rowNum => $row) {
 //            CRM_Core_Error::debug_var('rowNum', $rowNum);
-            CRM_Core_Error::debug_var('row_before', $row);
+//            CRM_Core_Error::debug_var('row_before', $row);
 ////            if (!$rows[$rowNum]['civicrm_o8_job_is_active']) {
 //                $rows[$rowNum]['civicrm_o8_job_is_active'] = intval($rows[$rowNum]['civicrm_o8_job_is_active']);
 ////            }
@@ -463,6 +508,18 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                 $rows[$rowNum]['civicrm_contact_organization_organization_name_link'] = $url;
                 $rows[$rowNum]['civicrm_contact_organization_organization_name_hover'] = ts('View contact summary for this organization.');
             }
+            if (array_key_exists('civicrm_contact_applicant_display_name', $row) && !empty($rows[$rowNum]['civicrm_contact_applicant_display_name']) &&
+                array_key_exists('civicrm_contact_applicant_id', $row)
+            ) {
+                $url = CRM_Utils_System::url('civicrm/contact/view',
+                    'reset=1&cid=' .
+                    $rows[$rowNum]['civicrm_contact_applicant_id'],
+                    $this->_absoluteUrl
+                );
+
+                $rows[$rowNum]['civicrm_contact_applicant_display_name_link'] = $url;
+                $rows[$rowNum]['civicrm_contact_applicant_display_name_hover'] = ts('View contact summary for this applicant.');
+            }
             // convert donor sort name to link
             if (array_key_exists('civicrm_contact_sort_name', $row) &&
                 !empty($rows[$rowNum]['civicrm_contact_sort_name']) &&
@@ -487,6 +544,21 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                 $val = intval($val);
                 $rows[$rowNum]['civicrm_o8_job_role_id']
                     = CRM_Core_PseudoConstant::getLabel("CRM_Jobs_BAO_SscJob", "role_id", $val);
+            }
+            if (1 == 1) {
+//                            CRM_Core_Error::debug_var('val', $val);
+                $val = boolval($val);
+                $rows[$rowNum]['civicrm_o8_application_is_active'] = "Withdrawn";
+                if($val){
+                    $rows[$rowNum]['civicrm_o8_application_is_active'] = "Applied";
+                }
+
+            }
+            if ($val = CRM_Utils_Array::value('civicrm_o8_application_status_id', $row)) {
+//                            CRM_Core_Error::debug_var('val', $val);
+                $val = intval($val);
+                $rows[$rowNum]['civicrm_o8_application_status_id']
+                    = CRM_Core_PseudoConstant::getLabel("CRM_Jobs_BAO_SscApplication", "status_id", $val);
             }
             if ($val = CRM_Utils_Array::value('civicrm_o8_job_location_id', $row)) {
 //                            CRM_Core_Error::debug_var('val', $val);

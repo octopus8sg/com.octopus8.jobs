@@ -126,9 +126,9 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 //            CRM_Core_Error::debug_var('otherDate', $otherDate);
             $now->setTime( 0, 0, 0 );
             $otherDate->setTime( 0, 0, 0 );
-            CRM_Core_Error::debug_var('otherDate', $otherDate);
+//            CRM_Core_Error::debug_var('otherDate', $otherDate);
             $daydiff = $now->diff($otherDate)->days;
-            CRM_Core_Error::debug_var('daydiff', $daydiff);
+//            CRM_Core_Error::debug_var('daydiff', $daydiff);
             if ($now <= $otherDate) {
                 $isActive = True;
 //                CRM_Core_Error::debug_var('isActive', $isActive);

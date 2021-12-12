@@ -416,7 +416,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
 //            CRM_Core_Error::debug_var('rows', $rows);
         foreach ($rows as $rowNum => $row) {
 //            CRM_Core_Error::debug_var('rowNum', $rowNum);
-            CRM_Core_Error::debug_var('row_before', $row);
+//            CRM_Core_Error::debug_var('row_before', $row);
 ////            if (!$rows[$rowNum]['civicrm_o8_job_is_active']) {
 //                $rows[$rowNum]['civicrm_o8_job_is_active'] = intval($rows[$rowNum]['civicrm_o8_job_is_active']);
 ////            }

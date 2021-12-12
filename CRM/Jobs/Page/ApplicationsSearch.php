@@ -348,18 +348,18 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             $jis_active_view = "Closed";
 //                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
             $now = new DateTime;
-            CRM_Core_Error::debug_var('now', $now);
+//            CRM_Core_Error::debug_var('now', $now);
             $due_date = $dao->job_is_active;
-            CRM_Core_Error::debug_var('due_date', $due_date);
+//            CRM_Core_Error::debug_var('due_date', $due_date);
             $otherDate = new DateTime($due_date);
             $now->setTime( 0, 0, 0 );
             $otherDate->setTime( 0, 0, 0 );
-            CRM_Core_Error::debug_var('otherDate', $otherDate);
+//            CRM_Core_Error::debug_var('otherDate', $otherDate);
             $daydiff = $now->diff($otherDate)->days;
-            CRM_Core_Error::debug_var('daydiff', $daydiff);
+//            CRM_Core_Error::debug_var('daydiff', $daydiff);
             if ($now <= $otherDate) {
                 $jis_active_view = "Open";
-                CRM_Core_Error::debug_var('isActive', $jis_active_view);
+//                CRM_Core_Error::debug_var('isActive', $jis_active_view);
             }
 
             $r_view = CRM_Utils_System::url('civicrm/applications/form',
