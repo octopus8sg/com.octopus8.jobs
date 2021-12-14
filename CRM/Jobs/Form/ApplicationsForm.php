@@ -176,7 +176,9 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'data-option-edit-path' => 'civicrm/admin/options/o8_application_status']);
 
             if ($this->_action == CRM_Core_Action::PREVIEW) {
-                $this->add('advcheckbox', 'is_active', E::ts('Application Status'))->freeze();
+//                $this->add('select', 'is_active', E::ts('Application Status'), [0 => "Withdrawn", 1 => "Applied"])->freeze();
+                $this->add('text', 'is_active2', E::ts('Application Status'))->freeze();
+                $this->add('datepicker', 'job_created_date', E::ts('Job Created'))->freeze();
                 $this->add('datepicker', 'job_due_date', E::ts('Job Closed'))->freeze();
 //                $this->add('advcheckbox', 'job_is_active', E::ts('Open Job'))->freeze();
                 $this->addButtons([
@@ -188,9 +190,11 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 ]);
                 $this->freeze();
             } elseif ($this->_action == CRM_Core_Action::VIEW) {
-                $this->add('advcheckbox', 'is_active', E::ts('Applied'))->freeze();
+//                $this->add('select', 'is_active', E::ts('Application Status'), [0 => "Withdrawn", 1 => "Applied", FALSE => "Withdrawn"])->freeze();
+                $this->add('text', 'is_active2', E::ts('Application Status'))->freeze();
 //                $this->add('advcheckbox', 'job_is_active', E::ts('Position Open'))->freeze();
                 $this->add('datepicker', 'job_due_date', E::ts('Job Closed'))->freeze();
+                $this->add('datepicker', 'job_created_date', E::ts('Job Created'))->freeze();
                 $this->_changeitButtonName = $this->getButtonName('submit', 'changeit');
                 $this->_acceptButtonName = $this->getButtonName('submit', 'accept');
                 $this->_reviewButtonName = $this->getButtonName('submit', 'review');
@@ -326,14 +330,18 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             $defaults['o8_job_location_id'] = $job['location_id'];
             $defaults['o8_job_role_id'] = $job['role_id'];
             $defaults['employer_id'] = $job['contact_id'];
+            $defaults['is_active2'] = "Withdrawn";
+            if (boolval($this->_myentity['is_active']) === True) {
+                $defaults['is_active2'] = "Applied";
+            }
             $now = new DateTime;
 //            CRM_Core_Error::debug_var('now', $now);
             $due_date = $job['due_date'];
 //            CRM_Core_Error::debug_var('due_date', $due_date);
             $otherDate = new DateTime($due_date);
 //            CRM_Core_Error::debug_var('otherDate', $otherDate);
-            $now->setTime( 0, 0, 0 );
-            $otherDate->setTime( 0, 0, 0 );
+            $now->setTime(0, 0, 0);
+            $otherDate->setTime(0, 0, 0);
 //            CRM_Core_Error::debug_var('otherDate', $otherDate);
             $daydiff = $now->diff($otherDate)->days;
 //            CRM_Core_Error::debug_var('daydiff', $daydiff);
