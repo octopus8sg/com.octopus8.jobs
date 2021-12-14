@@ -32,7 +32,7 @@
                             {ts}Date Applied{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Applied/Withdrawn{/ts}
+                            {ts}Application Status{/ts}
                         </th>
                         <th id="nosort">&nbsp;Action</th>
                     </tr>

@@ -26,7 +26,7 @@
                             {ts}Employer{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Date Created{/ts}
+                            {ts}Job Created{/ts}
                         </th>
                         <th scope="col">
                             {ts}Job Closed{/ts}

@@ -14,7 +14,7 @@
                             {ts}ID{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Applied/Withdrawn{/ts}
+                            {ts}Application Status{/ts}
                         </th>
                         <th scope="col">
                             {ts}Job Title{/ts}
@@ -41,7 +41,7 @@
                             {ts}Applicant{/ts}
                         </th>
                         <th scope="col">
-                            {ts}App Created Date{/ts}
+                            {ts}Application Created{/ts}
                         </th>
                         <th scope="col">
                             {ts}Status{/ts}

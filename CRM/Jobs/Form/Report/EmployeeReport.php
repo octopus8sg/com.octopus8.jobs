@@ -547,10 +547,10 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
             }
             if (1 == 1) {
 //                            CRM_Core_Error::debug_var('val', $val);
-                $val = boolval($val);
+                $val = boolval($rows[$rowNum]['civicrm_o8_application_is_active']);
                 $rows[$rowNum]['civicrm_o8_application_is_active'] = "Withdrawn";
-                if($val){
-                    $rows[$rowNum]['civicrm_o8_application_is_active'] = "Applied";
+                if($val === TRUE){
+                    $rows[$rowNum]['civicrm_o8_application_is_active'] = 'Applied';
                 }
 
             }

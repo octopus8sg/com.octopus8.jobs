@@ -140,7 +140,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 $this->add('datepicker',
                     'job_created_date', E::ts('Job Created At'), ['class' => 'huge'], FALSE)->freeze();
                 $this->add('datepicker',
-                    'created_date', E::ts('Application Created At'), ['class' => 'huge'], FALSE)->freeze();
+                    'created_date', E::ts('Application Created'), ['class' => 'huge'], FALSE)->freeze();
                 $this->add('text',
                     'title', E::ts('Job Title'), ['class' => 'huge'], FALSE)->freeze();
                 $this->addEntityRef('employer_id',
@@ -171,12 +171,12 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             //todo add pseudoconstants
 
             $statuses = CRM_Core_OptionGroup::values('o8_application_status');
-            $this->add('select', 'status_id', E::ts('Application Status'),
+            $this->add('select', 'status_id', E::ts('Status'),
                 $statuses, TRUE, ['class' => 'huge crm-select2',
                     'data-option-edit-path' => 'civicrm/admin/options/o8_application_status']);
 
             if ($this->_action == CRM_Core_Action::PREVIEW) {
-                $this->add('advcheckbox', 'is_active', E::ts('Applied'))->freeze();
+                $this->add('advcheckbox', 'is_active', E::ts('Application Status'))->freeze();
                 $this->add('datepicker', 'job_due_date', E::ts('Job Closed'))->freeze();
 //                $this->add('advcheckbox', 'job_is_active', E::ts('Open Job'))->freeze();
                 $this->addButtons([
