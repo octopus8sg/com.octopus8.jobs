@@ -29,7 +29,7 @@
                             {ts}Job Closed{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Date Applied{/ts}
+                            {ts}Application created{/ts}
                         </th>
                         <th scope="col">
                             {ts}Application Status{/ts}
