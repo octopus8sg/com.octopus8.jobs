@@ -16,8 +16,6 @@ CRM.$(function ($) {
 
     var jobs_sourceUrl = CRM.vars.source_url['job_sourceUrl'];
     $(document).ready(function () {
-
-
         //Reset Table, add Filter and Search Possibility
         //devices datatable
         var jobs_tab = $('.selector-jobs');
