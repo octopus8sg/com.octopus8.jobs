@@ -1,0 +1,116 @@
+[
+  {
+    "_id": {
+      "$oid": "o8_jobs_role_options"
+    },
+    "option_values": [
+      "Admin/secretarial/general management",
+      "IT - Information Technology",
+      "Conservancy – Cleaning Services",
+      "F&B",
+      "General Work",
+      "Human Resources",
+      "Accounting/auditing/taxation",
+      "Customer Service",
+      "Call Centre Operations/Telemarketing",
+      "Design/Graphic Design/Interior Design",
+      "Engineering",
+      "Banking and Finance",
+      "Business – Consultancy",
+      "Sales & Marketing",
+      "Manufacturing- Packer",
+      "Logistics- Warehouse",
+      "Marketing/Public Relations",
+      "Retail/Services",
+      "Manufacturing- Production",
+      "Hospitality",
+      "Security and Investigation",
+      "Repair and Maintenance",
+      "Public/Civil Service",
+      "Logistics – Supply Chain",
+      "Personal Care/ Beauty",
+      "Education and Training",
+      "Healthcare/ Pharmaceutical",
+      "Logistics – Despatch/Delivery",
+      "Advertising/media",
+      "Professional Services",
+      "Environment/Health",
+      "Purchasing/Merchandising",
+      "Social Services/Non-Profit Organisation",
+      "Human Resource",
+      "Risk Management",
+      "Telecommunications",
+      "Travel/Tourism",
+      "Medical/Therapy Services",
+      "Architecture/building and construction",
+      "Public Sector",
+      "Financial Services",
+      "Horticulture",
+      "Sciences/Laboratory/R&D"
+    ],
+    "orgType": "JOBS",
+    "configType": "ROLE"
+  },
+  {
+    "_id": {
+      "$oid": "o8_jobs_audience_options"
+    },
+    "option_values": [
+      "ANY",
+      "FRESHER",
+      "EXPERIENCED"
+    ],
+    "orgType": "JOBS",
+    "configType": "AUDIENCE"
+  },
+  {
+    "_id": {
+      "$oid": "o8_jobs_skill_options"
+    },
+    "option_values": [
+      "Communication ",
+      "Computational Thinking ",
+      "Creative Thinking ",
+      "Decision Making ",
+      "Developing People ",
+      "Digital Literacy ",
+      "Global Mindset ",
+      "Interpersonal Skills ",
+      "Leadership ",
+      "Lifelong Learning ",
+      "Managing Diversity ",
+      "Problem Solving ",
+      "Resource Management ",
+      "Sense-Making ",
+      "Service Orientation ",
+      "Teamwork ",
+      "Transdisciplinary Thinking ",
+      "Virtual Collaboration",
+      "Word",
+      "Excel",
+      "Powerpoint",
+      "Internet",
+      "Email",
+      "NIL",
+      "Others"
+    ],
+    "orgType": "JOBS",
+    "configType": "SKILL"
+  },
+  {
+    "_id": {
+      "$oid": "o8_jobs_location_options"
+    },
+    "option_values": [
+      "East",
+      "West",
+      "Central",
+      "South",
+      "North",
+      "Islandwide"
+    ],
+    "orgType": "JOBS",
+    "configType": "LOCATION"
+  }
+]
+

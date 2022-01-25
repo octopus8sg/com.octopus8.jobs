@@ -122,7 +122,6 @@
         <type>timestamp</type>
         <title>Job Closed</title>
         <required>false</required>
-        <default>DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 6 month )</default>
         <comment>Date and time the job proposal will expire</comment>
         <html>
             <type>Select Date</type>

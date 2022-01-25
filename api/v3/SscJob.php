@@ -24,6 +24,21 @@ function _civicrm_api3_ssc_job_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_ssc_job_create($params) {
+//    if (!isset($params['contact_id']) and isset($params['device_id'])) {
+//        $devices = civicrm_api4('Device', 'get', [
+//            'select' => [
+//                'contact_id',
+//            ],
+//            'where' => [
+//                ['id', '=', $params['device_id']],
+//            ],
+//            'limit' => 2,
+//        ]);
+//        if (!empty($devices)) {
+//            $contact_id = $devices[0]['contact_id'];
+//            $params['contact_id'] = $contact_id;
+//        }
+//    }
   return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params, 'SscJob');
 }
 

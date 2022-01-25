@@ -176,7 +176,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 "Staff",
             );
             if (in_array($contactType, $employees)) {
-                $wheresql .= " AND j.due_date >= CURDATE()";
+                $wheresql .= " AND (j.due_date >= CURDATE() or j.due_date is null) ";
             }
 
         }
@@ -232,6 +232,8 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                     $wheresql .= " AND j.`created_date` >= '" . $dateselect_from . "' ";
                 }
             }
+        }else{
+
         }
 
 
@@ -257,6 +259,8 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                     $wheresql .= " AND j.`due_date` >= '" . $due_dateselect_from . "' ";
                 }
             }
+        }else{
+
         }
 
 
@@ -267,13 +271,13 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                     $due_date_to = date("Y-m-d H:i:s", $_to);
                     $wheresql .= " AND j.`due_date` < '" . $due_date_to . "' ";
                 } else {
-                    $wheresql .= " AND j.`due_date` <= '" . $due_date_today . "' ";
+                    $wheresql .= " AND (j.`due_date` <= '" . $due_date_today . "' or j.due_date is null)";
                 }
             } else {
-                $wheresql .= " AND j.`due_date` <= '" . $due_date_today . "' ";
+                $wheresql .= " AND (j.`due_date` <= '" . $due_date_today . "' or j.due_date is null) ";
             }
         } else {
-            $wheresql .= " AND j.`due_date` <= '" . $due_date_today . "' ";
+//            $wheresql .= " AND j.`due_date` <= '" . $due_date_today . "' ";
         }
 //        CRM_Core_Error::debug_var('wheresql', $wheresql);
 
@@ -295,7 +299,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
 
 //        CRM_Core_Error::debug_var('sql', $sql);
         $sql = $selectsql . $wheresql . $groupsql . $ordersql;
-//        CRM_Core_Error::debug_var('search_sql', $sql);
+        CRM_Core_Error::debug_var('search_sql', $sql);
         $dao = CRM_Core_DAO::executeQuery($sql);
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();

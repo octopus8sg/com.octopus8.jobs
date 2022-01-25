@@ -43,7 +43,7 @@ CREATE TABLE `civicrm_o8_job` (
   `location_id` int DEFAULT 1,
   `status_id` int DEFAULT 1,
   `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time the job was created',
-  `due_date` timestamp NULL DEFAULT DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 6 month ) COMMENT 'Date and time the job proposal will expire',
+  `due_date` timestamp NULL COMMENT 'Date and time the job proposal will expire',
   `created_id` int unsigned COMMENT 'FK to civicrm_contact, who created this application',
   `modified_date` timestamp NULL COMMENT 'Date and time the job was modified',
   `modified_id` int unsigned COMMENT 'FK to civicrm_contact, who modified this application',

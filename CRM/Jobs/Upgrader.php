@@ -175,6 +175,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
         } catch (\CiviCRM_API3_Exception $ex) {
             // Ignore exception.
         }
+        $this->createCustomFieldsAndOptions();
     }
 
     /**
@@ -270,7 +271,32 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base {
        }
    }
 
-  /**
+    public function createCustomFieldsAndOptions()
+    {
+        $jcfields = $ecfields = $econfigs = $jconfigs = [];
+        $econfigs = json_decode(file_get_contents(
+            E::path('js/employerOptions.json')
+        ), true);
+        $ecfields = json_decode(file_get_contents(
+            E::path('js/employerCustomFields.json')
+        ), true);
+        $jcfields = json_decode(file_get_contents(
+            E::path('js/jobsCustomFields.json')
+        ), true);
+        $jconfigs = json_decode(file_get_contents(
+            E::path('js/jobsOptions.json')
+        ), true);
+//    $result0 = deleteCustomFieldByName('SKILLS');
+//    $result0 = deleteCustomFieldByName('o8_skills');
+        CRM_Core_Error::debug_var('ecfields', $ecfields);
+        CRM_Core_Error::debug_var('econfigs', $econfigs);
+        CRM_Core_Error::debug_var('jconfigs', $jconfigs);
+        CRM_Core_Error::debug_var('jcfields', $jcfields);
+//        createJobFields($jconfigs, $jcfields);
+//        createEmployerFields($econfigs, $ecfields);
+    }
+
+    /**
    * Example: Run a simple query when a module is enabled.
    */
   // public function enable() {

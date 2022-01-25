@@ -256,6 +256,15 @@ function jobs_civicrm_navigationMenu(&$menu)
         'separator' => 0,
     ));
     _jobs_civix_navigationMenu($menu);
+    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+        'label' => E::ts('Run a Function'),
+        'name' => 'run_a_fun',
+        'url' => 'civicrm/jobs/runafun',
+        'permission' => 'administer CiviCRM',
+        'operator' => 'OR',
+        'separator' => 1,
+    ));
+    _jobs_civix_navigationMenu($menu);
 }
 
 /**
