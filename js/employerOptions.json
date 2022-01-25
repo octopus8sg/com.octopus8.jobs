@@ -1,7 +1,7 @@
 [
   {
     "_id": {
-      "$oid": "61e4128c0f570faa12eed608"
+      "$oid": "o8_employer_type"
     },
     "option_values": [
       "COMPANY",
@@ -12,7 +12,7 @@
   },
   {
     "_id": {
-      "$oid": "61e4128c0f570faa12eed609"
+      "$oid": "o8_employer_sector"
     },
     "option_values": [
       "PRIMARY",
@@ -24,10 +24,10 @@
   },
   {
     "_id": {
-      "$oid": "61e4128c0f570faa12eed60a"
+      "$oid": "o8_employer_industry"
     },
     "option_values": [
-      "Retail, Sales & Marketing",
+      "Sales & Marketing",
       "Training/Education",
       "Construction",
       "Retail",
@@ -79,7 +79,7 @@
   },
   {
     "_id": {
-      "$oid": "61e4128c0f570faa12eed60b"
+      "$oid": "o8_employer_country"
     },
     "option_values": [
       "Afghanistan",

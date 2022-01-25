@@ -1,9 +1,9 @@
 [{
 	"_id": {
-		"$oid": "61e46a070f570faa12eee629"
+		"$oid": "o8_employer_employer_industry"
 	},
 	"code": {
-		"$oid": "5f03cd055920ee002bfb7ae0"
+		"$oid": "o8_employer_employer_industry"
 	},
 	"option_values": [
 		"Accounting/auditing/taxation",
@@ -60,10 +60,10 @@
 },
 {
 	"_id": {
-		"$oid": "61e46a070f570faa12eee62a"
+		"$oid": "o8_employer_ess"
 	},
 	"code": {
-		"$oid": "5dabcb2096725b002b0001eb"
+		"$oid": "o8_employer_ess"
 	},
 	"option_values": [
 		"Azlin Binte Amran",
@@ -93,10 +93,10 @@
 },
 {
 	"_id": {
-		"$oid": "61e46a070f570faa12eee62b"
+		"$oid": "o8_employer_ess_secondary"
 	},
 	"code": {
-		"$oid": "5e55fa9a1b0331002b8b6a91"
+		"$oid": "o8_employer_ess_secondary"
 	},
 	"option_values": [
 		"Azlin Binte Amran",
@@ -121,10 +121,10 @@
 },
 {
 	"_id": {
-		"$oid": "61e46a070f570faa12eee62c"
+		"$oid": "o8_employer_sge_liason_person"
 	},
 	"code": {
-		"$oid": "5ed1dc1c5920ee002bfad40d"
+		"$oid": "o8_employer_sge_liason_person"
 	},
 	"option_values": [],
 	"fieldType": "TEXT",
@@ -134,10 +134,10 @@
 },
 {
 	"_id": {
-		"$oid": "61e46a070f570faa12eee62d"
+		"$oid": "o8_employer_is_the_place_accessible"
 	},
 	"code": {
-		"$oid": "5ed1de315920ee002bfad832"
+		"$oid": "o8_employer_is_the_place_accessible"
 	},
 	"option_values": [
 		"Yes",
@@ -150,10 +150,10 @@
 },
 {
 	"_id": {
-		"$oid": "61e46a070f570faa12eee62e"
+		"$oid": "o8_employer_is_building_wheelchair"
 	},
 	"code": {
-		"$oid": "5ed1de315920ee002bfad831"
+		"$oid": "o8_employer_is_building_wheelchair"
 	},
 	"option_values": [
 		"Yes",
@@ -166,10 +166,10 @@
 },
 {
 	"_id": {
-		"$oid": "61e46a070f570faa12eee62f"
+		"$oid": "o8_employer_has_building_handicap_toilets"
 	},
 	"code": {
-		"$oid": "5ed1de315920ee002bfad830"
+		"$oid": "o8_employer_has_building_handicap_toilets"
 	},
 	"option_values": [
 		"Yes",
