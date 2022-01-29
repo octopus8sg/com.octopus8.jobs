@@ -30,6 +30,7 @@ class CRM_Jobs_Form_Report_EmployerReport extends CRM_Report_Form
 //        'Contact',
 //        'Individual',
         'Organisation',
+        'Organization',
     ];
 
     public function customDataFrom($joinsForFiltersOnly = FALSE)

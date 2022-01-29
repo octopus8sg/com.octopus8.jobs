@@ -1,0 +1,461 @@
+[{
+	"_id": {
+		"$oid": "o8_employee_code"
+	},
+	"code": {
+		"$oid": "o8_employee_code"
+	},
+	"fieldType": "TEXT",
+	"position": 1,
+	"name": "CODE"
+},
+{
+	"_id": {
+		"$oid": "o8_employee_school"
+	},
+	"code": {
+		"$oid": "o8_employee_school"
+	},
+	"option_values": [
+	],
+	"fieldType": "USER",
+	"position": 1,
+	"name": "School"},
+{
+	"_id": {
+		"$oid": "o8_employee_program"
+	},
+	"code": {
+		"$oid": "o8_employee_program"
+	},
+	"option_values": [
+		"Azlin Binte Amran",
+		"Clara Lee",
+		"Elizabeth Chua",
+		"Erwin Tan",
+		"Ho Kian Meng",
+		"Nicole Wong",
+		"Norazman A Hamid",
+		"Rajendran Krishnan",
+		"Yvonne Tan",
+		"Vicki Ang",
+		" ",
+		"Phang Jing Wei",
+		"Terrence Woo",
+		"Yew Hau En",
+		"Gary Mok Siew Fai",
+		"Richard Goh",
+		"Norazman Bin Abdul Hamid",
+		"Asmah Binte Abu",
+		"Patricia Goh"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 2,
+	"name": "Program"},
+{
+	"_id": {
+		"$oid": "o8_employee_ess_secondary"
+	},
+	"code": {
+		"$oid": "o8_employee_ess_secondary"
+	},
+	"option_values": [
+		"Azlin Binte Amran",
+		"Asmah Binte Abu",
+		"Patricia Goh",
+		"Clara Lee",
+		"Elizabeth Chua",
+		"Erwin Tan",
+		"Ho Kian Meng",
+		"Nicole Wong",
+		"Norazman A Hamid",
+		"Rajendran Krishnan",
+		"Yvonne Tan",
+		"Vicki Ang",
+		" ",
+		"Phang Jing Wei",
+		"Terrence Woo",
+		"Gary Mok Siew Fai"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 12,
+	"name": "ESS Secondary"
+},
+	{
+		"option_values" : [
+			"Unemployed",
+			"Employed",
+			"Employed but looking",
+			"Unemployed, not looking for now"
+		],
+		"_id": {
+			"$oid": "o8_employee_client_status"
+		},
+		"code": {
+			"$oid": "o8_employee_client_status"
+		},
+		"name" : "Client Status",
+		"fieldType" : "DROPDOWN",
+		"position" : 13
+	},
+	{
+		"option_values" : [
+			"Others",
+			"Master's Degree",
+			"Degree",
+			"Diploma",
+			"Higher Nitec and Nitec",
+			"A-Level",
+			"O-Level",
+			"N-Level",
+			"PSLE"
+		],
+		"_id": {
+			"$oid": "o8_employee_education"
+		},
+		"code": {
+			"$oid": "o8_employee_education"
+		},
+		"name" : "Education",
+		"fieldType" : "DROPDOWN",
+		"moduleType" : "STUDENT",
+		"mandatory" : false,
+		"position" : 14
+	},
+	{
+		"_id": {
+			"$oid": "o8_employee_education_others"
+		},
+		"code": {
+			"$oid": "o8_employee_education_others"
+		},
+		"name" : "Education others",
+		"fieldType" : "TEXT",
+		"position" : 15
+	},
+	{
+		"option_values" : [
+			"Physical Disability",
+			"Hearing Impairment",
+			"Visual Impairment",
+			"Partial Hearing Impairment",
+			"Partial Visual Impairment",
+			"Autism Spectrum Disorder",
+			"Intellectual Disability"
+		],
+		"_id": {
+			"$oid": "o8_employee_main_disability"
+		},
+		"code": {
+			"$oid": "o8_employee_main_disability"
+		},
+		"name" : "Main Disability",
+		"fieldType" : "DROPDOWN",
+		"position" : 16
+	},
+	{
+		"_id": {
+			"$oid": "o8_employee_secondary_disability"
+		},
+		"code": {
+			"$oid": "o8_employee_secondary_disability"
+		},
+		"name" : "Secondary Disability",
+		"fieldType" : "TEXT",
+		"position" : 17
+	},
+	{
+		"option_values" : [
+			"Accounting/auditing/taxation",
+			"Admin/secretarial/general management",
+			"Advertising/media",
+			"Architecture/building and construction",
+			"Banking and Finance",
+			"Business – Consultancy",
+			"Call Centre Operations/Telemarketing",
+			"Conservancy – Cleaning Services",
+			"Customer Service",
+			"Design/Graphic Design/Interior Design",
+			"Education and Training",
+			"Engineering",
+			"Entertainment",
+			"Environment/Health",
+			"Events/Promotion",
+			"F&B",
+			"General Work ",
+			"Healthcare/ Pharmaceutical",
+			"Horticulture",
+			"Hospitality",
+			"Human Resources",
+			"IT - Information Technology",
+			"Insurance",
+			"Legal Services",
+			"Logistics – Despatch/Delivery",
+			"Logistics – Supply Chain",
+			"Logistics- Warehouse",
+			"Manufacturing- Packer",
+			"Manufacturing- Production",
+			"Marketing/Public Relations",
+			"Medical/Therapy Services",
+			"Personal Care/ Beauty",
+			"Professional Services",
+			"Public/Civil Service",
+			"Purchasing/Merchandising",
+			"Real Estate/ Property Management",
+			"Repair and Maintenance",
+			"Retail/Services",
+			"Risk Management",
+			"Sales & Marketing",
+			"Sciences/Laboratory/R&D",
+			"Security and Investigation",
+			"Social Services/Non-Profit Organisation",
+			"Sports",
+			"Telecommunications",
+			"Travel/Tourism"
+		],
+		"_id": {
+			"$oid": "o8_employee_client_specialization_1"
+		},
+		"code": {
+			"$oid": "o8_employee_client_specialization_1"
+		},
+		"name" : "Client Specialization 1 ",
+		"fieldType" : "DROPDOWN",
+		"moduleType" : "STUDENT",
+		"mandatory" : false,
+		"position" : 18
+	},
+	{
+		"_id": {
+			"$oid": "o8_employee_job_title_1"
+		},
+		"code": {
+			"$oid": "o8_employee_job_title_1"
+		},
+		"name" : "Job title 1",
+		"fieldType" : "TEXT",
+		"moduleType" : "STUDENT",
+		"mandatory" : false,
+		"position" : 19
+	},
+	{
+		"option_values" : [
+			"Accounting/auditing/taxation",
+			"Admin/secretarial/general management",
+			"Advertising/media",
+			"Architecture/building and construction",
+			"Banking and Finance",
+			"Business – Consultancy",
+			"Call Centre Operations/Telemarketing",
+			"Conservancy – Cleaning Services",
+			"Customer Service",
+			"Design/Graphic Design/Interior Design",
+			"Education and Training",
+			"Engineering",
+			"Entertainment",
+			"Environment/Health",
+			"Events/Promotion",
+			"F&B",
+			"General Work",
+			"Healthcare/ Pharmaceutical",
+			"Horticulture",
+			"Hospitality",
+			"Human Resources",
+			"IT - Information Technology",
+			"Insurance",
+			"Legal Services",
+			"Logistics – Despatch/Delivery",
+			"Logistics – Supply Chain",
+			"Logistics- Warehouse",
+			"Manufacturing- Packer",
+			"Manufacturing- Production",
+			"Marketing/Public Relations",
+			"Medical/Therapy Services",
+			"Personal Care/ Beauty",
+			"Professional Services",
+			"Public/Civil Service",
+			"Purchasing/Merchandising",
+			"Real Estate/ Property Management",
+			"Repair and Maintenance",
+			"Retail/Services",
+			"Risk Management",
+			"Sales & Marketing",
+			"Sciences/Laboratory/R&D",
+			"Security and Investigation",
+			"Social Services/Non-Profit Organisation",
+			"Sports",
+			"Telecommunications",
+			"Travel/Tourism"
+		],
+		"_id": {
+			"$oid": "o8_employee_client_specialization_2"
+		},
+		"code": {
+			"$oid": "o8_employee_client_specialization_2"
+		},
+		"name" : "Client Specialization 2",
+		"fieldType" : "DROPDOWN",
+		"position" : 20
+	},
+	{
+		"_id": {
+			"$oid": "o8_employee_job_title_2"
+		},
+		"code": {
+			"$oid": "o8_employee_job_title_2"
+		},
+		"name" : "Job title 2",
+		"fieldType" : "TEXT",
+		"position" : 21
+	},
+	{
+		"option_values" : [
+			"Accounting/auditing/taxation",
+			"Admin/secretarial/general management",
+			"Advertising/media",
+			"Architecture/building and construction",
+			"Banking and Finance",
+			"Business – Consultancy",
+			"Call Centre Operations/Telemarketing",
+			"Conservancy – Cleaning Services",
+			"Customer Service",
+			"Design/Graphic Design/Interior Design",
+			"Education and Training",
+			"Engineering",
+			"Entertainment",
+			"Environment/Health",
+			"Events/Promotion",
+			"F&B",
+			"General Work ",
+			"Healthcare/ Pharmaceutical",
+			"Horticulture",
+			"Hospitality",
+			"Human Resources",
+			"IT - Information Technology",
+			"Insurance",
+			"Legal Services",
+			"Logistics – Despatch/Delivery",
+			"Logistics – Supply Chain",
+			"Logistics- Warehouse",
+			"Manufacturing- Packer",
+			"Manufacturing- Production",
+			"Marketing/Public Relations",
+			"Medical/Therapy Services",
+			"Personal Care/ Beauty",
+			"Professional Services",
+			"Public/Civil Service",
+			"Purchasing/Merchandising",
+			"Real Estate/ Property Management",
+			"Repair and Maintenance",
+			"Retail/Services",
+			"Risk Management",
+			"Sales & Marketing",
+			"Sciences/Laboratory/R&D",
+			"Security and Investigation",
+			"Social Services/Non-Profit Organisation",
+			"Sports",
+			"Telecommunications",
+			"Travel/Tourism"
+		],
+		"_id": {
+			"$oid": "o8_employee_client_specialization_3"
+		},
+		"code": {
+			"$oid": "o8_employee_client_specialization_3"
+		},
+		"name" : "Client Specialization 3",
+		"fieldType" : "DROPDOWN",
+		"moduleType" : "STUDENT",
+		"mandatory" : false,
+		"position" : 22
+	},
+	{
+		"_id": {
+			"$oid": "o8_employee_job_title_3"
+		},
+		"code": {
+			"$oid": "o8_employee_job_title_3"
+		},
+		"name" : "Job title 3",
+		"fieldType" : "TEXT",
+		"moduleType" : "STUDENT",
+		"mandatory" : false,
+		"position" : 23
+	},
+	{
+		"option_values" : [],
+		"_id": {
+			"$oid": "o8_employee_specialization_others"
+		},
+		"code": {
+			"$oid": "o8_employee_specialization_others"
+		},
+		"name" : "Specialization Others",
+		"fieldType" : "TEXT",
+		"position" : 24
+	},
+	{
+		"option_values" : [
+			"East",
+			"West",
+			"Central",
+			"South",
+			"North",
+			"Islandwide"
+		],
+		"_id": {
+			"$oid": "o8_employee_job_location_preffered"
+		},
+		"code": {
+			"$oid": "o8_employee_job_location_preffered"
+		},
+		"name" : "Job Location Preferred",
+		"fieldType" : "DROPDOWN",
+		"moduleType" : "STUDENT",
+		"mandatory" : false,
+		"position" : 25
+	},
+	{
+		"option_values" : [
+			"Yes",
+			"No"
+		],
+		"_id": {
+			"$oid": "o8_employee_work_on_weekend_and_public_holiday"
+		},
+		"code": {
+			"$oid": "o8_employee_work_on_weekend_and_public_holiday"
+		},
+		"name" : "Work on Weekend and Public Holiday",
+		"fieldType" : "DROPDOWN",
+		"position" : 26
+	},
+	{
+		"option_values" : [
+			"Yes",
+			"No"
+		],
+		"_id": {
+			"$oid": "o8_employee_ok_with_shift_work"
+		},
+		"code": {
+			"$oid": "o8_employee_ok_with_shift_work"
+		},
+		"name" : "Ok with Shift Work ",
+		"fieldType" : "DROPDOWN",
+		"position" : 27
+	},
+	{
+		"option_values" : [],
+		"_id": {
+			"$oid": "o8_employee_additional_information"
+		},
+		"code": {
+			"$oid": "o8_employee_additional_information"
+		},
+		"name" : "Additional Information",
+		"fieldType" : "TEXT",
+		"position" : 28
+	}
+]
+

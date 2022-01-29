@@ -276,12 +276,15 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base
 
     public function createCustomFieldsAndOptions()
     {
-        $jcfields = $ecfields = $econfigs = $jconfigs = [];
+        $jcfields = $ecfields = $eecfields = $econfigs = $jconfigs = [];
         $econfigs = json_decode(file_get_contents(
             E::path('js/employerOptions.json')
         ), true);
         $ecfields = json_decode(file_get_contents(
             E::path('js/employerCustomFields.json')
+        ), true);
+        $eecfields = json_decode(file_get_contents(
+            E::path('js/employeeCustomFields.json')
         ), true);
         $jcfields = json_decode(file_get_contents(
             E::path('js/jobsCustomFields.json')
@@ -291,12 +294,12 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base
         ), true);
 //    $result0 = deleteCustomFieldByName('SKILLS');
 //    $result0 = deleteCustomFieldByName('o8_skills');
-//        CRM_Core_Error::debug_var('ecfields', $ecfields);
+//        CRM_Core_Error::debug_var('eecfields', $eecfields);
 //        CRM_Core_Error::debug_var('econfigs', $econfigs);
-//        CRM_Core_Error::debug_var('jconfigs', $jconfigs);
 //        CRM_Core_Error::debug_var('jcfields', $jcfields);
-        createEmployerFields($econfigs, $ecfields);
-        createJobFields($jconfigs, $jcfields);
+//        createEmployerFields($econfigs, $ecfields);
+//        createJobFields($jconfigs, $jcfields);
+        createEmployeeFields($eecfields);
     }
 
     /**
@@ -407,8 +410,8 @@ function createJobFields($jconfigs, $jcfields)
     ]);
     $create_custom_group = TRUE;
     if (isset($hasgroup['id'])) {
-                $create_custom_group = FALSE;
-                $group_id = $hasgroup['id'];
+        $create_custom_group = FALSE;
+        $group_id = $hasgroup['id'];
     }
     if ($create_custom_group) {
         $grouparray = [
@@ -421,32 +424,43 @@ function createJobFields($jconfigs, $jcfields)
         $newgroup = civicrm_api3('CustomGroup', 'create', $grouparray);
         $group_id = $newgroup['id'];
     } else {
-        echo 'Jobs will not be created';
+//        echo 'Jobs will not be created';
     }
     $customvaluepositions = 0;
     foreach ($jconfigs as $config) {
 //        CRM_Core_Error::debug_var('config', $config);
-        $name = $config['configType'];
-        $name = trim($name);
         $code = $config['_id']['$oid'];
-//        $result0 = deleteCustomFieldByName($code);
+        if (isset($config['configType'])) {
+            $name = $config['configType'];
+            $name = trim($name);
+        } else {
+            $name = $code;
+        }
+
+        //        $result0 = deleteCustomFieldByName($code);
 //        $result1 = deleteCustomFieldByLabel($name);
-        $option_values = $config['option_values'];
+        $option_values = [];
+        if (isset($config['option_values'])) {
+            $option_values = $config['option_values'];
+        }
         $option_values = array_map('trim', $option_values);
-        $option_values_id = addOptionsToOptionValuesByCode($code, $option_values);
+        $option_values_id = addOptionsToOptionValuesByCode($code, $option_values, $name);
+        //        CRM_Core_Error::debug_var('option_values_id', $option_values_id);
+//        CRM_Core_Error::debug_var('name', $name);
+//        CRM_Core_Error::debug_var('code', $code);
         if ($name == 'AUDIENCE' OR $name == 'SKILL') {
             $customfield = [
                 'custom_group_id' => $group_id,
                 'name' => $code,
                 'weight' => $customvaluepositions,
                 'label' => $name,
-                'serialize' => 5,
-                'option_values' => $option_values_id,
+                'serialize' => 1,
+                'option_group_id' => $option_values_id,
                 'html_type' => "Select",
             ];
 //            CRM_Core_Error::debug_var('optionsarray'.$code, $optionsarray);
             $result = getCustomFieldByCode($code, $customfield);
-            CRM_Core_Error::debug_var('result'.$code, $result);
+//            CRM_Core_Error::debug_var('result'.$code, $result);
             $customvaluepositions = $customvaluepositions + 1;
         }
     }
@@ -488,7 +502,7 @@ function createJobFields($jconfigs, $jcfields)
                     'name' => $code,
                     'weight' => $position,
                     'label' => $name,
-                    'serialize' => 5,
+                    'serialize' => 1,
                     'option_group_id' => $option_group_id,
                     'html_type' => "Select",
                 ];
@@ -564,7 +578,7 @@ function createEmployerFields($econfigs, $ecfields)
         if (in_array($name, ['TYPE', 'INDUSTRY'])) {
             $customfield = array(
                 'custom_group_id' => $group_id,
-                'serialize' => 5,
+                'serialize' => 1,
                 'name' => $code,
                 'weight' => $customvaluepositions,
                 'label' => $name,
@@ -613,7 +627,8 @@ function createEmployerFields($econfigs, $ecfields)
                     'name' => $code,
                     'weight' => $position,
                     'label' => $name,
-                    'serialize' => 5,
+                    'data_type' => 'alphanumeric',
+                    'serialize' => 1,
                     'option_group_id' => $option_group_id,
                     'html_type' => "Select",
                 ];
@@ -640,6 +655,122 @@ function createEmployerFields($econfigs, $ecfields)
 
 }
 
+
+/**
+ * @param $eeconfigs
+ * @param $eecfields
+ * @throws CiviCRM_API3_Exception
+ */
+function createEmployeeFields($eecfields)
+{
+//    CRM_Core_Error::debug_var('eecfields', $eecfields);
+
+    $group_code = "spd_o8_employee";
+    $hasgroup = civicrm_api3('CustomGroup', 'get', [
+        'return' => ["id"],
+        'name' => $group_code,
+    ]);
+
+    $create_custom_group = TRUE;
+    if (isset($hasgroup['id'])) {
+        $create_custom_group = FALSE;
+        $group_id = $hasgroup['id'];
+    }
+    if ($create_custom_group) {
+        $newgroup = civicrm_api3('CustomGroup', 'create', [
+//            'debug' => 1,
+            'title' => "Employee Custom Fields",
+            'extends' => "Individual",
+            'name' => $group_code,
+            'collapse_display' => 0,
+        ]);
+        $group_id = $newgroup['id'];
+    } else {
+//        echo 'Organisations will not be created';
+    }
+    $customvaluepositions = 0;
+    foreach ($eecfields as $customf) {
+        $type = $customf['fieldType'];
+        $position = $customvaluepositions + $customf['position'];
+        $code = $customf['_id']['$oid'];
+        if (isset($customf['name'])) {
+            $name = $customf['name'];
+            $name = trim($name);
+        } else {
+            $name = $code;
+        }
+
+        //        $result0 = deleteCustomFieldByName($code);
+//        $result1 = deleteCustomFieldByLabel($name);
+        $option_values = [];
+        if (isset($customf['option_values'])) {
+            $option_values = $customf['option_values'];
+        }
+        $option_values = array_map('trim', $option_values);
+        CRM_Core_Error::debug_var('optionvalues' . $customf['name'], $option_values);
+        try {
+            $option_group_id = addOptionsToOptionValuesByCode($code, $option_values, $name);
+        } catch (ErrorException $e) {
+            CRM_Core_Error::debug_var('eee' . $code, $e->getMessage());
+        }
+//        CRM_Core_Error::debug_var('2fecustom' . $customf['name'], $customf);
+
+        if ($type == "TEXT" AND sizeof($option_values) == 0) {
+            try {
+                //            CRM_Core_Error::debug_var('result1'.$code, $result1);
+                $customfield = [
+                    'custom_group_id' => $group_id,
+                    'name' => $code,
+                    'weight' => $position,
+                    'label' => $name,
+                    'data_type' => "Memo",
+                    'html_type' => "TextArea",
+                    'option_values' => null,
+                ];
+                $result = getCustomFieldByCode($code, $customfield);
+                //            CRM_Core_Error::debug_var('optionsarray'.$code, $optionsarray);
+                CRM_Core_Error::debug_var('result' . $code, $result);
+
+            } catch (ErrorException $e) {
+                CRM_Core_Error::debug_var('eee' . $code, $e->getMessage());
+            }
+        } elseif ($type == "DROPDOWN" OR sizeof($option_values) > 0) {
+            try {
+                $customfield = [
+                    'custom_group_id' => $group_id,
+                    'name' => $code,
+                    'weight' => $position,
+                    'label' => $name,
+                    'data_type' => 'alphanumeric',
+                    'serialize' => 1,
+                    'option_group_id' => $option_group_id,
+                    'html_type' => "Select",
+                ];
+                $result = getCustomFieldByCode($code, $customfield);
+            } catch (ErrorException $e) {
+                CRM_Core_Error::debug_var('eee' . $code, $e->getMessage());
+            }
+        } elseif ($type == "DATE") {
+            try {
+                $customfield = [
+                    'custom_group_id' => $group_id,
+                    'name' => $code,
+                    'weight' => $position,
+                    'label' => $name,
+                    'data_type' => "Date",
+                    'html_type' => "Select Date",
+                ];
+                $result = getCustomFieldByCode($code, $customfield);
+            } catch
+            (ErrorException $e) {
+                CRM_Core_Error::debug_var('eee' . $code, $e->getMessage());
+            }
+        }
+    }
+    return;
+
+}
+
 /**
  * @param $code
  * @param array $option_values
@@ -650,43 +781,84 @@ function createEmployerFields($econfigs, $ecfields)
  */
 function addOptionsToOptionValuesByCode($code, array $option_values, $label = null)
 {
-    if ($label == null) {
-        $label = $code;
-    }
-    $resultoptions = civicrm_api3('OptionGroup', 'get', [
-        'name' => $code,
-        'sequential' => 1,
+    $optionGroupId = null;
+    $optionGroupName = null;
+    $optionGroupName = $code;
+    $optionGroup = civicrm_api3('OptionGroup', 'get', [
+        'name' => $optionGroupName,
+//        'sequential' => 1,
         'return' => ["id"],
-        'api.OptionValue.get' => ['id' => "\$value"],
     ]);
-    if (!$resultoptions['id']) {
-        $resultoptions = civicrm_api3('OptionGroup', 'create', [
-                'name' => $code,
-                'title' => E::ts($label),
-                'sequential' => 1,
-                'return' => ["id"],
-                'api.OptionValue.get' => ['id' => "\$value"]]
-        );
+    if (isset($optionGroup["id"])) {
+        $optionGroupId = $optionGroup["id"];
     }
-    $option_group_id = $resultoptions['id'];
-    $option_group_name = $resultoptions['values'][0]['name'];
-    $civicrm_options = $resultoptions['values'][0]['api.OptionValue.get']['values'];
-//    CRM_Core_Error::debug_var('resultoptions' . $code, $resultoptions);
-    foreach ($civicrm_options as $civicrm_option) {
-        if (in_array(trim($civicrm_option['label']), $option_values)) {
-            if (($key = array_search($civicrm_option['label'], $option_values)) !== false) {
-                $option_values = array_splice($option_values, $key, 1);
+
+
+    $value = $option_values;
+    $value = array_values(array_filter($value)); // filter empty values
+    $value = array_map('trim', $value);
+    $valueUpdated = FALSE;
+    $isValid = TRUE;
+    $gid = $optionGroupId;
+    foreach ($value as $option) {
+        $label = $option;
+        $values_cutom_field = civicrm_api3("OptionValue", "get", array(
+            'sequential' => '1',
+            'options' => ['limit' => 0],
+            'option_group_id' => $gid
+        ));
+        $notexist = TRUE;
+        foreach ($values_cutom_field["values"] as $key => $value_comp) {
+            if ($value_comp["value"] == $option || $value_comp["label"] == $option) {
+                $notexist = FALSE;
+                break;
             }
         }
-    }
-    if (sizeof($option_values) > 0) {
-        foreach ($option_values as $option_value) {
-            $resultoptionvalue = civicrm_api3('OptionValue', 'create', [
-                'option_group_id' => $option_group_id,
-                'label' => $option_value,
-            ]);
+        if ($notexist) {
+            insertValue_customfield($gid, $option, $label);
         }
     }
+//    CRM_Core_Error::debug_var('1setoptions' . $code, $option_values);
+//    if ($label == null) {
+//        $label = $code;
+//    }
+//    $resultoptions = civicrm_api3('OptionGroup', 'get', [
+//        'name' => $code,
+////        'sequential' => 1,
+////        'return' => ["id"],
+//        'api.OptionValue.get' => ['options' => ['limit' => 0]],
+//    ]);
+//    if (!isset($resultoptions['id'])) {
+//        $resultoptions = civicrm_api3('OptionGroup', 'create', [
+//                'name' => $code,
+//                'title' => E::ts($label),
+////                'sequential' => 1,
+////                'return' => ["id"],
+//                'api.OptionValue.get' => ['options' => ['limit' => 0]]]
+//        );
+//        CRM_Core_Error::debug_var('setoptions' . $code, $resultoptions);
+//
+//    } else {
+//        CRM_Core_Error::debug_var('gotoptions' . $code, $resultoptions);
+//    }
+//    $option_group_id = $resultoptions['id'];
+////    $option_group_name = $resultoptions['values'][0]['name'];
+//    $civicrm_options = $resultoptions['values'][strval($option_group_id)]['api.OptionValue.get']['values'];
+//    CRM_Core_Error::debug_var('gotoptions' . $code, $civicrm_options);
+//    foreach ($civicrm_options as $civicrm_option) {
+//        if (in_array(trim($civicrm_option['label']), $option_values)) {
+//            $key = array_search($civicrm_option['label'], $option_values);
+//            $option_values = array_splice($option_values, $key + 1, 1);
+//        }
+//    }
+//    if (sizeof($option_values) > 0) {
+//        foreach ($option_values as $option_value) {
+//            $resultoptionvalue = civicrm_api3('OptionValue', 'create', [
+//                'option_group_id' => $option_group_id,
+//                'label' => $option_value,
+//            ]);
+//        }
+//    }
     return $option_group_id;
 }
 
@@ -703,16 +875,25 @@ function addOptionsToOptionValuesByCode($code, array $option_values, $label = nu
  */
 function getCustomFieldByCode($code, $customfield)
 {
-    $result0 = civicrm_api3('CustomField', 'get', [
-        'return' => ["id"],
+    $result = civicrm_api3('CustomField', 'get', [
+//        'return' => ["id"],
         'name' => $code,
     ]);
 
-    if (isset($result0["id"])) {
-        $result_id = $result0['id'];
+    if (isset($result["id"])) {
+        return $result;
     } else {
         $result = civicrm_api3('CustomField', 'create', $customfield);
-        $result_id = $result['id'];
+        return $result;
     }
-    return $result_id;
+}
+
+function insertValue_customfield($gid, $value, $label)
+{
+    $params = array(
+        'label' => $label,
+//            'value' => $value,
+        'option_group_id' => $gid,
+    );
+    $result = civicrm_api3("OptionValue", "create", $params);
 }
