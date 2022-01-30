@@ -152,7 +152,7 @@
     <field>
         <name>modified_date</name>
         <type>timestamp</type>
-        <title>Job Proposal Created Date</title>
+        <title>Job Proposal Modified Date</title>
         <required>false</required>
         <comment>Date and time the job was modified</comment>
         <html>
@@ -168,7 +168,7 @@
         <title>Modified By Contact ID</title>
         <comment>FK to civicrm_contact, who modified this application</comment>
         <html>
-            <label>Created By</label>
+            <label>Modified By</label>
         </html>
     </field>
 

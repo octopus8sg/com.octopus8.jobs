@@ -316,7 +316,7 @@ class CRM_Jobs_DAO_SscJob extends CRM_Core_DAO {
         'modified_date' => [
           'name' => 'modified_date',
           'type' => CRM_Utils_Type::T_TIMESTAMP,
-          'title' => E::ts('Job Proposal Created Date'),
+          'title' => E::ts('Job Proposal Modified Date'),
           'description' => E::ts('Date and time the job was modified'),
           'required' => FALSE,
           'where' => 'civicrm_o8_job.modified_date',
@@ -325,7 +325,7 @@ class CRM_Jobs_DAO_SscJob extends CRM_Core_DAO {
           'bao' => 'CRM_Jobs_DAO_SscJob',
           'localizable' => 0,
           'html' => [
-            'type' => 'Select Date',
+            'type' => 'Select Modified Date',
             'formatType' => 'activityDateTime',
           ],
           'add' => NULL,
@@ -342,7 +342,7 @@ class CRM_Jobs_DAO_SscJob extends CRM_Core_DAO {
           'localizable' => 0,
           'FKClassName' => 'CRM_Contact_DAO_Contact',
           'html' => [
-            'label' => E::ts("Created By"),
+            'label' => E::ts("Modified By"),
           ],
           'add' => NULL,
         ],

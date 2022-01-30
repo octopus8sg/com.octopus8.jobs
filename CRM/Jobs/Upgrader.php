@@ -297,8 +297,8 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base
 //        CRM_Core_Error::debug_var('eecfields', $eecfields);
 //        CRM_Core_Error::debug_var('econfigs', $econfigs);
 //        CRM_Core_Error::debug_var('jcfields', $jcfields);
-//        createEmployerFields($econfigs, $ecfields);
-//        createJobFields($jconfigs, $jcfields);
+        createEmployerFields($econfigs, $ecfields);
+        createJobFields($jconfigs, $jcfields);
         createEmployeeFields($eecfields);
     }
 
@@ -707,7 +707,7 @@ function createEmployeeFields($eecfields)
             $option_values = $customf['option_values'];
         }
         $option_values = array_map('trim', $option_values);
-        CRM_Core_Error::debug_var('optionvalues' . $customf['name'], $option_values);
+//        CRM_Core_Error::debug_var('optionvalues' . $customf['name'], $option_values);
         try {
             $option_group_id = addOptionsToOptionValuesByCode($code, $option_values, $name);
         } catch (ErrorException $e) {
@@ -729,7 +729,7 @@ function createEmployeeFields($eecfields)
                 ];
                 $result = getCustomFieldByCode($code, $customfield);
                 //            CRM_Core_Error::debug_var('optionsarray'.$code, $optionsarray);
-                CRM_Core_Error::debug_var('result' . $code, $result);
+//                CRM_Core_Error::debug_var('result' . $code, $result);
 
             } catch (ErrorException $e) {
                 CRM_Core_Error::debug_var('eee' . $code, $e->getMessage());
@@ -791,6 +791,14 @@ function addOptionsToOptionValuesByCode($code, array $option_values, $label = nu
     ]);
     if (isset($optionGroup["id"])) {
         $optionGroupId = $optionGroup["id"];
+    } else {
+        $resultoptions = civicrm_api3('OptionGroup', 'create', [
+                'name' => $code,
+                'title' => E::ts($label),
+//                'sequential' => 1,
+                'return' => ["id"]]
+        );
+        $optionGroupId = $resultoptions['id'];
     }
 
 
@@ -810,56 +818,20 @@ function addOptionsToOptionValuesByCode($code, array $option_values, $label = nu
         $notexist = TRUE;
         foreach ($values_cutom_field["values"] as $key => $value_comp) {
             if ($value_comp["value"] == $option || $value_comp["label"] == $option) {
+//                CRM_Core_Error::debug_var($optionGroupName . $key . 'eee' . $option . '===', $value_comp);
                 $notexist = FALSE;
                 break;
             }
         }
+        $notexstr = "false";
+        if ($notexist) $notexstr = "true";
+//        CRM_Core_Error::debug_var('eee' . $option, strval($notexstr));
         if ($notexist) {
             insertValue_customfield($gid, $option, $label);
         }
     }
-//    CRM_Core_Error::debug_var('1setoptions' . $code, $option_values);
-//    if ($label == null) {
-//        $label = $code;
-//    }
-//    $resultoptions = civicrm_api3('OptionGroup', 'get', [
-//        'name' => $code,
-////        'sequential' => 1,
-////        'return' => ["id"],
-//        'api.OptionValue.get' => ['options' => ['limit' => 0]],
-//    ]);
-//    if (!isset($resultoptions['id'])) {
-//        $resultoptions = civicrm_api3('OptionGroup', 'create', [
-//                'name' => $code,
-//                'title' => E::ts($label),
-////                'sequential' => 1,
-////                'return' => ["id"],
-//                'api.OptionValue.get' => ['options' => ['limit' => 0]]]
-//        );
-//        CRM_Core_Error::debug_var('setoptions' . $code, $resultoptions);
-//
-//    } else {
-//        CRM_Core_Error::debug_var('gotoptions' . $code, $resultoptions);
-//    }
-//    $option_group_id = $resultoptions['id'];
-////    $option_group_name = $resultoptions['values'][0]['name'];
-//    $civicrm_options = $resultoptions['values'][strval($option_group_id)]['api.OptionValue.get']['values'];
-//    CRM_Core_Error::debug_var('gotoptions' . $code, $civicrm_options);
-//    foreach ($civicrm_options as $civicrm_option) {
-//        if (in_array(trim($civicrm_option['label']), $option_values)) {
-//            $key = array_search($civicrm_option['label'], $option_values);
-//            $option_values = array_splice($option_values, $key + 1, 1);
-//        }
-//    }
-//    if (sizeof($option_values) > 0) {
-//        foreach ($option_values as $option_value) {
-//            $resultoptionvalue = civicrm_api3('OptionValue', 'create', [
-//                'option_group_id' => $option_group_id,
-//                'label' => $option_value,
-//            ]);
-//        }
-//    }
-    return $option_group_id;
+
+    return $optionGroupId;
 }
 
 /**
@@ -881,10 +853,40 @@ function getCustomFieldByCode($code, $customfield)
     ]);
 
     if (isset($result["id"])) {
-        return $result;
+        $mycustomfield = $result["values"][$result["id"]];
+        $serialize = $mycustomfield["serialize"];
+        if($serialize == "0"){$serialize = "";}
+        if($mycustomfield["is_searchable"] == "0"){
+        try {
+            $result = civicrm_api3('CustomField', 'get', [
+                'name' => $code,
+                'api.CustomField.update' => [
+                    "is_searchable" => "1",
+                    "serialize" => $serialize],
+            ]);
+        } catch (ErrorException $e) {
+
+        }
+        }
+        if (isset($customfield['option_group_id'])) {
+            try {
+                $result = civicrm_api3('CustomField', 'get', [
+                    'name' => $code,
+                    'api.CustomField.update' => [
+                        "option_group_id" => $customfield['option_group_id'],
+                        "serialize" => $serialize,
+                        ],
+                ]);
+            } catch
+            (ErrorException $e) {
+
+            }
+        }
+        return $result['id'];
     } else {
+        $customfield["is_searchable"] = "1";
         $result = civicrm_api3('CustomField', 'create', $customfield);
-        return $result;
+        return $result['id'];
     }
 }
 

@@ -239,12 +239,12 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                             'title' => ts('Role'),
                             'operatorType' => CRM_Report_Form::OP_MULTISELECT,
                             'options' => CRM_Core_PseudoConstant::get('CRM_Jobs_DAO_SscJob', 'role_id'),
-                        ],                        
+                        ],
                         'location_id' => [
                             'title' => ts('Location'),
                             'operatorType' => CRM_Report_Form::OP_MULTISELECT,
                             'options' => CRM_Core_PseudoConstant::get('CRM_Jobs_DAO_SscJob', 'location_id'),
-                        ],                        
+                        ],
 //                        'is_active' => [
 //                            'title' => ts('Position Open?'),
 //                            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
@@ -500,7 +500,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
 //            CRM_Core_Error::debug_var('rows', $rows);
         foreach ($rows as $rowNum => $row) {
 //            CRM_Core_Error::debug_var('rowNum', $rowNum);
-//            CRM_Core_Error::debug_var('row_before', $row);
+//            CRM_Core_Error::debug_var('row_before' . $rowNum, $row);
 ////            if (!$rows[$rowNum]['civicrm_o8_job_is_active']) {
 //                $rows[$rowNum]['civicrm_o8_job_is_active'] = intval($rows[$rowNum]['civicrm_o8_job_is_active']);
 ////            }
@@ -588,8 +588,14 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                         $val = implode(' ', array_slice($words, 0, 5)) . "...";
                     }
                 }
-//                $val =
                 $rows[$rowNum]['civicrm_o8_job_description']
+                    = $val;
+            }
+            $job_id = $rows[$rowNum]['civicrm_o8_job_ssc_job_id'];
+            if ($val = CRM_Utils_Array::value('civicrm_o8_job_title', $row)) {
+//                            CRM_Core_Error::debug_var('val', $val);
+                $val = $this->getJobTitleLink($job_id, $val);
+                $rows[$rowNum]['civicrm_o8_job_title']
                     = $val;
             }
             $lastKey = $rowNum;
@@ -712,12 +718,29 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
     {
         $contact = "Not set";
         if (!empty($contactId)) {
-            $contact = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
+            $contact = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/contact/view',
                     ['reset' => 1, 'cid' => $contactId]) . '">' .
                 CRM_Contact_BAO_Contact::displayName($contactId) . '</a>';
 
         }
         return $contact;
+
+    }
+
+    /**
+     * Generate the from clause as it relates to the soft credits.
+     */
+    public function getJobTitleLink($jobId, $text)
+    {
+        $job = "Not set";
+        if (!empty($jobId)) {
+            http://localhost:3306/wp-admin/admin.php?page=CiviCRM&q=civicrm%2Fjobs%2Fform&action=view&id=2
+            $job = '<a target="_blank" href="' . CRM_Utils_System::url('civicrm/jobs/form',
+                    ['action' => 'view', 'reset' => 1, 'id' => $jobId]) . '">' .
+                $text . '</a>';
+
+        }
+        return $job;
 
     }
 
