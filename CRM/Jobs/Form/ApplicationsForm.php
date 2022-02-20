@@ -171,9 +171,9 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             //todo add pseudoconstants
 
             $statuses = CRM_Core_OptionGroup::values('o8_application_status');
-            CRM_Core_Error::debug_var('statuses', $statuses);
+//            CRM_Core_Error::debug_var('statuses', $statuses);
             unset($statuses[5]);
-            CRM_Core_Error::debug_var('statuses2', $statuses);
+//            CRM_Core_Error::debug_var('statuses2', $statuses);
             $this->add('select', 'status_id', E::ts('Status'),
                 $statuses, TRUE, ['class' => 'huge crm-select2',
                     'data-option-edit-path' => 'civicrm/admin/options/o8_application_status']);
