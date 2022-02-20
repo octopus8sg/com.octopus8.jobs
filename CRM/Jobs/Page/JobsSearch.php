@@ -87,6 +87,20 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
         } catch (Exception $e) {
             $dateselect_from = null;
         }
+        $due_dateselect_to = CRM_Utils_Request::retrieveValue('due_dateselect_to', 'String', null);
+        try {
+            $due_dateselectto = new DateTime($due_dateselect_to);
+        } catch (Exception $e) {
+            $due_dateselect_to = null;
+        }
+//        CRM_Core_Error::debug_var('due_dateselect_to', $due_dateselect_to);
+
+        $due_dateselect_from = CRM_Utils_Request::retrieveValue('due_dateselect_from', 'String', null);
+        try {
+            $due_dateselectfrom = new DateTime($due_dateselect_from);
+        } catch (Exception $e) {
+            $due_dateselect_from = null;
+        }
 //        CRM_Core_Error::debug_var('dateselect_from', $dateselect_from);
         if (isset($employeeId)) {
             //employee view
@@ -96,7 +110,8 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
                 2 => 'role',
                 3 => 'location',
                 4 => 'contact_id',
-                5 => 'created_date',
+                5 => 'due_date',
+                6 => 'created_date',
             ];
         } elseif (!isset($employerId)) {
             //admin view
@@ -108,7 +123,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
                 4 => 'contact_id',
                 5 => 'application_count',
                 6 => 'created_date',
-                7 => 'is_active',
+                7 => 'due_date',
             ];
         } else {
             //employer view view
@@ -119,7 +134,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
                 3 => 'location',
                 4 => 'application_count',
                 5 => 'created_date',
-                6 => 'is_active',
+                6 => 'due_date',
             ];
         }
 
@@ -135,9 +150,9 @@ SELECT  SQL_CALC_FOUND_ROWS
     j.contact_id,
     r.label role,                            
     l.label location,                            
-    j.created_date,
-    j.is_active
-FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
+    j.due_date,
+    j.created_date
+FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.id
                               INNER JOIN civicrm_option_value l on  j.location_id = l.value
                               INNER JOIN civicrm_option_group gl on l.option_group_id = gl.id and gl.name = 'o8_job_location'
                               INNER JOIN civicrm_option_value r on  j.role_id = r.value
@@ -145,7 +160,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
 ";
 
         $wheresql = " where 1 = 1";
-        $groupsql = " group by j.id, j.title, j.is_active, l.label, r.label, j.created_date";
+        $groupsql = " group by j.id, j.title, j.due_date, l.label, r.label, j.created_date";
         $ordersql = " ORDER BY j.id desc";
         if (isset($contact_id)) {
             $wheresql .= " AND j.`contact_id` = " . $contact_id . " ";
@@ -161,7 +176,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 "Staff",
             );
             if (in_array($contactType, $employees)) {
-                $wheresql .= " AND j.is_active = true";
+                $wheresql .= " AND (j.due_date >= CURDATE() or j.due_date is null) ";
             }
 
         }
@@ -194,9 +209,9 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             }
         }
 
-        if (isset($is_active)) {
-                $wheresql .= " AND j.`is_active` = " . strval($is_active) . " ";
-        }
+//        if (isset($is_active)) {
+//                $wheresql .= " AND j.`is_active` = " . strval($is_active) . " ";
+//        }
 
         if (isset($role_id)) {
             if ($role_id > 0) {
@@ -205,8 +220,8 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
         }
 
 
-        $month_ago = strtotime("-1 month", time());
-        $date_month_ago = date("Y-m-d H:i:s", $month_ago);
+        $month_ahead = strtotime("+6 month", time());
+        $due_date_today = date("Y-m-d H:i:s", $month_ahead);
 
         $today = strtotime("+1 day", time());
         $date_today = date("Y-m-d H:i:s", $today);
@@ -217,6 +232,8 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                     $wheresql .= " AND j.`created_date` >= '" . $dateselect_from . "' ";
                 }
             }
+        }else{
+
         }
 
 
@@ -234,6 +251,33 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             }
         } else {
             $wheresql .= " AND j.`created_date` <= '" . $date_today . "' ";
+        }
+
+        if (isset($due_dateselect_from)) {
+            if ($due_dateselect_from != null) {
+                if ($due_dateselect_from != '') {
+                    $wheresql .= " AND j.`due_date` >= '" . $due_dateselect_from . "' ";
+                }
+            }
+        }else{
+
+        }
+
+
+        if (isset($due_dateselect_to)) {
+            if ($due_dateselect_to != null) {
+                if ($due_dateselect_to != '') {
+                    $_to = strtotime("+1 day", strtotime($due_dateselect_to));
+                    $due_date_to = date("Y-m-d H:i:s", $_to);
+                    $wheresql .= " AND j.`due_date` < '" . $due_date_to . "' ";
+                } else {
+                    $wheresql .= " AND (j.`due_date` <= '" . $due_date_today . "' or j.due_date is null)";
+                }
+            } else {
+                $wheresql .= " AND (j.`due_date` <= '" . $due_date_today . "' or j.due_date is null) ";
+            }
+        } else {
+//            $wheresql .= " AND j.`due_date` <= '" . $due_date_today . "' ";
         }
 //        CRM_Core_Error::debug_var('wheresql', $wheresql);
 
@@ -281,11 +325,11 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $r_view = CRM_Utils_System::url('civicrm/jobs/form',
                     ['action' => 'view', 'id' => $dao->id]);
             }
-            $is_active_view = "Closed";
-//                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
-            if($dao->is_active > 0){
-                $is_active_view = "Open";
-            }
+//            $is_active_view = "Closed";
+////                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
+//            if($dao->is_active > 0){
+//                $is_active_view = "Open";
+//            }
             $u_action = ['action' => 'update',
                 'id' => $dao->id, 'reset' => 1];
             $r_update = CRM_Utils_System::url('civicrm/jobs/form',
@@ -295,6 +339,9 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
             $view = '<a target="_blank" class="action-item view-job crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
             if ($can_update) {
                 $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
+            }
+            if ($dao->application_count > 0) {
+                $can_delete = false;
             }
             if ($can_delete) {
                 $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
@@ -308,12 +355,15 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
                 $rows[$count][] = $contact;
             }
             if (!isset($employeeId)) {
-                $rows[$count][] = $dao->application_count;
+                $app_count = $dao->application_count;
+                $jobid = $dao->id;
+                $app_count_link = "<a target='_blank' href='" .
+                    CRM_Utils_System::url('civicrm/applications/search',
+                        ['jobid' => $jobid]) . "'>" . $app_count . "</a> ";
+                $rows[$count][] = $app_count_link;
             }
             $rows[$count][] = $dao->created_date;
-            if (!isset($employeeId)) {
-                $rows[$count][] = $is_active_view;
-            }
+            $rows[$count][] = $dao->due_date;
             $rows[$count][] = $action;
             $count++;
         }

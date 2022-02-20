@@ -1,0 +1,183 @@
+[{
+	"_id": {
+		"$oid": "o8_employer_employer_industry"
+	},
+	"code": {
+		"$oid": "o8_employer_employer_industry"
+	},
+	"option_values": [
+		"Accounting/auditing/taxation",
+		"Admin/secretarial/general management",
+		"Advertising/media",
+		"Architecture/building and construction",
+		"Banking and Finance",
+		"Business – Consultancy",
+		"Call Centre Operations/Telemarketing",
+		"Conservancy – Cleaning Services",
+		"Customer Service",
+		"Design/Graphic Design/Interior Design",
+		"Education and Training",
+		"Engineering",
+		"Entertainment",
+		"Environment/Health",
+		"Events/Promotion ",
+		"F&B",
+		"General Work ",
+		"Healthcare/ Pharmaceutical",
+		"Horticulture",
+		"Hospitality",
+		"Human Resources",
+		"IT - Information Technology",
+		"Insurance",
+		"Legal Services",
+		"Logistics – Despatch/Delivery",
+		"Logistics – Supply Chain",
+		"Logistics- Warehouse",
+		"Manufacturing- Packer",
+		"Manufacturing- Production",
+		"Marketing/Public Relations",
+		"Medical/Therapy Services",
+		"Personal Care/ Beauty",
+		"Professional Services",
+		"Public/Civil Service",
+		"Purchasing/Merchandising",
+		"Real Estate/ Property Management",
+		"Repair and Maintenance",
+		"Retail/Services",
+		"Risk Management",
+		"Sales & Marketing",
+		"Sciences/Laboratory/R&D",
+		"Security and Investigation",
+		"Social Services/Non-Profit Organisation",
+		"Sports",
+		"Telecommunications",
+		"Travel/Tourism"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 0,
+	"name": "Employer Industry",
+	"moduleType": "EMPLOYER"
+},
+{
+	"_id": {
+		"$oid": "o8_employer_ess"
+	},
+	"code": {
+		"$oid": "o8_employer_ess"
+	},
+	"option_values": [
+		"Azlin Binte Amran",
+		"Clara Lee",
+		"Elizabeth Chua",
+		"Erwin Tan",
+		"Ho Kian Meng",
+		"Nicole Wong",
+		"Norazman A Hamid",
+		"Rajendran Krishnan",
+		"Yvonne Tan",
+		"Vicki Ang",
+		" ",
+		"Phang Jing Wei",
+		"Terrence Woo",
+		"Yew Hau En",
+		"Gary Mok Siew Fai",
+		"Richard Goh",
+		"Norazman Bin Abdul Hamid",
+		"Asmah Binte Abu",
+		"Patricia Goh"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 1,
+	"name": "ESS",
+	"moduleType": "EMPLOYER"
+},
+{
+	"_id": {
+		"$oid": "o8_employer_ess_secondary"
+	},
+	"code": {
+		"$oid": "o8_employer_ess_secondary"
+	},
+	"option_values": [
+		"Azlin Binte Amran",
+		"Clara Lee",
+		"Elizabeth Chua",
+		"Erwin Tan",
+		"Ho Kian Meng",
+		"Nicole Wong",
+		"Norazman A Hamid",
+		"Rajendran Krishnan",
+		"Yvonne Tan",
+		"Vicki Ang",
+		" ",
+		"Phang Jing Wei",
+		"Terrence Woo",
+		"Gary Mok Siew Fai"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 2,
+	"name": "ESS Secondary",
+	"moduleType": "EMPLOYER"
+},
+{
+	"_id": {
+		"$oid": "o8_employer_sge_liason_person"
+	},
+	"code": {
+		"$oid": "o8_employer_sge_liason_person"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 3,
+	"name": "SGE liaison person in charge",
+	"moduleType": "EMPLOYER"
+},
+{
+	"_id": {
+		"$oid": "o8_employer_is_the_place_accessible"
+	},
+	"code": {
+		"$oid": "o8_employer_is_the_place_accessible"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 4,
+	"name": "Is the place accessible?",
+	"moduleType": "EMPLOYER"
+},
+{
+	"_id": {
+		"$oid": "o8_employer_is_building_wheelchair"
+	},
+	"code": {
+		"$oid": "o8_employer_is_building_wheelchair"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 5,
+	"name": "Is the building wheelchair friendly and accessible?",
+	"moduleType": "EMPLOYER"
+},
+{
+	"_id": {
+		"$oid": "o8_employer_has_building_handicap_toilets"
+	},
+	"code": {
+		"$oid": "o8_employer_has_building_handicap_toilets"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 6,
+	"name": "Does the building have handicap toilets?",
+	"moduleType": "EMPLOYER"
+}]
+

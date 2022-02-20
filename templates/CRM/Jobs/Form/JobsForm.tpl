@@ -35,8 +35,8 @@
 
 
     <div class="crm-section">
-      <div class="label">{$form.is_active.label}</div>
-      <div class="content">{$form.is_active.html}</div>
+      <div class="label">{$form.due_date.label}</div>
+      <div class="content">{$form.due_date.html}</div>
       <div class="clear"></div>
     </div>
 
@@ -56,12 +56,6 @@
     <div class="crm-section">
       <div class="label">{$form.location_id.label}</div>
       <div class="content">{$form.location_id.html}</div>
-      <div class="clear"></div>
-    </div>
-
-    <div class="crm-section">
-      <div class="label">{$form.app_count.label}</div>
-      <div class="content">{$form.app_count.html}</div>
       <div class="clear"></div>
     </div>
 

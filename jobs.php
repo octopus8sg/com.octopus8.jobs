@@ -247,6 +247,42 @@ function jobs_civicrm_navigationMenu(&$menu)
         'separator' => 0,
     ));
     _jobs_civix_navigationMenu($menu);
+    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+        'label' => E::ts('Import Jobs'),
+        'name' => 'import_jobs',
+        'url' => 'civicrm/csvimporter/import?entity=SscJob',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 2,
+    ));
+    _jobs_civix_navigationMenu($menu);
+    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+        'label' => E::ts('Import Applications'),
+        'name' => 'import_applications',
+        'url' => 'civicrm/csvimporter/import?entity=SscJob',
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 0,
+    ));
+    _jobs_civix_navigationMenu($menu);
+    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+        'label' => E::ts('Job Reports'),
+        'name' => 'job_reports',
+        'url' => CRM_Utils_System::url('civicrm/report/list', ['grp' => 'jobs', 'reset' => 1]),
+        'permission' => 'access CiviCRM',
+        'operator' => 'OR',
+        'separator' => 2,
+    ));
+    _jobs_civix_navigationMenu($menu);
+    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+        'label' => E::ts('Run a Function'),
+        'name' => 'run_a_fun',
+        'url' => 'civicrm/jobs/runafun',
+        'permission' => 'administer CiviCRM',
+        'operator' => 'OR',
+        'separator' => 2,
+    ));
+    _jobs_civix_navigationMenu($menu);
 }
 
 /**

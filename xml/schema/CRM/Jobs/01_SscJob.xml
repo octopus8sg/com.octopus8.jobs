@@ -2,16 +2,16 @@
 
 <table>
     <base>CRM/Jobs</base>
-    <class>SscApplication</class>
-    <name>civicrm_o8_application</name>
-    <comment>Social Services Connect Job Application</comment>
+    <class>SscJob</class>
+    <name>civicrm_o8_job</name>
+    <comment>Social Services Connect Job Proposals</comment>
     <log>true</log>
 
     <field>
         <name>id</name>
         <type>int unsigned</type>
         <required>true</required>
-        <comment>Unique SSC Application ID</comment>
+        <comment>Unique SSC Job ID</comment>
         <html>
             <type>Number</type>
         </html>
@@ -35,15 +35,32 @@
     </foreignKey>
 
     <field>
-        <name>status_id</name>
-        <title>Application for Job Status</title>
+        <name>title</name>
+        <type>varchar</type>
+        <length>255</length>
+        <required>false</required>
+    </field>
+
+    <field>
+        <name>description</name>
+        <title>Description</title>
+        <lable>Description</lable>
+        <type>longtext</type>
+        <html>
+            <type>RichTextEditor</type>
+        </html>
+        <length>255</length>
+        <required>false</required>
+    </field>
+
+    <field>
+        <name>role_id</name>
+        <title>Role</title>
         <type>int</type>
         <length>3</length>
         <default>1</default>
-        <import>true</import>
-        <export>true</export>
         <pseudoconstant>
-            <optionGroupName>o8_application_status</optionGroupName>
+            <optionGroupName>o8_job_role</optionGroupName>
         </pseudoconstant>
         <html>
             <type>Select</type>
@@ -51,52 +68,77 @@
     </field>
 
     <field>
-        <name>is_active</name>
-        <title>Is Application Active?</title>
-        <type>boolean</type>
+        <name>location_id</name>
+        <title>Location</title>
+        <type>int</type>
+        <length>3</length>
         <default>1</default>
-        <required>true</required>
-        <comment>Is the Application active or withdrawn?</comment>
+        <pseudoconstant>
+            <optionGroupName>o8_job_location</optionGroupName>
+        </pseudoconstant>
+        <html>
+            <type>Select</type>
+        </html>
     </field>
+
+<!--    <field>-->
+<!--        <name>is_active</name>-->
+<!--        <title>Is Job Active?</title>-->
+<!--        <type>boolean</type>-->
+<!--        <default>1</default>-->
+<!--        <required>true</required>-->
+<!--        <comment>Is the Job open or closed?</comment>-->
+<!--    </field>-->
 
     <field>
-        <name>o8_job_id</name>
-        <type>int unsigned</type>
-        <import>true</import>
-        <export>true</export>
-        <comment>FK to SSC Job</comment>
-        <required>true</required>
+        <name>status_id</name>
+        <title>Status</title>
+        <type>int</type>
+        <length>3</length>
+        <default>1</default>
+        <pseudoconstant>
+            <optionGroupName>o8_job_status</optionGroupName>
+        </pseudoconstant>
+        <html>
+            <type>Select</type>
+        </html>
     </field>
-
-    <foreignKey>
-        <name>o8_job_id</name>
-        <table>civicrm_o8_job</table>
-        <key>id</key>
-        <onDelete>CASCADE</onDelete>
-    </foreignKey>
 
     <field>
         <name>created_date</name>
         <type>timestamp</type>
-        <title>Application Created Date</title>
-        <required>true</required>
+        <title>Job Proposal Created Date</title>
+        <required>false</required>
         <default>CURRENT_TIMESTAMP</default>
-        <comment>Date and time the application was created</comment>
+        <comment>Date and time the job was created</comment>
         <html>
             <type>Select Date</type>
             <formatType>activityDateTime</formatType>
         </html>
-
     </field>
+
+    <field>
+        <name>due_date</name>
+        <type>timestamp</type>
+        <title>Job Closed</title>
+        <required>false</required>
+        <comment>Date and time the job proposal will expire</comment>
+        <html>
+            <type>Select Date</type>
+            <formatType>activityDateTime</formatType>
+        </html>
+    </field>
+
     <field>
         <name>created_id</name>
         <type>int unsigned</type>
-        <required>false</required>
         <title>Created By Contact ID</title>
+<!--        <default>1</default>-->
         <comment>FK to civicrm_contact, who created this application</comment>
         <html>
             <label>Created By</label>
         </html>
+        <add>4.4</add>
     </field>
 
     <foreignKey>
@@ -106,27 +148,30 @@
         <onDelete>SET NULL</onDelete>
     </foreignKey>
 
+
     <field>
         <name>modified_date</name>
         <type>timestamp</type>
-        <title>Application Created Date</title>
+        <title>Job Proposal Modified Date</title>
         <required>false</required>
-        <comment>Date and time the application was modified</comment>
+        <comment>Date and time the job was modified</comment>
         <html>
             <type>Select Date</type>
             <formatType>activityDateTime</formatType>
         </html>
 
     </field>
+
     <field>
         <name>modified_id</name>
         <type>int unsigned</type>
         <title>Modified By Contact ID</title>
         <comment>FK to civicrm_contact, who modified this application</comment>
         <html>
-            <label>Created By</label>
+            <label>Modified By</label>
         </html>
     </field>
+
 
     <foreignKey>
         <name>modified_id</name>
@@ -134,5 +179,6 @@
         <key>id</key>
         <onDelete>SET NULL</onDelete>
     </foreignKey>
+
 
 </table>

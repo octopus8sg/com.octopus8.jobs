@@ -47,13 +47,6 @@
             <div class="clear"></div>
         </div>
 
-
-        <div class="crm-section">
-            <div class="label">{$form.o8_job_status_id.label}</div>
-            <div class="content">{$form.o8_job_status_id.html}</div>
-            <div class="clear"></div>
-        </div>
-
         <div class="crm-section">
             <div class="label">{$form.o8_job_role_id.label}</div>
             <div class="content">{$form.o8_job_role_id.html}</div>
@@ -73,14 +66,20 @@
         </div>
 
         <div class="crm-section">
-            <div class="label">{$form.is_active.label}</div>
-            <div class="content">{$form.is_active.html}</div>
+            <div class="label">{$form.job_due_date.label}</div>
+            <div class="content">{$form.job_due_date.html}</div>
             <div class="clear"></div>
         </div>
 
         <div class="crm-section">
-            <div class="label">{$form.job_is_active.label}</div>
-            <div class="content">{$form.job_is_active.html}</div>
+            <div class="label">{$form.is_active2.label}</div>
+            <div class="content">{$form.is_active2.html}</div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="crm-section">
+            <div class="label">{$form.is_active.label}</div>
+            <div class="content">{$form.is_active.html}</div>
             <div class="clear"></div>
         </div>
 

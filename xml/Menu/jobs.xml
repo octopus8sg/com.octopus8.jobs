@@ -64,4 +64,10 @@
     <title>EmployerTab</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/jobs/runafun</path>
+    <page_callback>CRM_Jobs_Upgrader::createCustomFieldsAndOptions</page_callback>
+    <title>EmployerTab</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
 </menu>

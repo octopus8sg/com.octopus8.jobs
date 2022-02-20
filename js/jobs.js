@@ -16,8 +16,6 @@ CRM.$(function ($) {
 
     var jobs_sourceUrl = CRM.vars.source_url['job_sourceUrl'];
     $(document).ready(function () {
-
-
         //Reset Table, add Filter and Search Possibility
         //devices datatable
         var jobs_tab = $('.selector-jobs');
@@ -111,17 +109,29 @@ CRM.$(function ($) {
                 "value": $('#job_dateselect_to').val()
             });
             aoData.push({
+                "name": "due_dateselect_from",
+                "value": $('#job_due_dateselect_from').val()
+            });
+            aoData.push({
+                "name": "job_due_date_open",
+                "value": $('#job_due_date_open').val()
+            });
+            aoData.push({
+                "name": "due_dateselect_to",
+                "value": $('#job_due_dateselect_to').val()
+            });
+            aoData.push({
                 "name": "role_id",
                 "value": $('#job_role_id').val()
             });
-            var ischecked = $('#job_is_active').prop("checked");
-            // alert(ischecked);
-            aoData.push({
-                "name":
-                    "is_active",
-                "value":
-                ischecked
-            });
+            // var ischecked = $('#job_is_active').prop("checked");
+            // // alert(ischecked);
+            // aoData.push({
+            //     "name":
+            //         "is_active",
+            //     "value":
+            //     ischecked
+            // });
             aoData.push({
                 "name":
                     "location_id",

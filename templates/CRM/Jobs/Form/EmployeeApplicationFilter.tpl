@@ -8,26 +8,26 @@
             <div class="crm-accordion-body">
                 <table class="form-layout employee-application-filter">
                     <tbody>
-                    <tr>
-                        <td class="label">{$form.employee_application_contact_id.label}</td>
-                        <td>{$form.employee_application_contact_id.html}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">{$form.employee_application_location_id.label}</td>
-                        <td>{$form.employee_application_location_id.html}</td>
-                        <td class="label">{$form.employee_application_role_id.label}</td>
-                        <td>{$form.employee_application_role_id.html}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">{$form.employee_application_status_id.label}</td>
-                        <td>{$form.employee_application_status_id.html}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">{$form.employee_application_is_active.label}</td>
-                        <td>{$form.employee_application_is_active.html}</td>
-                        <td class="label">{$form.employee_application_job_is_active.label}</td>
-                        <td>{$form.employee_application_job_is_active.html}</td>
-                    </tr>
+{*                    <tr>*}
+{*                        <td class="label">{$form.employee_application_contact_id.label}</td>*}
+{*                        <td>{$form.employee_application_contact_id.html}</td>*}
+{*                    </tr>*}
+{*                    <tr>*}
+{*                        <td class="label">{$form.employee_application_location_id.label}</td>*}
+{*                        <td>{$form.employee_application_location_id.html}</td>*}
+{*                        <td class="label">{$form.employee_application_role_id.label}</td>*}
+{*                        <td>{$form.employee_application_role_id.html}</td>*}
+{*                    </tr>*}
+{*                    <tr>*}
+{*                        <td class="label">{$form.employee_application_status_id.label}</td>*}
+{*                        <td>{$form.employee_application_status_id.html}</td>*}
+{*                    </tr>*}
+{*                    <tr>*}
+{*                        <td class="label">{$form.employee_application_is_active.label}</td>*}
+{*                        <td>{$form.employee_application_is_active.html}</td>*}
+{*                        <td class="label">{$form.employee_application_job_is_active.label}</td>*}
+{*                        <td>{$form.employee_application_job_is_active.html}</td>*}
+{*                    </tr>*}
                     <tr>
                         <td class="label">{$form.employee_application_dateselect_from.label}</td>
                         <td>{$form.employee_application_dateselect_from.html}</td>

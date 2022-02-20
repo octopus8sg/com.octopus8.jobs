@@ -26,13 +26,13 @@
                             {ts}Employer{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Date Created{/ts}
+                            {ts}Job Closed{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Date Applied{/ts}
+                            {ts}Application created{/ts}
                         </th>
                         <th scope="col">
-                            {ts}Applied/Withdrawn{/ts}
+                            {ts}Application Status{/ts}
                         </th>
                         <th id="nosort">&nbsp;Action</th>
                     </tr>
