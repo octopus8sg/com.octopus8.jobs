@@ -40,7 +40,7 @@ class CRM_Jobs_Form_Report_EmployerReport extends CRM_Report_Form
         }
         $mapper = CRM_Core_BAO_CustomQuery::$extendsMap;
         $mapper['SscJob'] = 'civicrm_o8_job';
-        $mapper['SscApplication'] = 'civicrm_o8_application';
+        $mapper['SscApplication'] = 'civicrm_o8_job_application';
         //CRM-18276 GROUP_CONCAT could be used with singleValueQuery and then exploded,
         //but by default that truncates to 1024 characters, which causes errors with installs with lots of custom field sets
         $customTables = [];

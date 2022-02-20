@@ -2,7 +2,12 @@
 use CRM_Jobs_ExtensionUtil as E;
 
 class CRM_Jobs_BAO_SscApplication extends CRM_Jobs_DAO_SscApplication {
-
+    const
+        NOTSHORTLISTED = 1,
+        SHORTLISTED = 2,
+        SELECTED = 3,
+        REJECTED = 4,
+        WITHDRAWN = 5;
   /**
    * Create a new SscApplication based on array-data
    *

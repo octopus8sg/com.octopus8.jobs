@@ -3,7 +3,7 @@
 <table>
     <base>CRM/Jobs</base>
     <class>SscApplication</class>
-    <name>civicrm_o8_application</name>
+    <name>civicrm_o8_job_application</name>
     <comment>Social Services Connect Job Application</comment>
     <log>true</log>
 

@@ -301,7 +301,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                                 ]);
                             }
                         }
-                    } elseif ($this->_isEmployee) {
+                    }
+                    elseif ($this->_isEmployee) {
 //                        CRM_Core_Error::debug_var('_isActive', $this->_isActive);
                         $this->add('hidden', 'employee_id');
                         if ($this->_isActive) {

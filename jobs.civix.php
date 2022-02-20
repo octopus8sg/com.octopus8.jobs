@@ -453,7 +453,7 @@ function _jobs_civix_civicrm_entityTypes(&$entityTypes) {
     'CRM_Jobs_DAO_SscApplication' => [
       'name' => 'SscApplication',
       'class' => 'CRM_Jobs_DAO_SscApplication',
-      'table' => 'civicrm_o8_application',
+      'table' => 'civicrm_o8_job_application',
     ],
     'CRM_Jobs_DAO_SscJob' => [
       'name' => 'SscJob',

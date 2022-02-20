@@ -39,7 +39,7 @@ class CRM_Jobs_Form_Report_EmployeeReport extends CRM_Report_Form
         }
         $mapper = CRM_Core_BAO_CustomQuery::$extendsMap;
         $mapper['SscJob'] = 'civicrm_o8_job';
-        $mapper['SscApplication'] = 'civicrm_o8_application';
+        $mapper['SscApplication'] = 'civicrm_o8_job_application';
         //CRM-18276 GROUP_CONCAT could be used with singleValueQuery and then exploded,
         //but by default that truncates to 1024 characters, which causes errors with installs with lots of custom field sets
         $customTables = [];
@@ -188,7 +188,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
                     ],
                     'grouping' => 'applicant-fields',
                 ],
-                'civicrm_o8_application' => [
+                'civicrm_o8_job_application' => [
                     'dao' => 'CRM_Jobs_DAO_SscApplication',
                     'fields' => [
                         'ssc_app_id' => [
@@ -367,7 +367,7 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
      */
     public function from()
     {
-        $this->setFromBase('civicrm_o8_application');
+        $this->setFromBase('civicrm_o8_job_application');
 // todo joins
 //        $this->_from .= "
 //        INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact']}
@@ -375,13 +375,13 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
 //        ";
         $this->_from .= "
         LEFT JOIN civicrm_o8_job {$this->_aliases['civicrm_o8_job']}
-        ON {$this->_aliases['civicrm_o8_job']}.id = {$this->_aliases['civicrm_o8_application']}.o8_job_id
+        ON {$this->_aliases['civicrm_o8_job']}.id = {$this->_aliases['civicrm_o8_job_application']}.o8_job_id
         INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact']}
-        ON {$this->_aliases['civicrm_contact']}.id = {$this->_aliases['civicrm_o8_application']}.contact_id
+        ON {$this->_aliases['civicrm_contact']}.id = {$this->_aliases['civicrm_o8_job_application']}.contact_id
         INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact_organization']}
         ON {$this->_aliases['civicrm_contact_organization']}.id = {$this->_aliases['civicrm_o8_job']}.contact_id
         INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact_applicant']}
-        ON {$this->_aliases['civicrm_contact_applicant']}.id = {$this->_aliases['civicrm_o8_application']}.contact_id
+        ON {$this->_aliases['civicrm_contact_applicant']}.id = {$this->_aliases['civicrm_o8_job_application']}.contact_id
         ";
         $this->appendAdditionalFromJoins();
     }
@@ -547,17 +547,17 @@ LEFT JOIN civicrm_contact {$field['alias']} ON {$field['alias']}.id = {$this->_a
             }
             if (1 == 1) {
 //                            CRM_Core_Error::debug_var('val', $val);
-                $val = boolval($rows[$rowNum]['civicrm_o8_application_is_active']);
-                $rows[$rowNum]['civicrm_o8_application_is_active'] = "Withdrawn";
+                $val = boolval($rows[$rowNum]['civicrm_o8_job_application_is_active']);
+                $rows[$rowNum]['civicrm_o8_job_application_is_active'] = "Withdrawn";
                 if($val === TRUE){
-                    $rows[$rowNum]['civicrm_o8_application_is_active'] = 'Applied';
+                    $rows[$rowNum]['civicrm_o8_job_application_is_active'] = 'Applied';
                 }
 
             }
-            if ($val = CRM_Utils_Array::value('civicrm_o8_application_status_id', $row)) {
+            if ($val = CRM_Utils_Array::value('civicrm_o8_job_application_status_id', $row)) {
 //                            CRM_Core_Error::debug_var('val', $val);
                 $val = intval($val);
-                $rows[$rowNum]['civicrm_o8_application_status_id']
+                $rows[$rowNum]['civicrm_o8_job_application_status_id']
                     = CRM_Core_PseudoConstant::getLabel("CRM_Jobs_BAO_SscApplication", "status_id", $val);
             }
             if ($val = CRM_Utils_Array::value('civicrm_o8_job_location_id', $row)) {

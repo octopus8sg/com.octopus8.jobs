@@ -36,7 +36,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 
     public function getDefaultEntityTable()
     {
-        return 'civicrm_o8_application';
+        return 'civicrm_o8_job_application';
     }
 
     public function getEntityId()
@@ -171,6 +171,9 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             //todo add pseudoconstants
 
             $statuses = CRM_Core_OptionGroup::values('o8_application_status');
+            CRM_Core_Error::debug_var('statuses', $statuses);
+            unset($statuses[5]);
+            CRM_Core_Error::debug_var('statuses2', $statuses);
             $this->add('select', 'status_id', E::ts('Status'),
                 $statuses, TRUE, ['class' => 'huge crm-select2',
                     'data-option-edit-path' => 'civicrm/admin/options/o8_application_status']);
@@ -245,49 +248,46 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'name' => E::ts('Withdraw'),
                     'icon' => 'fa-trash',
                 ];
-                if (!$this->_myentity['is_active']) {
-                    $this->addButtons([
-                        [
-                            'type' => 'cancel',
-                            'name' => E::ts('Close'),
-                            'isDefault' => TRUE,
-                        ],
-                    ]);
 
-                } else {
-                    if ($userACL == 'admin') {
+                if ($userACL == 'admin') {
 
 //        CRM_Core_Error::debug_var('myjob', $this->_myentity);
 //        CRM_Core_Error::debug_var('myapp', $this->_myentity);
-                        $buttons = [
+                    $buttons = [
 //                        $review,
 //                        $accept,
 //                        $reject,
-//                    $changeit
-                        ];
-                        if ($this->_myentity['is_active']) {
+                        $changeit
+                    ];
+                    $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
+                    if ($this->_myentity['is_active']) {
 //                            $buttons[] = $changeit;
-                            $buttons[] = $withdraw;
-                            $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
-                        }
-                        $this->addButtons($buttons);
-
-                    } elseif ($userACL == 'employer') {
-                        if ($this->_myentity['is_active']) {
-                            $buttons[] = $changeit;
-                            $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
-//                        $buttons[] = $withdraw;
-                        }
-                        $this->addButtons($buttons);
-
-                    } elseif ($userACL == 'employee') {
-                        if ($this->_myentity['is_active']) {
-                            $this->addButtons([
-                                $withdraw,
-                                ['type' => 'cancel', 'name' => E::ts('Cancel')]
-                            ]);
-                        }
+                        $buttons[] = $withdraw;
                     }
+                    $this->addButtons($buttons);
+                }elseif ($userACL == 'employer') {
+                    if ($this->_myentity['is_active']) {
+                        $buttons = [
+//                            $review,
+//                            $accept,
+//                            $reject,
+                            $changeit
+                        ];
+                        $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
+//                        $buttons[] = $withdraw;
+                    } else {
+                            $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
+                    }
+                    $this->addButtons($buttons);
+
+                } elseif ($userACL == 'employee') {
+                    if ($this->_myentity['is_active']) {
+                        $buttons[] = $withdraw;
+                        $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
+                    }else {
+                        $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
+                    }
+                    $this->addButtons($buttons);
                 }
             }
         } else {
@@ -298,11 +298,11 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
         }
         if ($this->_action == CRM_Core_Action::VIEW) {
             $this->freeze();
-            if ($userACL != 'employer') {
+            if ($userACL != 'employer' and $userACL != 'admin') {
 //                $a = $this->getElement('status_id');
                 $this->removeElement('status_id');
             }
-            if ($userACL == 'employer') {
+            if ($userACL == 'employer' or $userACL == 'admin') {
                 $this->getElement('status_id')->unfreeze();
             }
         }
@@ -390,47 +390,25 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
             $reject = $post[$this->_rejectButtonName];
             $withdraw = $post[$this->_withdrawButtonName];
             $statusId = NULL;
-//            try {
             if ($changeit) {
 //                CRM_Core_Error::debug_var('accept', $accept);
                 $statusId = $values['status_id'];
             } else {
                 if ($accept) {
-                    $result = civicrm_api3('OptionValue', 'getvalue', [
-                        'return' => "value",
-                        'option_group_id' => "o8_application_status",
-                        'name' => "approved",
-                    ]);
+                    $result = CRM_Jobs_BAO_SscApplication::SELECTED;
 //                CRM_Core_Error::debug_var('accept', $accept);
                 }
                 if ($review) {
-                    $result = civicrm_api3('OptionValue', 'getvalue', [
-                        'return' => "value",
-                        'option_group_id' => "o8_application_status",
-                        'name' => "under_revision",
-                    ]);
+                    $result = CRM_Jobs_BAO_SscApplication::SHORTLISTED;
                 }
                 if ($reject) {
-                    $result = civicrm_api3('OptionValue', 'getvalue', [
-                        'return' => "value",
-                        'option_group_id' => "o8_application_status",
-                        'name' => "rejected",
-                    ]);
+                    $result = CRM_Jobs_BAO_SscApplication::REJECTED;
+
                 }
-//            } catch (Exception $e) {
-//                if (!empty($value['label'])) {
+                if ($withdraw) {
+                    $result = CRM_Jobs_BAO_SscApplication::WITHDRAWN;
+                }
                 $statusId = $result['value'];
-//                }
-//            }
-            }
-            if ($statusId) {
-                $params['id'] = $this->getEntityId();
-                $action = 'update';
-                $currentUserId = CRM_Core_Session::getLoggedInContactID();
-                $params['modified_id'] = $currentUserId;
-                $params['status_id'] = $statusId;
-                $params['modified_date'] = date('YmdHis');
-                civicrm_api4('SscApplication', $action, ['values' => $params]);
             }
             if ($withdraw) {
                 $params['id'] = $this->getEntityId();
@@ -440,7 +418,17 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 $params['modified_id'] = $currentUserId;
                 $params['modified_date'] = date('YmdHis');
                 civicrm_api4('SscApplication', $action, ['values' => $params]);
+            } elseif ($statusId) {
+                $params['id'] = $this->getEntityId();
+                $action = 'update';
+                $params['is_active'] = True;
+                $currentUserId = CRM_Core_Session::getLoggedInContactID();
+                $params['modified_id'] = $currentUserId;
+                $params['status_id'] = $statusId;
+                $params['modified_date'] = date('YmdHis');
+                civicrm_api4('SscApplication', $action, ['values' => $params]);
             }
+
 
         }
         parent::postProcess();

@@ -136,7 +136,7 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base
             $typeOptionGroupId = civicrm_api3('OptionGroup', 'create', ['name' => 'o8_application_status', 'title' => E::ts('Status')]);
             $typeOptionGroupId = $typeOptionGroupId['id'];
             civicrm_api3('OptionValue', 'create',
-                ['value' => 1,
+                ['value' => CRM_Jobs_BAO_SscApplication::NOTSHORTLISTED,
                     'is_default' => '1',
                     'name' => 'not_shortlisted',
                     'label' => E::ts('Not Shortlisted'),
@@ -144,23 +144,30 @@ class CRM_Jobs_Upgrader extends CRM_Jobs_Upgrader_Base
                 ]
             );
             civicrm_api3('OptionValue', 'create',
-                ['value' => 2,
+                ['value' => CRM_Jobs_BAO_SscApplication::SHORTLISTED,
                     'name' => 'shortlisted',
                     'label' => E::ts('Shortlisted'),
                     'option_group_id' => $typeOptionGroupId
                 ]
             );
             civicrm_api3('OptionValue', 'create',
-                ['value' => 3,
+                ['value' => CRM_Jobs_BAO_SscApplication::SELECTED,
+                    'name' => 'selected',
+                    'label' => E::ts('Selected'),
+                    'option_group_id' => $typeOptionGroupId
+                ]
+            );
+            civicrm_api3('OptionValue', 'create',
+                ['value' => CRM_Jobs_BAO_SscApplication::REJECTED,
                     'name' => 'rejected',
                     'label' => E::ts('Rejected'),
                     'option_group_id' => $typeOptionGroupId
                 ]
             );
             civicrm_api3('OptionValue', 'create',
-                ['value' => 4,
-                    'name' => 'selected',
-                    'label' => E::ts('Selected'),
+                ['value' => CRM_Jobs_BAO_SscApplication::WITHDRAWN,
+                    'name' => 'withdrawn',
+                    'label' => E::ts('Withdrawn'),
                     'option_group_id' => $typeOptionGroupId
                 ]
             );
@@ -726,6 +733,7 @@ function createEmployeeFields($eecfields)
                     'data_type' => "Memo",
                     'html_type' => "TextArea",
                     'option_values' => null,
+                    'is_searchable' => 1
                 ];
                 $result = getCustomFieldByCode($code, $customfield);
                 //            CRM_Core_Error::debug_var('optionsarray'.$code, $optionsarray);
@@ -745,6 +753,7 @@ function createEmployeeFields($eecfields)
                     'serialize' => 1,
                     'option_group_id' => $option_group_id,
                     'html_type' => "Select",
+                    'is_searchable' => 1
                 ];
                 $result = getCustomFieldByCode($code, $customfield);
             } catch (ErrorException $e) {
@@ -759,6 +768,7 @@ function createEmployeeFields($eecfields)
                     'label' => $name,
                     'data_type' => "Date",
                     'html_type' => "Select Date",
+                    'is_searchable' => 1
                 ];
                 $result = getCustomFieldByCode($code, $customfield);
             } catch
@@ -856,18 +866,18 @@ function getCustomFieldByCode($code, $customfield)
         $mycustomfield = $result["values"][$result["id"]];
         $serialize = $mycustomfield["serialize"];
         if($serialize == "0"){$serialize = "";}
-        if($mycustomfield["is_searchable"] == "0"){
-        try {
-            $result = civicrm_api3('CustomField', 'get', [
-                'name' => $code,
-                'api.CustomField.update' => [
-                    "is_searchable" => "1",
-                    "serialize" => $serialize],
-            ]);
-        } catch (ErrorException $e) {
-
-        }
-        }
+//        if($mycustomfield["is_searchable"] == "0"){
+//        try {
+//            $result = civicrm_api3('CustomField', 'get', [
+//                'name' => $code,
+//                'api.CustomField.update' => [
+//                    "is_searchable" => "1",
+//                    "serialize" => $serialize],
+//            ]);
+//        } catch (ErrorException $e) {
+//
+//        }
+//        }
         if (isset($customfield['option_group_id'])) {
             try {
                 $result = civicrm_api3('CustomField', 'get', [

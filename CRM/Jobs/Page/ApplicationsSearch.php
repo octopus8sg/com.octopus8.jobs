@@ -162,8 +162,8 @@ SELECT  SQL_CALC_FOUND_ROWS
     ap.contact_id app_contact_id,
     s.label app_status,
     ap.id app_id
-FROM civicrm_o8_job j LEFT JOIN civicrm_o8_application a on a.o8_job_id = j.id
-    INNER JOIN civicrm_o8_application ap on ap.o8_job_id = j.id
+FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.id
+    INNER JOIN civicrm_o8_job_application ap on ap.o8_job_id = j.id
     INNER JOIN civicrm_option_value s on  ap.status_id = s.value
     INNER JOIN civicrm_option_group gs on s.option_group_id = gs.id and gs.name = 'o8_application_status'
     INNER JOIN civicrm_option_value l on  j.location_id = l.value

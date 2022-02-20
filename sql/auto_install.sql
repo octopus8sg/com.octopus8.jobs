@@ -17,7 +17,7 @@
 
 SET FOREIGN_KEY_CHECKS=0;
 
-DROP TABLE IF EXISTS `civicrm_o8_application`;
+DROP TABLE IF EXISTS `civicrm_o8_job_application`;
 DROP TABLE IF EXISTS `civicrm_o8_job`;
 
 SET FOREIGN_KEY_CHECKS=1;
@@ -56,12 +56,12 @@ ENGINE=InnoDB;
 
 -- /*******************************************************
 -- *
--- * civicrm_o8_application
+-- * civicrm_o8_job_application
 -- *
 -- * Social Services Connect Job Application
 -- *
 -- *******************************************************/
-CREATE TABLE `civicrm_o8_application` (
+CREATE TABLE `civicrm_o8_job_application` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique SSC Application ID',
   `contact_id` int unsigned COMMENT 'FK to Contact',
   `status_id` int DEFAULT 1,
@@ -72,9 +72,9 @@ CREATE TABLE `civicrm_o8_application` (
   `modified_date` timestamp NULL COMMENT 'Date and time the application was modified',
   `modified_id` int unsigned COMMENT 'FK to civicrm_contact, who modified this application',
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_civicrm_o8_application_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL,
-  CONSTRAINT FK_civicrm_o8_application_o8_job_id FOREIGN KEY (`o8_job_id`) REFERENCES `civicrm_o8_job`(`id`) ON DELETE RESTRICT,
-  CONSTRAINT FK_civicrm_o8_application_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL,
-  CONSTRAINT FK_civicrm_o8_application_modified_id FOREIGN KEY (`modified_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL
+  CONSTRAINT FK_civicrm_o8_job_application_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL,
+  CONSTRAINT FK_civicrm_o8_job_application_o8_job_id FOREIGN KEY (`o8_job_id`) REFERENCES `civicrm_o8_job`(`id`) ON DELETE RESTRICT,
+  CONSTRAINT FK_civicrm_o8_job_application_created_id FOREIGN KEY (`created_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL,
+  CONSTRAINT FK_civicrm_o8_job_application_modified_id FOREIGN KEY (`modified_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE SET NULL
 )
 ENGINE=InnoDB;
