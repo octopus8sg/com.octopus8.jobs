@@ -1,0 +1,416 @@
+[{
+	"_id": {
+		"$oid": "o8_job_type"
+	},
+	"code": {
+		"$oid": "o8_job_type"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 3,
+	"name": "TYPE",
+	"moduleType": "JOB"
+},{
+	"_id": {
+		"$oid": "o8_job_id"
+	},
+	"code": {
+		"$oid": "o8_job_id"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 1,
+	"name": "Job ID",
+	"moduleType": "JOB"
+},{
+	"_id": {
+		"$oid": "o8_job_code"
+	},
+	"code": {
+		"$oid": "o8_job_code"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 2,
+	"name": "CODE",
+	"moduleType": "JOB"
+},{
+	"_id": {
+		"$oid": "o8_job_amount"
+	},
+	"code": {
+		"$oid": "o8_job_amount"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 7,
+	"name": "AMOUNT",
+	"moduleType": "JOB"
+},{
+	"_id": {
+		"$oid": "o8_job_currency"
+	},
+	"code": {
+		"$oid": "o8_job_currency"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 6,
+	"name": "CURRENCY",
+	"moduleType": "JOB"
+},{
+	"_id": {
+		"$oid": "o8_job_vacancies"
+	},
+	"code": {
+		"$oid": "o8_job_vacancies"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 5,
+	"name": "VACANCIES",
+	"moduleType": "JOB"
+},{
+	"_id": {
+		"$oid": "o8_job_position"
+	},
+	"code": {
+		"$oid": "o8_job_position"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 9,
+	"name": "Job Position",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_expired_date"
+	},
+	"code": {
+		"$oid": "o8_job_expired_date"
+	},
+	"option_values": [],
+	"fieldType": "DATE",
+	"position": 10,
+	"name": "Job Expired Date",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_educational_qualifications_wpln"
+	},
+	"code": {
+		"$oid": "o8_job_educational_qualifications_wpln"
+	},
+	"option_values": [
+		"Degree",
+		"Diploma",
+		"Higher Nitec and Nitec",
+		"A-Level",
+		"O-Level",
+		"PSLE",
+		"Others",
+		"N-Level"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 11,
+	"name": "Educational Qualifications  WPLN",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_salary_details"
+	},
+	"code": {
+		"$oid": "o8_job_salary_details"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 12,
+	"name": "Salary Details",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_ess"
+	},
+	"code": {
+		"$oid": "o8_job_ess"
+	},
+	"option_values": [
+		"Asmah Binte Abu",
+		"Azlin Binte Amran",
+		"Clara Lee",
+		"Elizabeth Chua",
+		"Erwin Tan",
+		"Ho Kian Meng",
+		"Nicole Wong",
+		"Norazman A Hamid",
+		"Patricia Goh",
+		"Rajendran Krishnan",
+		"Richard Goh",
+		"Yvonne Tan",
+		"Vicki Ang",
+		" ",
+		"Gary Mok Siew Fai"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 13,
+	"name": "ESS",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_type_of_employment"
+	},
+	"code": {
+		"$oid": "o8_job_type_of_employment"
+	},
+	"option_values": [
+		"Permanent",
+		"Temporary",
+		"Contract",
+		"Freelancing"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 14,
+	"name": "Type of Employment",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_employment"
+	},
+	"code": {
+		"$oid": "o8_job_employment"
+	},
+	"option_values": [
+		"Full-time",
+		"Part-time",
+		"Full time and Part Time",
+		"Freelancing"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 15,
+	"name": "Employment",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_contract_duration"
+	},
+	"code": {
+		"$oid": "o8_job_contract_duration"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 16,
+	"name": "Contract Duration ",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_address_of_workplace_if_other"
+	},
+	"code": {
+		"$oid": "o8_job_address_of_workplace_if_other"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 17,
+	"name": "Address of Workplace if different from above",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_work_on_weekend"
+	},
+	"code": {
+		"$oid": "o8_job_work_on_weekend"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 18,
+	"name": "Work on Weekend and Public Holiday",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_type_of_work_week"
+	},
+	"code": {
+		"$oid": "o8_job_type_of_work_week"
+	},
+	"option_values": [
+		"5 Days",
+		"5.5 Days",
+		"6 Days",
+		"Others"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 19,
+	"name": "Type of Work Week",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_shift_work_required"
+	},
+	"code": {
+		"$oid": "o8_job_shift_work_required"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 20,
+	"name": "Shift Work Required ",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_working_hours"
+	},
+	"code": {
+		"$oid": "o8_job_working_hours"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 21,
+	"name": "Working Hours",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_overtime_pay"
+	},
+	"code": {
+		"$oid": "o8_job_overtime_pay"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 22,
+	"name": "Overtime Pay",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_type_of_disabilities_preferred"
+	},
+	"code": {
+		"$oid": "o8_job_type_of_disabilities_preferred"
+	},
+	"option_values": [
+		"Physical Disability",
+		"Hearing Impairment",
+		"Visual Impairment",
+		"Partial Hearing Impairment",
+		"Partial Visual Impairment",
+		" Autism Spectrum Disorder",
+		"Intellectual Disability",
+		"Open to All"
+	],
+	"fieldType": "TEXT",
+	"position": 23,
+	"name": "Type of Disabilities preferred",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_any_canteen"
+	},
+	"code": {
+		"$oid": "o8_job_any_canteen"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 24,
+	"name": "Is there any canteen or food centre nearby",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_transport_provided"
+	},
+	"code": {
+		"$oid": "o8_job_transport_provided"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 25,
+	"name": "Transport Provided",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_wheelchair_accessible"
+	},
+	"code": {
+		"$oid": "o8_job_wheelchair_accessible"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 26,
+	"name": "Is the workplace wheelchair accessible?",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_pwd_friendly"
+	},
+	"code": {
+		"$oid": "o8_job_pwd_friendly"
+	},
+	"option_values": [
+		"Yes",
+		"No"
+	],
+	"fieldType": "DROPDOWN",
+	"position": 27,
+	"name": "Is the workplace PWD-friendly",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_remarks"
+	},
+	"code": {
+		"$oid": "o8_job_remarks"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 28,
+	"name": "Remarks",
+	"moduleType": "JOB"
+},
+{
+	"_id": {
+		"$oid": "o8_job_reasons_for_non_referrals"
+	},
+	"code": {
+		"$oid": "o8_job_reasons_for_non_referrals"
+	},
+	"option_values": [],
+	"fieldType": "TEXT",
+	"position": 29,
+	"name": "Reasons for non-referrals",
+	"moduleType": "JOB"
+}]
+
