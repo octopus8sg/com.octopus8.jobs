@@ -449,7 +449,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $post = $_POST;
             $delete = $post['_qf_JobsForm_submit_delete'];
             if ($delete) {
-                civicrm_api4('SscJob', 'delete', [
+                civicrm_api4('SscApplication', 'delete', [
                     'where' => [['id', '=', $this->_id]],
                     'checkPermissions' => FALSE]);
                 CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
@@ -465,8 +465,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                 $params['contact_id'] = $employeeId;
                 $params['o8_job_id'] = $jobId;
                 try {
-                    civicrm_api4('SscApplication', $action, ['values' => $params,
-                        'checkPermissions' => FALSE]);
+                    civicrm_api4('SscApplication', $action, ['values' => $params]);
                     // makes application for the job
                 } catch (Exception $exception) {
                     CRM_Core_Error::debug_var('error', $exception->getMessage());
@@ -476,8 +475,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             }
         } elseif ($this->_action == CRM_Core_Action::DELETE) {
             civicrm_api4('SscJob', 'delete', [
-                'where' => [['id', '=', $this->_id]],
-                'checkPermissions' => FALSE]);
+                'where' => [['id', '=', $this->_id]]]);
             CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
         } else {
             $values = $this->controller->exportValues();
@@ -509,8 +507,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             //Default Way
 //            CRM_Core_Error::debug_var('paramsfrom', $params);
 //            CRM_Core_Error::debug_var('values', $values);
-            $saver = (array)civicrm_api4('SscJob', $action, ['values' => $params,
-                'checkPermissions' => FALSE]);
+            $saver = (array)civicrm_api4('SscJob', $action, ['values' => $params]);
 //            CRM_Core_Error::debug_var('saver', $saver);
         }
         parent::postProcess();
