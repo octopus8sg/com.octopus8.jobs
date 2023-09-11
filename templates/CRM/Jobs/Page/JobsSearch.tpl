@@ -1,12 +1,16 @@
 {crmScope extensionKey='com.octopus8.jobs'}
     <div class="crm-content-block">
-        <div class="action-link">
-            {*        {debug}*}
-            <a class="button add-job" href="{crmURL p="civicrm/jobs/form" q="reset=1&action=add" }">
-                <i class="crm-i fa-plus-circle">&nbsp;</i>
-                {ts}Add Job{/ts}
-            </a>
-        </div>
+        {if $permission eq 2}
+            <div class="action-link">
+                {*        {debug}*}
+
+                <a class="button add-job" href="{crmURL p="civicrm/jobs/form" q="reset=1&action=add" }">
+                    <i class="crm-i fa-plus-circle">&nbsp;</i>
+                    {ts}Add Job{/ts}
+                </a>
+
+            </div>
+        {/if}
         <div class="clear"></div>
         {include file="CRM/Jobs/Form/JobFilter.tpl"}
         <div class="clear"></div>

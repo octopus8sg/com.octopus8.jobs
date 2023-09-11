@@ -1,5 +1,8 @@
 <?php
 
+const VIEW_OCTOPUS_8_JOBS = 'view octopus8 jobs';
+const DELETE_OCTOPUS_8_JOBS = 'delete octopus8 jobs';
+const EDIT_OCTOPUS_8_JOBS = 'edit octopus8 jobs';
 require_once 'jobs.civix.php';
 
 // phpcs:disable
@@ -188,101 +191,113 @@ function jobs_civicrm_preProcess($formName, &$form)
 }
 
 /**
+ * Implementation of hook_civicrm_permission
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_permission/
+ */
+function jobs_civicrm_permission(&$permissions)
+{
+    $permissions[VIEW_OCTOPUS_8_JOBS] = E::ts('Octopus8 Jobs: View Jobs/Applications');
+    $permissions[EDIT_OCTOPUS_8_JOBS] = E::ts('Octopus8 Jobs: Edit/Create Jobs/Applications');
+    $permissions[DELETE_OCTOPUS_8_JOBS] = E::ts('Octopus8 Jobs: Delete Jobs/Applications');
+}
+
+/**
  * Implements hook_civicrm_navigationMenu().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
 function jobs_civicrm_navigationMenu(&$menu)
 {
-    if (!CRM_Core_Permission::check('administer CiviCRM')) {
-        CRM_Core_Session::setStatus('', ts('Insufficient permission'), 'error');
-        return;
-    }
+    $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
+    $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
+    $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
+    if ($can_edit || $can_delete || $can_view) {
 //    $currentUserId = CRM_Core_Session::getLoggedInContactID();
 
-    _jobs_civix_insert_navigation_menu($menu, '', array(
-        'label' => E::ts('Jobs'),
-        'name' => 'jobs',
-        'icon' => 'crm-i fa-briefcase',
-        'url' => 'civicrm/jobs',
-        'permission' => 'access CiviCRM',
-        'navID' => 10,
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-    _jobs_civix_navigationMenu($menu);
-    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-        'label' => E::ts('Dashboard'),
-        'name' => 'jobs_dashboard',
-        'url' => 'civicrm/jobs',
-        'permission' => 'access CiviCRM',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-    _jobs_civix_navigationMenu($menu);
-    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-        'label' => E::ts('Find Jobs'),
-        'name' => 'search_jobs',
-        'url' => 'civicrm/jobs/search',
-        'permission' => 'access CiviCRM',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-    _jobs_civix_navigationMenu($menu);
-    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-        'label' => E::ts('Add Job'),
-        'name' => 'add_job',
-        'url' => 'civicrm/jobs/form?reset=1&action=add',
-        'permission' => 'administer CiviCRM',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-    _jobs_civix_navigationMenu($menu);
-    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-        'label' => E::ts('Find Applications'),
-        'name' => 'search_application',
-        'url' => 'civicrm/applications/search',
-        'permission' => 'access CiviCRM',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-    _jobs_civix_navigationMenu($menu);
-    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-        'label' => E::ts('Import Jobs'),
-        'name' => 'import_jobs',
-        'url' => 'civicrm/csvimporter/import?entity=SscJob',
-        'permission' => 'access CiviCRM',
-        'operator' => 'OR',
-        'separator' => 2,
-    ));
-    _jobs_civix_navigationMenu($menu);
-    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-        'label' => E::ts('Import Applications'),
-        'name' => 'import_applications',
-        'url' => 'civicrm/csvimporter/import?entity=SscJob',
-        'permission' => 'access CiviCRM',
-        'operator' => 'OR',
-        'separator' => 0,
-    ));
-    _jobs_civix_navigationMenu($menu);
-    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-        'label' => E::ts('Job Reports'),
-        'name' => 'job_reports',
-        'url' => CRM_Utils_System::url('civicrm/report/list', ['grp' => 'jobs', 'reset' => 1]),
-        'permission' => 'access CiviCRM',
-        'operator' => 'OR',
-        'separator' => 2,
-    ));
-    _jobs_civix_navigationMenu($menu);
-    _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-        'label' => E::ts('Run a Function'),
-        'name' => 'run_a_fun',
-        'url' => 'civicrm/jobs/runafun',
-        'permission' => 'administer CiviCRM',
-        'operator' => 'OR',
-        'separator' => 2,
-    ));
-    _jobs_civix_navigationMenu($menu);
+        _jobs_civix_insert_navigation_menu($menu, '', array(
+            'label' => E::ts('Jobs'),
+            'name' => 'jobs',
+            'icon' => 'crm-i fa-briefcase',
+            'url' => 'civicrm/jobs',
+            'permission' => VIEW_OCTOPUS_8_JOBS,
+            'navID' => 10,
+            'operator' => 'OR',
+            'separator' => 0,
+        ));
+        _jobs_civix_navigationMenu($menu);
+        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+            'label' => E::ts('Dashboard'),
+            'name' => 'jobs_dashboard',
+            'url' => VIEW_OCTOPUS_8_JOBS,
+            'permission' => 'access CiviCRM',
+            'operator' => 'OR',
+            'separator' => 0,
+        ));
+        _jobs_civix_navigationMenu($menu);
+        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+            'label' => E::ts('Find Jobs'),
+            'name' => 'search_jobs',
+            'url' => 'civicrm/jobs/search',
+            'permission' => VIEW_OCTOPUS_8_JOBS,
+            'operator' => 'OR',
+            'separator' => 0,
+        ));
+        _jobs_civix_navigationMenu($menu);
+        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+            'label' => E::ts('Add Job'),
+            'name' => 'add_job',
+            'url' => 'civicrm/jobs/form?reset=1&action=add',
+            'permission' => EDIT_OCTOPUS_8_JOBS,
+            'operator' => 'OR',
+            'separator' => 0,
+        ));
+        _jobs_civix_navigationMenu($menu);
+        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+            'label' => E::ts('Find Applications'),
+            'name' => 'search_application',
+            'url' => 'civicrm/applications/search',
+            'permission' => VIEW_OCTOPUS_8_JOBS,
+            'operator' => 'OR',
+            'separator' => 0,
+        ));
+        _jobs_civix_navigationMenu($menu);
+        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+            'label' => E::ts('Import Jobs'),
+            'name' => 'import_jobs',
+            'url' => 'civicrm/csvimporter/import?entity=SscJob',
+            'permission' => EDIT_OCTOPUS_8_JOBS,
+            'operator' => 'OR',
+            'separator' => 2,
+        ));
+        _jobs_civix_navigationMenu($menu);
+        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+            'label' => E::ts('Import Applications'),
+            'name' => 'import_applications',
+            'url' => 'civicrm/csvimporter/import?entity=SscJob',
+            'permission' => EDIT_OCTOPUS_8_JOBS,
+            'operator' => 'OR',
+            'separator' => 0,
+        ));
+        _jobs_civix_navigationMenu($menu);
+        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+            'label' => E::ts('Job Reports'),
+            'name' => 'job_reports',
+            'url' => CRM_Utils_System::url('civicrm/report/list', ['grp' => 'jobs', 'reset' => 1]),
+            'permission' => VIEW_OCTOPUS_8_JOBS,
+            'operator' => 'OR',
+            'separator' => 2,
+        ));
+        _jobs_civix_navigationMenu($menu);
+        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+            'label' => E::ts('Run a Function'),
+            'name' => 'run_a_fun',
+            'url' => 'civicrm/jobs/runafun',
+            'permission' => 'administer CiviCRM',
+            'operator' => 'OR',
+            'separator' => 2,
+        ));
+        _jobs_civix_navigationMenu($menu);
+    }
 }
 
 /**
@@ -416,52 +431,57 @@ function _jobs_addQuickFormSignatureElement(
  */
 function jobs_civicrm_tabset($path, &$tabs, $context)
 {
-    if ($path === 'civicrm/contact/view') {
-        // add a tab to the contact summary screen
-        $contactId = $context['contact_id'];
-        $contact = \Civi\Api4\Contact::get(FALSE)
-            ->addWhere('id', '=', $contactId)
-            ->execute()->single();
-        $contactType = $contact['contact_type'];
-        $employeesurl = CRM_Utils_System::url('civicrm/jobs/employeetab', ['cid' => $contactId]);
-        $employersurl = CRM_Utils_System::url('civicrm/jobs/employertab', ['cid' => $contactId]);
+    $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
+    $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
+    $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
+    if ($can_edit || $can_delete || $can_view) {
+        if ($path === 'civicrm/contact/view') {
+            // add a tab to the contact summary screen
+            $contactId = $context['contact_id'];
+            $contact = \Civi\Api4\Contact::get(FALSE)
+                ->addWhere('id', '=', $contactId)
+                ->execute()->single();
+            $contactType = $contact['contact_type'];
+            $employeesurl = CRM_Utils_System::url('civicrm/jobs/employeetab', ['cid' => $contactId]);
+            $employersurl = CRM_Utils_System::url('civicrm/jobs/employertab', ['cid' => $contactId]);
 
-        $employeeEntities = \Civi\Api4\SscApplication::get(FALSE)
-            ->selectRowCount()
-            ->addWhere('contact_id', '=', $contactId)
-            ->execute();
-        $employerEntities = \Civi\Api4\SscJob::get(FALSE)
-            ->selectRowCount()
-            ->addWhere('contact_id', '=', $contactId)
-            ->execute();
-        $employers = array("Household",
-            "Organization",
-            "Team",
-            "Sponsor"
-        );
-        $employees = array("Individual",
-            "Student",
-            "Parent",
-            "Staff",
-        );
-        if (in_array($contactType, $employees)) {
-            $tabs[] = array(
-                'id' => 'employee_job',
-                'url' => $employeesurl,
-                'count' => $employeeEntities->count(),
-                'title' => E::ts('Jobs'),
-                'weight' => 1000,
-                'icon' => 'crm-i fa-briefcase',
+            $employeeEntities = \Civi\Api4\SscApplication::get(FALSE)
+                ->selectRowCount()
+                ->addWhere('contact_id', '=', $contactId)
+                ->execute();
+            $employerEntities = \Civi\Api4\SscJob::get(FALSE)
+                ->selectRowCount()
+                ->addWhere('contact_id', '=', $contactId)
+                ->execute();
+            $employers = array("Household",
+                "Organization",
+                "Team",
+                "Sponsor"
             );
-        } elseif (in_array($contactType, $employers)) {
-            $tabs[] = array(
-                'id' => 'employeer_job',
-                'url' => $employersurl,
-                'count' => $employerEntities->count(),
-                'title' => E::ts('Jobs'),
-                'weight' => 1000,
-                'icon' => 'crm-i fa-briefcase',
+            $employees = array("Individual",
+                "Student",
+                "Parent",
+                "Staff",
             );
+            if (in_array($contactType, $employees)) {
+                $tabs[] = array(
+                    'id' => 'employee_job',
+                    'url' => $employeesurl,
+                    'count' => $employeeEntities->count(),
+                    'title' => E::ts('Jobs'),
+                    'weight' => 1000,
+                    'icon' => 'crm-i fa-briefcase',
+                );
+            } elseif (in_array($contactType, $employers)) {
+                $tabs[] = array(
+                    'id' => 'employeer_job',
+                    'url' => $employersurl,
+                    'count' => $employerEntities->count(),
+                    'title' => E::ts('Jobs'),
+                    'weight' => 1000,
+                    'icon' => 'crm-i fa-briefcase',
+                );
+            }
         }
     }
 }

@@ -9,7 +9,10 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
     {
         // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
         CRM_Utils_System::setTitle(E::ts('Search Applications'));
-
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
+        if($can_edit){
+            $this->assign('permission', 2);
+        }
         // Example: Assign a variable for use in a template
         $urlQry['snippet'] = 4;
 //        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
@@ -352,8 +355,8 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
             $due_date = $dao->job_is_active;
 //            CRM_Core_Error::debug_var('due_date', $due_date);
             $otherDate = new DateTime($due_date);
-            $now->setTime( 0, 0, 0 );
-            $otherDate->setTime( 0, 0, 0 );
+            $now->setTime(0, 0, 0);
+            $otherDate->setTime(0, 0, 0);
 //            CRM_Core_Error::debug_var('otherDate', $otherDate);
             $daydiff = $now->diff($otherDate)->days;
 //            CRM_Core_Error::debug_var('daydiff', $daydiff);
@@ -361,6 +364,10 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
                 $jis_active_view = "Open";
 //                CRM_Core_Error::debug_var('isActive', $jis_active_view);
             }
+            $view = $delete = $edit = "";
+            $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
+            $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
+            $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
 
             $r_view = CRM_Utils_System::url('civicrm/applications/form',
                 ['action' => 'view', 'id' => $dao->app_id]);
@@ -368,10 +375,16 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
                 ['action' => 'update', 'id' => $dao->app_id]);
             $r_delete = CRM_Utils_System::url('civicrm/applications/form',
                 ['action' => 'delete', 'id' => $dao->app_id]);
-            $view = '<a target="_blank" class="action-item view-application crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
-            $update = '<a target="_blank" class="action-item update-application crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
-//            $delete = '<a target="_blank" class="action-item delete-application crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
-            $action = "<span>$view</span>";
+            if ($can_view) {
+                $view = '<a target="_blank" class="action-item view-application crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
+            }
+            if ($can_edit) {
+                $update = '<a target="_blank" class="action-item update-application crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
+            }
+            if ($can_delete) {
+                $delete = '<a target="_blank" class="action-item delete-application crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+            }
+            $action = "<span>$view $update $delete</span>";
             if (!isset($employeeId)) {
                 $rows[$count][] = $dao->app_id;
                 $rows[$count][] = $is_active_view;

@@ -9,7 +9,10 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
     {
         // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
         CRM_Utils_System::setTitle(E::ts('Search Jobs'));
-
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
+        if($can_edit){
+            $this->assign('permission', 2);
+        }
         // Example: Assign a variable for use in a template
         $urlQry['snippet'] = 4;
 //        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
@@ -18,6 +21,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
         $job_source_url = CRM_Utils_System::url('civicrm/jobs/jobsajax', $urlQry, FALSE, NULL, FALSE);
         $sourceUrl['job_sourceUrl'] = $job_source_url;
         $this->assign('useAjax', true);
+
         CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
         $controller_data = new CRM_Core_Controller_Simple(
             'CRM_Jobs_Form_JobsCommonFilter',
@@ -232,7 +236,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
                     $wheresql .= " AND j.`created_date` >= '" . $dateselect_from . "' ";
                 }
             }
-        }else{
+        } else {
 
         }
 
@@ -259,7 +263,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
                     $wheresql .= " AND j.`due_date` >= '" . $due_dateselect_from . "' ";
                 }
             }
-        }else{
+        } else {
 
         }
 
@@ -304,14 +308,10 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
         $iFilteredTotal = CRM_Core_DAO::singleValueQuery("SELECT FOUND_ROWS()");
         $rows = array();
         $count = 0;
-        $can_update = true;
-        $can_delete = true;
-        $update = "";
-        $delete = "";
-        if ($employeeId) {
-            $can_update = false;
-            $can_delete = false;
-        }
+        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
+        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
+        $update = $view = $delete = "";
         while ($dao->fetch()) {
             if (!empty($dao->contact_id)) {
                 $contact = '<a href="' . CRM_Utils_System::url('civicrm/contact/view',
@@ -325,26 +325,25 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
                 $r_view = CRM_Utils_System::url('civicrm/jobs/form',
                     ['action' => 'view', 'id' => $dao->id]);
             }
-//            $is_active_view = "Closed";
-////                    CRM_Core_Error::debug_var('isactive?', $dao->is_active);
-//            if($dao->is_active > 0){
-//                $is_active_view = "Open";
-//            }
+
             $u_action = ['action' => 'update',
                 'id' => $dao->id, 'reset' => 1];
             $r_update = CRM_Utils_System::url('civicrm/jobs/form',
                 $u_action);
             $r_delete = CRM_Utils_System::url('civicrm/jobs/form',
                 ['action' => 'delete', 'id' => $dao->id]);
-            $view = '<a target="_blank" class="action-item view-job crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
-            if ($can_update) {
+            if ($can_view) {
+                $view = '<a target="_blank" class="action-item view-job crm-hover-button" href="' . $r_view . '"><i class="crm-i fa-eye"></i>&nbsp;View</a>';
+            }
+            if ($can_edit) {
                 $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
             }
-            if ($dao->application_count > 0) {
-                $can_delete = false;
-            }
             if ($can_delete) {
-                $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+                if ($dao->application_count > 0) {
+                    $delete = '<a target="_blank" class="action-item delete-job crm-hover-button disabled" href="#"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+                } else {
+                    $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+                }
             }
             $action = "<span>$view $update $delete</span>";
             $rows[$count][] = $dao->id;

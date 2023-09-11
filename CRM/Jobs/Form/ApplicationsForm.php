@@ -381,15 +381,23 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
      */
     public function postProcess()
     {
+        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
+        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
         if ($this->_action == CRM_Core_Action::PREVIEW) {
             return;
         }
-        if ($this->_action == CRM_Core_Action::DELETE) {
-            civicrm_api4('Job', 'delete', [
-                'where' => [['id', '=', $this->_id]],
-                'checkPermissions' => FALSE]);
-            CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
-        } elseif ($this->_action == CRM_Core_Action::VIEW) {
+        if ($can_delete && $this->_action == CRM_Core_Action::DELETE) {
+            civicrm_api4('SscApplication', 'delete', [
+                'where' => [['id', '=', $this->_id]]
+            ]);
+            CRM_Core_Session::setStatus(E::ts('Removed Application'), E::ts('Application'), 'success');
+            parent::postProcess();
+            return;
+        }
+
+        if ($can_edit && $this->_action == CRM_Core_Action::VIEW) {
+
             $values = $this->controller->exportValues();
             $post = $_POST;
             $changeit = $post[$this->_changeitButtonName];
@@ -425,8 +433,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 $params['is_active'] = False;
                 $params['modified_id'] = $currentUserId;
                 $params['modified_date'] = date('YmdHis');
-                civicrm_api4('SscApplication', $action, ['values' => $params,
-                    'checkPermissions' => FALSE]);
+                civicrm_api4('SscApplication', $action, ['values' => $params]);
             } elseif ($statusId) {
                 $params['id'] = $this->getEntityId();
                 $action = 'update';
@@ -435,8 +442,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 $params['modified_id'] = $currentUserId;
                 $params['status_id'] = $statusId;
                 $params['modified_date'] = date('YmdHis');
-                civicrm_api4('SscApplication', $action, ['values' => $params,
-                    'checkPermissions' => FALSE]);
+                civicrm_api4('SscApplication', $action, ['values' => $params]);
             }
 
 

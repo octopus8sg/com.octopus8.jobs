@@ -423,13 +423,24 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
      */
     public function postProcess()
     {
+        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
+        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
 
         $session = CRM_Core_Session::singleton();
         $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
 //        CRM_Core_Error::debug_var('request', $_REQUEST);
 //        CRM_Core_Error::debug_var('post', $_POST);
         $currentUserId = CRM_Core_Session::getLoggedInContactID();
-        if ($this->_action == CRM_Core_Action::VIEW) {
+        if ($can_delete && $this->_action == CRM_Core_Action::DELETE) {
+            civicrm_api4('SscJob', 'delete', [
+                'where' => [['id', '=', $this->_id]]
+            ]);
+            CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
+            parent::postProcess();
+            return;
+        }
+        if ($can_edit && $this->_action == CRM_Core_Action::VIEW) {
 //        CRM_Core_Error::debug_var('request', $_REQUEST);
 //        CRM_Core_Error::debug_var('post', $_POST);
             // makes application for the job
