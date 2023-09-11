@@ -243,15 +243,15 @@ function jobs_civicrm_navigationMenu(&$menu)
             'separator' => 0,
         ));
         _jobs_civix_navigationMenu($menu);
-        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-            'label' => E::ts('Add Job'),
-            'name' => 'add_job',
-            'url' => 'civicrm/jobs/form?reset=1&action=add',
-            'permission' => EDIT_OCTOPUS_8_JOBS,
-            'operator' => 'OR',
-            'separator' => 0,
-        ));
-        _jobs_civix_navigationMenu($menu);
+//        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+//            'label' => E::ts('Add Job'),
+//            'name' => 'add_job',
+//            'url' => 'civicrm/jobs/form?reset=1&action=add',
+//            'permission' => EDIT_OCTOPUS_8_JOBS,
+//            'operator' => 'OR',
+//            'separator' => 0,
+//        ));
+//        _jobs_civix_navigationMenu($menu);
         _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
             'label' => E::ts('Find Applications'),
             'name' => 'search_application',
