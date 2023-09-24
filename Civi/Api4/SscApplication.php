@@ -12,16 +12,21 @@ class SscApplication extends Generic\DAOEntity {
     public static function permissions() {
         return [
             'get' => [
-                'view octopus8 jobs',
+                VIEW_OCTOPUS_8_JOBS,
+                EDIT_OCTOPUS_8_JOBS,
+                APPLY_OCTOPUS_8_JOBS,
+                DELETE_OCTOPUS_8_JOBS
             ],
             'delete' => [
-                'delete octopus8 jobs',
+                EDIT_OCTOPUS_8_JOBS,
+                DELETE_OCTOPUS_8_JOBS
             ],
             'create' => [
-                'edit octopus8 jobs',
+                EDIT_OCTOPUS_8_JOBS,
+                APPLY_OCTOPUS_8_JOBS,
             ],
             'update' => [
-                'edit octopus8 jobs',
+                EDIT_OCTOPUS_8_JOBS,
             ],
         ];
     }

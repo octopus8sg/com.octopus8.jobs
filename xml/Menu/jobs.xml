@@ -2,75 +2,76 @@
 <!--        const VIEW_OCTOPUS_8_JOBS = 'view octopus8 jobs';-->
 <!--        const DELETE_OCTOPUS_8_JOBS = 'delete octopus8 jobs';-->
 <!--        const EDIT_OCTOPUS_8_JOBS = 'edit octopus8 jobs';-->
+<!--        const APPLY_OCTOPUS_8_JOBS = 'apply octopus8 jobs';-->
 <menu>
   <item>
     <path>civicrm/jobs/commonfilter</path>
     <page_callback>CRM_Jobs_Form_JobsCommonFilter</page_callback>
     <title>JobsCommonFilter</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/jobs/form</path>
     <page_callback>CRM_Jobs_Form_JobsForm</page_callback>
     <title>JobsForm</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/applications/form</path>
     <page_callback>CRM_Jobs_Form_ApplicationsForm</page_callback>
     <title>ApplicationsForm</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/jobs/search</path>
     <page_callback>CRM_Jobs_Page_JobsSearch</page_callback>
     <title>JobsSearch</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/applications/search</path>
     <page_callback>CRM_Jobs_Page_ApplicationsSearch</page_callback>
     <title>ApplicationsSearch</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/jobs</path>
     <page_callback>CRM_Jobs_Page_JobsDashboard</page_callback>
     <title>JobsDashboard</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/jobs/jobsajax</path>
     <page_callback>CRM_Jobs_Page_JobsSearch::getJobsAjax</page_callback>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/jobs/applicationsajax</path>
     <page_callback>CRM_Jobs_Page_ApplicationsSearch::getApplicationsAjax</page_callback>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/jobs/contacttab</path>
     <page_callback>CRM_Jobs_Page_ContactTab</page_callback>
     <title>ContactTab</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/jobs/employeetab</path>
     <page_callback>CRM_Jobs_Page_EmployeeTab</page_callback>
     <title>EmployeeTab</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/jobs/employertab</path>
     <page_callback>CRM_Jobs_Page_EmployerTab</page_callback>
     <title>EmployerTab</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
     <path>civicrm/jobs/runafun</path>
     <page_callback>CRM_Jobs_Upgrader::createCustomFieldsAndOptions</page_callback>
     <title>EmployerTab</title>
-    <access_arguments>view octopus8 jobs</access_arguments>
+    <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
 </menu>

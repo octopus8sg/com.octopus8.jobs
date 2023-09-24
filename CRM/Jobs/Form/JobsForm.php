@@ -18,7 +18,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 
     protected $_id;
 
-    protected $_myentity;
+    protected $_sscJob;
 
     protected $_contactId;
 
@@ -62,34 +62,35 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
     public function preProcess()
     {
         parent::preProcess();
+        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
+        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
+        $can_apply = CRM_Core_Permission::check(APPLY_OCTOPUS_8_JOBS);
 
         $this->_action = CRM_Utils_Request::retrieve('action', 'String', $this);
 
         $this->assign('action', $this->_action);
 
-        $this->_id = CRM_Utils_Request::retrieve('id', 'Positive', $this, FALSE);
-
-        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive', $this, FALSE);
+        $id = CRM_Utils_Request::retrieve('id', 'Positive', $this, false);
+        $this->_id = $id;
+        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive', $this, false);
         if (!$contactId) {
             $currentUserId = CRM_Core_Session::getLoggedInContactID();
             $contactId = $currentUserId;
         }
 
-        $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive', $this, FALSE);
+//        $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive', $this, false);
 
         $this->_contactId = $contactId;
-        if ($employeeId) {
-            $this->_employeeId = $employeeId;
-        } else {
+        if ($can_apply) {
             $this->_employeeId = $contactId;
         }
         if (CRM_Core_Permission::check('administer CiviCRM')) {
-            $this->_isAdmin = TRUE;
+            $this->_isAdmin = true;
         }
-        $contact = $myentity = null;
 
         CRM_Utils_System::setTitle('Add Job');
-
+        $sscJob = null;
         if ($this->_id) {
             if ($this->_action == CRM_Core_Action::UPDATE) {
                 CRM_Utils_System::setTitle('Edit Job');
@@ -101,34 +102,39 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $entities = civicrm_api4('SscJob', 'get', [
                 'where' => [['id', '=', $this->_id]],
                 'limit' => 1,
-                'checkPermissions' => FALSE]);
+                'checkPermissions' => false]);
+
             if (!empty($entities)) {
-                $this->_myentity = $entities[0];
-                $myentity = $this->_myentity;
+                $sscJob = $entities[0];
+                $this->_sscJob = $sscJob;
             }
-            $this->assign('myentity', $this->_myentity);
+
+            $this->assign('sscJob', $sscJob);
 
             $session = CRM_Core_Session::singleton();
-            $session->replaceUserContext(CRM_Utils_System::url('civicrm/jobs/form', ['id' => $this->getEntityId(), 'action' => 'view']));
-            $appEntities = \Civi\Api4\SscApplication::get(FALSE)
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/jobs/form',
+                ['id' => $id,
+                    'action' => 'view']));
+            $appEntities = \Civi\Api4\SscApplication::get(false)
                 ->selectRowCount()
-                ->addWhere('o8_job_id', '=', $this->getEntityId())
+                ->addWhere('o8_job_id', '=', $id)
                 ->execute();
             $this->_appCount = $appEntities->count();
         }
         $this->_isActive = null;
 
-        if ($myentity) {
-            $employerId = $myentity['contact_id'];
+        if ($sscJob) {
+            $isActive = false;
+            $employerId = $sscJob['contact_id'];
             $contactId = $this->_contactId;
             $now = new DateTime;
 //            CRM_Core_Error::debug_var('now', $now);
-            $due_date = $myentity['due_date'];
+            $due_date = $sscJob['due_date'];
 //            CRM_Core_Error::debug_var('due_date', $due_date);
             $otherDate = new DateTime($due_date);
 //            CRM_Core_Error::debug_var('otherDate', $otherDate);
-            $now->setTime( 0, 0, 0 );
-            $otherDate->setTime( 0, 0, 0 );
+            $now->setTime(0, 0, 0);
+            $otherDate->setTime(0, 0, 0);
 //            CRM_Core_Error::debug_var('otherDate', $otherDate);
             $daydiff = $now->diff($otherDate)->days;
 //            CRM_Core_Error::debug_var('daydiff', $daydiff);
@@ -138,7 +144,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             }
             $this->_isActive = $isActive;
             if ($employerId != $contactId) {
-                $contact = \Civi\Api4\Contact::get(FALSE)
+                $contact = \Civi\Api4\Contact::get(false)
                     ->addWhere('id', '=', $contactId)
                     ->execute()->single();
                 $contactType = $contact['contact_type'];
@@ -153,7 +159,9 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                     $this->_isEmployer = false;
                 } else {
                     $this->_isEmployer = true;
-                    $this->_isEmployee = false;
+                    if ($can_apply) {
+                        $this->_isEmployee = false;
+                    }
                 }
             }
 
@@ -190,7 +198,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             }
 
         } catch (Exception $error) {
-            CRM_Core_Error::debug_var('errir', $error);
+            CRM_Core_Error::debug_var('error', $error);
 
         }
 
@@ -225,22 +233,22 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         if ($this->_action != CRM_Core_Action::DELETE) {
 
             if (($this->_contactId) AND ($this->_action != CRM_Core_Action::ADD)) {
-                $this->addEntityRef('contact_id', E::ts('Employer'), [], TRUE)->freeze();
+                $this->addEntityRef('contact_id', E::ts('Employer'), [], true)->freeze();
             } else {
-                $this->addEntityRef('contact_id', E::ts('Employer'), [], TRUE);
+                $this->addEntityRef('contact_id', E::ts('Employer'), [], true);
             }
-            $this->add('text', 'title', E::ts('Title'), ['class' => 'huge'], FALSE);
-            $this->add('datepicker', 'due_date', ts('Job Closed'), [], FALSE, ['time' => FALSE]);
-            $this->add('wysiwyg', 'description', E::ts('Description'), [], FALSE);
+            $this->add('text', 'title', E::ts('Title'), ['class' => 'huge'], false);
+            $this->add('datepicker', 'due_date', ts('Job Closed'), [], false, ['time' => false]);
+            $this->add('wysiwyg', 'description', E::ts('Description'), [], false);
             //todo add pseudoconstants
 
             $roles = CRM_Core_OptionGroup::values('o8_job_role');
             $this->add('select', 'role_id', E::ts('Role'),
-                $roles, TRUE, ['class' => 'huge crm-select2',
+                $roles, true, ['class' => 'huge crm-select2',
                     'data-option-edit-path' => 'civicrm/admin/options/o8_job_role']);
             $locations = CRM_Core_OptionGroup::values('o8_job_location');
             $this->add('select', 'location_id', E::ts('Location'),
-                $locations, TRUE, ['class' => 'huge crm-select2',
+                $locations, true, ['class' => 'huge crm-select2',
                     'data-option-edit-path' => 'civicrm/admin/options/o8_job_location']);
             $statuses = CRM_Core_OptionGroup::values('o8_job_status');
             $this->add('hidden', 'status_id');
@@ -249,7 +257,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             $currentUserId = CRM_Core_Session::getLoggedInContactID();
 
             if ($this->_action == CRM_Core_Action::VIEW) {
-                if ($this->_myentity['contact_id'] != $currentUserId) {
+                if ($this->_sscJob['contact_id'] != $currentUserId) {
                     //if user is not employer
                     if ($this->_isAdmin) {
 //                        CRM_Core_Error::debug_var('_isActive', $this->_isActive);
@@ -269,7 +277,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                                     [
                                         'type' => 'upload',
                                         'name' => E::ts('Apply'),
-                                        'isDefault' => FALSE
+                                        'isDefault' => false
                                     ],
 //                                    [
 //                                        'type' => 'submit',
@@ -277,12 +285,12 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 //                                        'icon' => 'fa-trash',
 //                                        'name' => E::ts('Delete'),
 //                                        'formaction' => 'delete',
-//                                        'isDefault' => FALSE,
+//                                        'isDefault' => false,
 //                                    ],
                                     [
                                         'type' => 'cancel',
                                         'name' => E::ts('Close'),
-                                        'isDefault' => TRUE,
+                                        'isDefault' => true,
                                     ],
                                 ]);
 
@@ -294,44 +302,36 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 //                                        'name' => E::ts('Delete'),
 //                                        'formaction' => 'delete',
 //                                        'icon' => 'fa-trash',
-//                                        'isDefault' => FALSE,
+//                                        'isDefault' => false,
 //                                    ],
                                     [
                                         'type' => 'cancel',
                                         'name' => E::ts('Close'),
-                                        'isDefault' => TRUE,
+                                        'isDefault' => true,
                                     ],
                                 ]);
                             }
                         }
-                    }
-                    elseif ($this->_isEmployee) {
-//                        CRM_Core_Error::debug_var('_isActive', $this->_isActive);
+                    } elseif ($this->_isEmployee) {
                         $this->add('hidden', 'employee_id');
                         if ($this->_isActive) {
-//                            CRM_Core_Error::debug_var('currentUserId', $currentUserId);
-//                            CRM_Core_Error::debug_var('this_isEmployee', $this->_isEmployee);
-//                            CRM_Core_Error::debug_var('this_isEmployer', $this->_isEmployer);
-//                            CRM_Core_Error::debug_var('this_isAdmin', $this->_isAdmin);
-//                            CRM_Core_Error::debug_var('this_myentcontactid', $this->_myentity['contact_id']);
-//                            CRM_Core_Error::debug_var('this_contactid', $this->_contactId);
                             $this->add('hidden', 'employee_id');
                             $this->addButtons([
-//                                [
-//                                    'type' => 'upload',
-//                                    'name' => E::ts('Apply'),
-//                                    'isDefault' => FALSE,
-//                                ],
+                                [
+                                    'type' => 'upload',
+                                    'name' => E::ts('Apply'),
+                                    'isDefault' => false,
+                                ],
 //                                [
 //                                    'type' => 'submit',
 //                                    'name' => E::ts('Delete'),
 //                                    'formaction' => 'delete',
-//                                    'isDefault' => FALSE,
+//                                    'isDefault' => false,
 //                                ],
                                 [
                                     'type' => 'cancel',
                                     'name' => E::ts('Close'),
-                                    'isDefault' => TRUE,
+                                    'isDefault' => true,
                                 ],
                             ]);
                         }
@@ -341,7 +341,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                         [
                             'type' => 'upload',
                             'name' => E::ts('Close'),
-                            'isDefault' => TRUE,
+                            'isDefault' => true,
                         ],
                     ]);
 
@@ -352,7 +352,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                     [
                         'type' => 'upload',
                         'name' => E::ts('Submit'),
-                        'isDefault' => TRUE,
+                        'isDefault' => true,
                     ],
                     ['type' => 'cancel',
                         'name' => E::ts('Cancel')]
@@ -360,17 +360,17 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             }
         } else {
             $this->addButtons([
-                ['type' => 'submit', 'name' => E::ts('Delete'), 'isDefault' => TRUE],
+                ['type' => 'submit', 'name' => E::ts('Delete'), 'isDefault' => true],
                 ['type' => 'cancel', 'name' => E::ts('Cancel')]
             ]);
         }
         if ($this->_action == CRM_Core_Action::VIEW) {
-            $this->add('text', 'job_id', E::ts('ID'), ['class' => 'huge'], FALSE);
-//            $this->add('html', 'app_count', E::ts('App Count'), ['class' => 'huge'], FALSE);
+            $this->add('text', 'job_id', E::ts('ID'), ['class' => 'huge'], false);
+//            $this->add('html', 'app_count', E::ts('App Count'), ['class' => 'huge'], false);
 //            $coli = $this->createElement('link', ['target' => '_blank']);
 //            $this->addElement($coli);
             $this->add('static', 'app_count', E::ts('App Count'));
-            $this->add('datepicker', 'created_date', E::ts('Created Time'), ['class' => 'huge'], FALSE);
+            $this->add('datepicker', 'created_date', E::ts('Created Time'), ['class' => 'huge'], false);
             $this->freeze();
         }
         parent::buildQuickForm();
@@ -386,8 +386,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
     public function setDefaultValues()
     {
         $defaults['app_count'] = "0";
-        if ($this->_myentity) {
-            $defaults = $this->_myentity;
+        if ($this->_sscJob) {
+            $defaults = $this->_sscJob;
             $defaults['job_id'] = $defaults['id'];
             if ($this->_isAdmin) {
                 $defaults['app_count'] = "<a target='_blank' href='" .
@@ -426,7 +426,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
         $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
         $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
         $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
-
+        $can_apply = CRM_Core_Permission::check(APPLY_OCTOPUS_8_JOBS);
         $session = CRM_Core_Session::singleton();
         $employeeId = CRM_Utils_Request::retrieve('employee_id', 'Positive');
 //        CRM_Core_Error::debug_var('request', $_REQUEST);
@@ -440,7 +440,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             parent::postProcess();
             return;
         }
-        if ($can_edit && $this->_action == CRM_Core_Action::VIEW) {
+        if (($can_edit || $can_view) && $this->_action == CRM_Core_Action::VIEW) {
 //        CRM_Core_Error::debug_var('request', $_REQUEST);
 //        CRM_Core_Error::debug_var('post', $_POST);
             // makes application for the job
@@ -451,7 +451,7 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             if ($delete) {
                 civicrm_api4('SscApplication', 'delete', [
                     'where' => [['id', '=', $this->_id]],
-                    'checkPermissions' => FALSE]);
+                    'checkPermissions' => false]);
                 CRM_Core_Session::setStatus(E::ts('Removed Job'), E::ts('Job'), 'success');
             } else {
                 //            CRM_Core_Error::debug_var('values', $values);
@@ -465,7 +465,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
                 $params['contact_id'] = $employeeId;
                 $params['o8_job_id'] = $jobId;
                 try {
-                    civicrm_api4('SscApplication', $action, ['values' => $params]);
+                    civicrm_api4('SscApplication', $action, ['values' => $params,
+                        'checkPermissions' => FALSE]);
                     // makes application for the job
                 } catch (Exception $exception) {
                     CRM_Core_Error::debug_var('error', $exception->getMessage());
@@ -507,7 +508,8 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
             //Default Way
 //            CRM_Core_Error::debug_var('paramsfrom', $params);
 //            CRM_Core_Error::debug_var('values', $values);
-            $saver = (array)civicrm_api4('SscJob', $action, ['values' => $params]);
+            $saver = (array)civicrm_api4('SscJob', $action, ['values' => $params,
+                'checkPermissions' => FALSE]);
 //            CRM_Core_Error::debug_var('saver', $saver);
         }
         parent::postProcess();
