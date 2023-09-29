@@ -129,6 +129,10 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 
     public function buildQuickForm()
     {
+        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
+        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
+        $can_apply = CRM_Core_Permission::check(APPLY_OCTOPUS_8_JOBS);
         $this->assign('id', $this->getEntityId());
         $this->add('hidden', 'id');
 //        CRM_Core_Error::debug_var('myjob', $this->_myjob);
@@ -209,21 +213,10 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                 $this->_reviewButtonName = $this->getButtonName('submit', 'review');
                 $this->_rejectButtonName = $this->getButtonName('submit', 'reject');
                 $this->_withdrawButtonName = $this->getButtonName('submit', 'withdraw');
-                $userACL = 'nobody';
+
                 $currentUserId = CRM_Core_Session::getLoggedInContactID();
 
-                if ($currentUserId == $this->_myentity->contact_id) {
-                    $userACL = 'employee';
-                }
-                if ($currentUserId == $this->_myjob->contact_id) {
-                    $userACL = 'employer';
-                }
-                if ($this->_myjob->contact_id == $this->_myentity->contact_id) {
-                    $userACL = 'admin';
-                }
-                if (CRM_Core_Permission::check('administer CiviCRM')) {
-                    $userACL = 'admin';
-                }
+
                 $review = [
                     'type' => 'submit',
                     'subName' => 'review',
@@ -255,38 +248,28 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'icon' => 'fa-trash',
                 ];
 
-                if ($userACL == 'admin') {
-
-//        CRM_Core_Error::debug_var('myjob', $this->_myentity);
-//        CRM_Core_Error::debug_var('myapp', $this->_myentity);
+                if ($can_edit && $can_delete) {
                     $buttons = [
-//                        $review,
-//                        $accept,
-//                        $reject,
                         $changeit
                     ];
                     $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
                     if ($this->_myentity['is_active']) {
-//                            $buttons[] = $changeit;
                         $buttons[] = $withdraw;
                     }
                     $this->addButtons($buttons);
-                }elseif ($userACL == 'employer') {
+                }elseif ($can_edit && $can_view && !$can_delete) {
                     if ($this->_myentity['is_active']) {
                         $buttons = [
-//                            $review,
-//                            $accept,
+                            $changeit,
 //                            $reject,
-                            $changeit
                         ];
                         $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
-//                        $buttons[] = $withdraw;
                     } else {
-                            $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
+                        $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
                     }
                     $this->addButtons($buttons);
 
-                } elseif ($userACL == 'employee') {
+                } elseif ($can_apply) {
                     if ($this->_myentity['is_active']) {
                         $buttons[] = $withdraw;
                         $buttons[] = ['type' => 'cancel', 'name' => E::ts('Cancel')];
@@ -304,11 +287,11 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
         }
         if ($this->_action == CRM_Core_Action::VIEW) {
             $this->freeze();
-            if ($userACL != 'employer' and $userACL != 'admin') {
+            if ($can_apply && !($can_delete || $can_edit)) {
 //                $a = $this->getElement('status_id');
                 $this->removeElement('status_id');
             }
-            if ($userACL == 'employer' or $userACL == 'admin') {
+            if ($can_edit) {
                 $this->getElement('status_id')->unfreeze();
             }
         }
