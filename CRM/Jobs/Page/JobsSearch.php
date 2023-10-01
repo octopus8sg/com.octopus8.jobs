@@ -97,7 +97,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
         } catch (Exception $e) {
             $due_dateselect_to = null;
         }
-        CRM_Core_Error::debug_var('due_dateselect_to', $due_dateselect_to);
+//        CRM_Core_Error::debug_var('due_dateselect_to', $due_dateselect_to);
 
         $due_dateselect_from = CRM_Utils_Request::retrieveValue('due_dateselect_from', 'String', null);
         try {
@@ -105,7 +105,7 @@ class CRM_Jobs_Page_JobsSearch extends CRM_Core_Page
         } catch (Exception $e) {
             $due_dateselect_from = null;
         }
-        CRM_Core_Error::debug_var('due_dateselect_from', $dateselect_from);
+//        CRM_Core_Error::debug_var('due_dateselect_from', $dateselect_from);
         if (isset($employeeId)) {
             //employee view
             $sortMapper = [

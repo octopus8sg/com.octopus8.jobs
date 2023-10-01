@@ -718,7 +718,7 @@ function createEmployeeFields($eecfields)
         try {
             $option_group_id = addOptionsToOptionValuesByCode($code, $option_values, $name);
         } catch (ErrorException $e) {
-            CRM_Core_Error::debug_var('eee' . $code, $e->getMessage());
+            CRM_Core_Error::debug_var('error' . $code, $e->getMessage());
         }
 //        CRM_Core_Error::debug_var('2fecustom' . $customf['name'], $customf);
 
@@ -740,7 +740,7 @@ function createEmployeeFields($eecfields)
 //                CRM_Core_Error::debug_var('result' . $code, $result);
 
             } catch (ErrorException $e) {
-                CRM_Core_Error::debug_var('eee' . $code, $e->getMessage());
+                CRM_Core_Error::debug_var('error' . $code, $e->getMessage());
             }
         } elseif ($type == "DROPDOWN" OR sizeof($option_values) > 0) {
             try {
@@ -757,7 +757,7 @@ function createEmployeeFields($eecfields)
                 ];
                 $result = getCustomFieldByCode($code, $customfield);
             } catch (ErrorException $e) {
-                CRM_Core_Error::debug_var('eee' . $code, $e->getMessage());
+                CRM_Core_Error::debug_var('error' . $code, $e->getMessage());
             }
         } elseif ($type == "DATE") {
             try {
@@ -773,7 +773,7 @@ function createEmployeeFields($eecfields)
                 $result = getCustomFieldByCode($code, $customfield);
             } catch
             (ErrorException $e) {
-                CRM_Core_Error::debug_var('eee' . $code, $e->getMessage());
+                CRM_Core_Error::debug_var('error' . $code, $e->getMessage());
             }
         }
     }
