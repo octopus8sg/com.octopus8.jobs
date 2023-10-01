@@ -9,15 +9,15 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
     {
         // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
         CRM_Utils_System::setTitle(E::ts('Search Applications'));
-        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
-        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
-        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
-        $can_apply = CRM_Core_Permission::check(APPLY_OCTOPUS_8_JOBS);
-        $is_not_employee = true;
+        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $can_apply = CRM_Core_Permission::check(APPLY_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $is_employee = false;
         if ($can_apply && ! ($can_edit || $can_delete) ) {
-            $is_not_employee = false;
+            $is_employee = true;
         }
-        if($can_edit){
+        if ($can_edit){
             $this->assign('permission', 2);
         }
         // Example: Assign a variable for use in a template
@@ -42,7 +42,7 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
         $app_source_url = CRM_Utils_System::url('civicrm/jobs/applicationsajax', $urlQry, FALSE, NULL, FALSE);
         $sourceUrl['application_sourceUrl'] = $app_source_url;
         $this->assign('useAjax', true);
-        $this->assign('isNotEmployee', $is_not_employee);
+        $this->assign('isEmployee', $is_employee);
         CRM_Core_Resources::singleton()->addVars('source_url', $sourceUrl);
         $controller_data = new CRM_Core_Controller_Simple(
             'CRM_Jobs_Form_JobsCommonFilter',
@@ -62,15 +62,15 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
 //        CRM_Core_Error::debug_var('post', $_POST);
 
         $contactId = null;
-        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
-        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
-        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
-        $can_apply = CRM_Core_Permission::check(APPLY_OCTOPUS_8_JOBS);
+        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $can_apply = CRM_Core_Permission::check(APPLY_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
 
 //        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
 
         $employeeId = CRM_Utils_Request::retrieve('employeeid', 'Positive');
-        $employerId = CRM_Utils_Request::retrieve('employerid', 'Positive');
+        $contactId = CRM_Utils_Request::retrieve('cid', 'Positive');
         $thejobId = CRM_Utils_Request::retrieve('jobid', 'Positive');
 
 
@@ -79,15 +79,12 @@ class CRM_Jobs_Page_ApplicationsSearch extends CRM_Core_Page
         }
         $currentUserId = CRM_Core_Session::getLoggedInContactID();
         $is_employee = $is_employee = false;
+        if ($contactId) {
+            $is_employee = true;
+        }
         if ($can_apply && ! ($can_edit || $can_delete) ) {
             $is_employee = true;
         }
-
-        if ($can_view && ! ($can_apply) ) {
-            $is_employer = true;
-        }
-
-
         $employerIds = CRM_Utils_Request::retrieveValue('employer_ids', 'String', null);
         $employeeIds = CRM_Utils_Request::retrieveValue('employee_ids', 'String', null);
         $appId = CRM_Utils_Request::retrieveValue('application_id', 'String', null);
@@ -187,18 +184,18 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
     INNER JOIN civicrm_option_value r on  j.role_id = r.value
     INNER JOIN civicrm_option_group gr on r.option_group_id = gr.id and gr.name = 'o8_job_role'
 ";
-        $wheresql = " where 1 = 2 ";
+        $wheresql = " where 1 = 1 ";
         if ($is_admin) {
             $wheresql = " where 1 = 1 ";
         }
 
-        if ($is_employee) {
-            $wheresql = " where ap.contact_id = " . $currentUserId . " ";
-        }
+//        if ($is_employee) {
+//            $wheresql = " where ap.contact_id = " . $currentUserId . " ";
+//        }
 
-        if ($is_employer) {
-            $wheresql = " where j.contact_id = " . $currentUserId . " ";
-        }
+//        if ($is_employer) {
+//            $wheresql = " where j.contact_id = " . $currentUserId . " ";
+//        }
 
         $groupsql = " group by j.id, j.due_date, ap.is_active, j.title, s.label, l.label, r.label, j.created_date, j.contact_id, app_id";
         $ordersql = " ORDER BY app_id desc";
@@ -218,9 +215,9 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
             }
         }
 
-        if (isset($contactId)) {
-            if ($contactId !== null) {
-                $wheresql .= " AND ap.`contact_id` = " . $contactId . " ";
+        if ($is_employee) {
+            if (!$employeeId) {
+                $employeeId = CRM_Core_Session::getLoggedInContactID();
             }
         }
 
@@ -315,7 +312,7 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
         } else {
             $wheresql .= " AND ap.`created_date` <= '" . $date_today . "' ";
         }
-//        CRM_Core_Error::debug_var('wheresql', $wheresql);
+
 
 
         if ($sort !== NULL) {

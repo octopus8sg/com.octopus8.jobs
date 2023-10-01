@@ -68,17 +68,16 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
         $jobId = null;
         $myentity = null;
         if ($this->_id) {
-
             CRM_Utils_System::setTitle('Edit Application');
             if ($this->_action == CRM_Core_Action::VIEW) {
                 CRM_Utils_System::setTitle('View Application');
             }
-            $entities = civicrm_api4('SscApplication', 'get', [
+            $applications = civicrm_api4('SscApplication', 'get', [
                 'where' => [['id', '=', $this->_id]],
                 'limit' => 1,
                 'checkPermissions' => FALSE]);
-            if (!empty($entities)) {
-                $myentity = $entities[0];
+            if (!empty($applications)) {
+                $myentity = $applications[0];
                 $this->_myentity = $myentity;
             }
             $this->assign('myentity', $myentity);
@@ -100,7 +99,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 
         if ($jobId) {
             $jentities = civicrm_api4('SscJob', 'get', [
-                'where' => [['id', '=', $this->_id]],
+                'where' => [['id', '=', $jobId]],
                 'limit' => 1,
                 'checkPermissions' => FALSE]);
             if (!empty($jentities)) {
@@ -129,12 +128,12 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
 
     public function buildQuickForm()
     {
-        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
-        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
-        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
-        $can_apply = CRM_Core_Permission::check(APPLY_OCTOPUS_8_JOBS);
-        $this->assign('id', $this->getEntityId());
-        $this->add('hidden', 'id');
+        $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+        $can_apply = CRM_Core_Permission::check(APPLY_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+//        $this->assign('id', $this->getEntityId());
+//        $this->add('hidden', 'id');
 //        CRM_Core_Error::debug_var('myjob', $this->_myjob);
         if ($this->_action != CRM_Core_Action::DELETE) {
             if ($this->_contactId) {
@@ -155,10 +154,7 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
                     'title', E::ts('Job Title'), ['class' => 'huge'], FALSE)->freeze();
                 $this->addEntityRef('employer_id',
                     E::ts('Employer'), [], FALSE)->freeze();
-//                $jstatuses = CRM_Core_OptionGroup::values('o8_job_status');
-//                $this->add('select', 'o8_job_status_id', E::ts('Job Status'),
-//                    $jstatuses, FALSE, ['class' => 'huge crm-select2',
-//                        'data-option-edit-path' => 'civicrm/admin/options/o8_job_status'])->freeze();
+
                 $jlocations = CRM_Core_OptionGroup::values('o8_job_location');
                 $this->add('select', 'o8_job_location_id', E::ts('Job Location'),
                     $jlocations, FALSE, ['class' => 'huge crm-select2',
@@ -309,10 +305,11 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
     {
         if ($this->_myentity) {
             $defaults = $this->_myentity;
+            $defaults['app_id'] = $defaults['id'];
+            $defaults['job_id'] = $defaults['o8_job_id'];
         }
         if ($this->_myjob) {
             $job = $this->_myjob;
-            $defaults['app_id'] = $this->_id;
             $defaults['job_id'] = $this->_jobId;
             $defaults['title'] = $job['title'];
             $defaults['o8_job_status_id'] = $job['status_id'];
@@ -372,7 +369,8 @@ class CRM_Jobs_Form_ApplicationsForm extends CRM_Core_Form
         }
         if ($can_delete && $this->_action == CRM_Core_Action::DELETE) {
             civicrm_api4('SscApplication', 'delete', [
-                'where' => [['id', '=', $this->_id]]
+                'where' => [['id', '=', $this->_id]],
+                'checkPermissions' => false
             ]);
             CRM_Core_Session::setStatus(E::ts('Removed Application'), E::ts('Application'), 'success');
             parent::postProcess();

@@ -35,7 +35,7 @@
     <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>
   </item>
   <item>
-    <path>civicrm/jobs</path>
+    <path>civicrm/jobs/dashboard</path>
     <page_callback>CRM_Jobs_Page_JobsDashboard</page_callback>
     <title>JobsDashboard</title>
     <access_arguments>view octopus8 jobs;delete octopus8 jobs;edit octopus8 jobs;apply octopus8 jobs</access_arguments>

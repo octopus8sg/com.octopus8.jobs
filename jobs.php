@@ -210,10 +210,10 @@ function jobs_civicrm_permission(&$permissions)
  */
 function jobs_civicrm_navigationMenu(&$menu)
 {
-    $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS);
-    $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS);
-    $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
-    $can_apply = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS);
+    $can_view = CRM_Core_Permission::check(VIEW_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+    $can_delete = CRM_Core_Permission::check(DELETE_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+    $can_edit = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
+    $can_apply = CRM_Core_Permission::check(EDIT_OCTOPUS_8_JOBS) || CRM_Core_Permission::check('administer CiviCRM');
     if ($can_edit || $can_delete || $can_view || $can_apply) {
 //    $currentUserId = CRM_Core_Session::getLoggedInContactID();
 
@@ -222,19 +222,19 @@ function jobs_civicrm_navigationMenu(&$menu)
             'name' => 'jobs',
             'icon' => 'crm-i fa-briefcase',
             'url' => 'civicrm/jobs',
-            'permission' => VIEW_OCTOPUS_8_JOBS,
+//            'permission' => [VIEW_OCTOPUS_8_JOBS, EDIT_OCTOPUS_8_JOBS, DELETE_OCTOPUS_8_JOBS, APPLY_OCTOPUS_8_JOBS],
             'navID' => 10,
             'operator' => 'OR',
             'separator' => 0,
         ));
         _jobs_civix_navigationMenu($menu);
     }
-    if ($can_edit || $can_delete || $can_view) {
+    if ($can_edit || $can_delete) {
         _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
             'label' => E::ts('Dashboard'),
             'name' => 'jobs_dashboard',
-            'url' => VIEW_OCTOPUS_8_JOBS,
-            'permission' => 'access CiviCRM',
+            'url' => 'civicrm/jobs/dashboard',
+//            'permission' => [VIEW_OCTOPUS_8_JOBS, EDIT_OCTOPUS_8_JOBS, DELETE_OCTOPUS_8_JOBS],
             'operator' => 'OR',
             'separator' => 0,
         ));
@@ -245,7 +245,7 @@ function jobs_civicrm_navigationMenu(&$menu)
             'label' => E::ts('Find Jobs'),
             'name' => 'search_jobs',
             'url' => 'civicrm/jobs/search',
-            'permission' => VIEW_OCTOPUS_8_JOBS,
+//            'permission' => VIEW_OCTOPUS_8_JOBS,
             'operator' => 'OR',
             'separator' => 0,
         ));
@@ -256,17 +256,18 @@ function jobs_civicrm_navigationMenu(&$menu)
             'label' => E::ts('Find Applications'),
             'name' => 'search_application',
             'url' => 'civicrm/applications/search',
-            'permission' => VIEW_OCTOPUS_8_JOBS,
+//            'permission' => VIEW_OCTOPUS_8_JOBS,
             'operator' => 'OR',
             'separator' => 0,
         ));
         _jobs_civix_navigationMenu($menu);
-
+    }
+    if($can_edit && $can_delete) {
         _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
             'label' => E::ts('Import Jobs'),
             'name' => 'import_jobs',
             'url' => 'civicrm/csvimporter/import?entity=SscJob',
-            'permission' => EDIT_OCTOPUS_8_JOBS,
+//            'permission' => EDIT_OCTOPUS_8_JOBS,
             'operator' => 'OR',
             'separator' => 2,
         ));
@@ -275,7 +276,7 @@ function jobs_civicrm_navigationMenu(&$menu)
             'label' => E::ts('Import Applications'),
             'name' => 'import_applications',
             'url' => 'civicrm/csvimporter/import?entity=SscJob',
-            'permission' => EDIT_OCTOPUS_8_JOBS,
+//            'permission' => EDIT_OCTOPUS_8_JOBS,
             'operator' => 'OR',
             'separator' => 0,
         ));
@@ -284,20 +285,20 @@ function jobs_civicrm_navigationMenu(&$menu)
             'label' => E::ts('Job Reports'),
             'name' => 'job_reports',
             'url' => CRM_Utils_System::url('civicrm/report/list', ['grp' => 'jobs', 'reset' => 1]),
-            'permission' => VIEW_OCTOPUS_8_JOBS,
+//            'permission' => VIEW_OCTOPUS_8_JOBS,
             'operator' => 'OR',
             'separator' => 2,
         ));
         _jobs_civix_navigationMenu($menu);
-        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
-            'label' => E::ts('Run a Function'),
-            'name' => 'run_a_fun',
-            'url' => 'civicrm/jobs/runafun',
-            'permission' => 'administer CiviCRM',
-            'operator' => 'OR',
-            'separator' => 2,
-        ));
-        _jobs_civix_navigationMenu($menu);
+//        _jobs_civix_insert_navigation_menu($menu, 'jobs', array(
+//            'label' => E::ts('Run a Function'),
+//            'name' => 'run_a_fun',
+//            'url' => 'civicrm/jobs/runafun',
+//            'permission' => 'administer CiviCRM',
+//            'operator' => 'OR',
+//            'separator' => 2,
+//        ));
+//        _jobs_civix_navigationMenu($menu);
     }
 }
 
