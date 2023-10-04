@@ -339,11 +339,11 @@ FROM civicrm_o8_job j LEFT JOIN civicrm_o8_job_application a on a.o8_job_id = j.
                 $update = '<a target="_blank" class="action-item update-job crm-hover-button" href="' . $r_update . '"><i class="crm-i fa-pencil"></i>&nbsp;Edit</a>';
             }
             if ($can_delete) {
-                if ($dao->application_count > 0) {
-                    $delete = '<a target="_blank" class="action-item delete-job crm-hover-button disabled" href="#"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
-                } else {
+//                if ($dao->application_count > 0) {
+//                    $delete = '<a target="_blank" class="action-item delete-job crm-hover-button disabled" href="#"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
+//                } else {
                     $delete = '<a target="_blank" class="action-item delete-job crm-hover-button" href="' . $r_delete . '"><i class="crm-i fa-trash"></i>&nbsp;Delete</a>';
-                }
+//                }
             }
             $action = "<span>$view $update $delete</span>";
             $rows[$count][] = $dao->id;

@@ -388,6 +388,12 @@ class CRM_Jobs_Form_JobsForm extends CRM_Core_Form
 //        CRM_Core_Error::debug_var('post', $_POST);
         $currentUserId = CRM_Core_Session::getLoggedInContactID();
         if ($can_delete && $this->_action == CRM_Core_Action::DELETE) {
+            $session = CRM_Core_Session::singleton();
+            $session->replaceUserContext(CRM_Utils_System::url('civicrm/jobs/search'));
+            civicrm_api4('SscApplication', 'delete', [
+                'where' => [['o8_job_id', '=', $this->_id]],
+                'checkPermissions' => false
+            ]);
             civicrm_api4('SscJob', 'delete', [
                 'where' => [['id', '=', $this->_id]],
                 'checkPermissions' => false
