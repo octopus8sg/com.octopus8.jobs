@@ -10,47 +10,7 @@
                 <table class="selector selector-applications row-highlight pagerDisplay" id="Applications" name="Applications">
                     <thead class="sticky">
                     <tr>
-                    {if $isNotEmployee}
-                        <th id="sortable" scope="col">
-                            {ts}ID{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Application Status{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Job Title{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Role{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Location{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Employer{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Apps Count{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Job Created Date{/ts}
-                        </th>
-
-                        <th scope="col">
-                            {ts}Job Closed{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Applicant{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Application Created{/ts}
-                        </th>
-                        <th scope="col">
-                            {ts}Status{/ts}
-                        </th>
-
-                        <th id="nosort">&nbsp;Action</th>
-                        {else}
+                    {if $isEmployee}
                         <th id="sortable" scope="col">
                             {ts}ID{/ts}
                         </th>
@@ -75,6 +35,45 @@
                         <th scope="col">
                             {ts}Application Status{/ts}
                         </th>
+                        <th id="nosort">&nbsp;Action</th>
+                        {else}
+                        <th id="sortable" scope="col">
+                            {ts}ID{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Application Status{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Job Title{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Role{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Location{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Employer{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Apps Count{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Job Created Date{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Job Closed{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Applicant{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Application Created{/ts}
+                        </th>
+                        <th scope="col">
+                            {ts}Status{/ts}
+                        </th>
+
                         <th id="nosort">&nbsp;Action</th>
                         {/if}
                     </tr>
